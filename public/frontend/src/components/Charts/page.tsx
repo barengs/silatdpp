@@ -6,13 +6,15 @@ import UserLists from "@/components/UserLists/UserLists";
 
 // For development purpose
 interface User {
-  name: string;
-  position: string;
-  role: string;
+  id: string,
+  name: string,
+  position: string,
+  role: string,
 }
 
 const userData: User[] = [
   {
+    id: "1",
     name: "Alvin Setya Pranata",
     position: "Kepala Dinas",
     role: "Admin"
