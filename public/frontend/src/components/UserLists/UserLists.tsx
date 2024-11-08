@@ -2,12 +2,14 @@ import Link from 'next/link';
 import React from 'react'
 
 interface UserListsProps {
+    id: string,
     name: string,
     position: string,
     role: string
 }
 
 const UserLists: React.FC<UserListsProps> = ({
+    id,
     name,
     position,
     role
@@ -18,7 +20,7 @@ const UserLists: React.FC<UserListsProps> = ({
         <td className='text-center py-4'>{position}</td>
         <td className='text-center py-4'>{role}</td>
         <td className='text-center py-4'>
-          <Link href="youtube.com" className='text-blue-500 underline'>Edit</Link>
+          <Link href={`/chart/${id}`} className='text-blue-500 underline'>Edit</Link>
         </td>
     </tr>
   )
