@@ -40,8 +40,8 @@ const Chart: React.FC = () => {
           <th className="py-4">Aksi</th>
         </thead>
         <tbody>
-          {userData.map(((user: User) => (
-            <UserLists {...user} />
+          {userData.map(((user: User, index: number) => (
+            <UserLists key={index} {...user} />
           )))
 
           }
