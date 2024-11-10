@@ -22,13 +22,6 @@ function getData() {
 // For development purpose
 
 
-export const metadata: Metadata = {
-    title:
-      "SILATDPP",
-    description: "This is Next.js Home for TailAdmin Dashboard Template",
-  };
-  
-
 const options = [
     {
         name: "Admin",
