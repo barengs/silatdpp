@@ -4,30 +4,8 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import SelectFields from "@/components/Fields/SelectFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { Metadata } from "next";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-
-// For development purpose
-function getData() {
-    return [
-        {
-            id: "1",
-            nama: "Alvin Setya Pranata",
-            position: "Kepala Dinas",
-            role: "Admin",
-        },
-    ];
-}
-// For development purpose
-
-
-export const metadata: Metadata = {
-    title:
-      "SILATDPP",
-    description: "This is Next.js Home for TailAdmin Dashboard Template",
-  };
-  
+import React, { useState } from "react";
 
 const options = [
     {
@@ -44,29 +22,15 @@ const options = [
         value: "school_admin"
     }
 ]
-// For development purpose
 
-
-interface userDetailProps {
-    params: {
-        slug: string;
-    };
-}
-
-const UserDetail = ({ params }: userDetailProps) => {
+const UserDetail = () => {
     // const { id } = params;
 
     const [data, setData] = useState<{ id: string; nama: string; position: string; role: string; }[]>([{id: "", nama: "", position: "", role: ""}])
 
-
-    useEffect(() => {
-      setData(getData())
-    }, [])
-
-
     return (
         <DefaultLayout>
-            <Link href="/users" className="mb-6">
+            <Link href="/users">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
