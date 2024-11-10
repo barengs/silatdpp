@@ -2,6 +2,7 @@
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
+import SelectFields from "@/components/Fields/SelectFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import React, { useEffect, useState } from "react";
 
@@ -17,6 +18,23 @@ function getData() {
     ];
 }
 
+const options = [
+    {
+        name: "Admin",
+        value: "admin",
+    },
+
+    {
+        name: "Kepala Sekolah",
+        value: "principal"
+    },
+    {
+        name: "Admin Sekolah",
+        value: "school_admin"
+    }
+]
+// For development purpose
+
 
 interface userDetailProps {
     params: {
@@ -25,14 +43,14 @@ interface userDetailProps {
 }
 
 const UserDetail = ({ params }: userDetailProps) => {
-    const { slug } = params;
+    // const { id } = params;
 
     const [data, setData] = useState<{ id: string; nama: string; position: string; role: string; }[]>([{id: "", nama: "", position: "", role: ""}])
 
 
     useEffect(() => {
       setData(getData())
-    })
+    }, [])
 
 
     return (
@@ -42,12 +60,13 @@ const UserDetail = ({ params }: userDetailProps) => {
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                 {data.map((data, index) => (
                     <div key={index} className="flex flex-col gap-9">
-                        <InputFields name="Nama" defaultValue={data.nama} />
+                        <InputFields name="Nama Pengguna" defaultValue={data.nama} />
                         <InputFields
                             name="Jabatan"
                             defaultValue={data.position}
                         />
-                        <InputFields name="Role" defaultValue={data.role} />
+                        <SelectFields title="Hak Akses" options={options} defaultValue="principal"/>
+
                     </div>
                 ))}
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">

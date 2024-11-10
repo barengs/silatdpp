@@ -1,55 +1,32 @@
 "use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import React from "react";
-import UserLists from "@/components/UserLists/UserLists";
-
+import Table from "../Table/page";
+import { cleanColumnName, extractDataColumnName } from "../../../utils/data";
 
 // For development purpose
-interface User {
-  id: string,
-  name: string,
-  position: string,
-  role: string,
-}
 
-const userData: User[] = [
-  {
-    id: "1",
-    name: "Alvin Setya Pranata",
-    position: "Kepala Dinas",
-    role: "Admin"
-  }
-]
+const DUMMY_DATA = [
+    {
+        id: "1",
+        name: "Alvin Setya Pranata",
+        position: "Kepala Dinas",
+        role: "Admin",
+    },
+];
 
 const Chart: React.FC = () => {
+    const { columns, value } = extractDataColumnName(DUMMY_DATA);
 
-  
+    return (
+        <>
+            <Breadcrumb pageName="Managemen Pengguna" />
 
-  return (
-    <>
-      <Breadcrumb pageName="Managemen Pengguna" />
-
-
-      <div className="px-4 py-12">
-
-      <table className="bg-white w-full">
-        <thead>
-          <th className="py-4">Nama</th>
-          <th className="py-4">Jabatan</th>
-          <th className="py-4">Role</th>
-          <th className="py-4">Aksi</th>
-        </thead>
-        <tbody>
-          {userData.map(((user: User, index: number) => (
-            <UserLists key={index} {...user} />
-          )))
-
-          }
-        </tbody>
-      </table>
-      </div>
-    </>
-  );
+            <div className="px-4 py-12">
+                <Table column={cleanColumnName(columns)} data={value} />
+            </div>
+        </>
+    );
 };
 
 export default Chart;
