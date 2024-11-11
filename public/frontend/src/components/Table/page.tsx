@@ -1,28 +1,35 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 interface TableProps {
     name: string;
     addButtonName: string;
+    addButtonLink: string;
     column: string[];
     data: Record<string, string>[];
     detailLink?: string;
+    excludes?: string[];
 }
 
 const Table: React.FC<TableProps> = ({
     name,
     addButtonName,
+    addButtonLink,
     column,
     data,
     detailLink = "",
+    excludes = []
 }) => {
+
+    const [pageIndex, setPageIndex] = useState(0)
+
     return (
         <div className="w-full bg-white px-4 py-2">
             <div className="flex w-full justify-between items-center border-b-[1px] border-b-slate-400 py-2">
                 <h1 className="font-semibold text-lg text-black">{name}</h1>
                 <div className="flex justify-end">
                     <Link
-                        href="/users/addData"
+                        href={addButtonLink}
                         className="mb-4 mt-2 rounded-md bg-blue-500 px-2 py-3 text-white text-sm"
                     >
                         {addButtonName}
@@ -31,9 +38,9 @@ const Table: React.FC<TableProps> = ({
             </div>
 
             <div className="flex justify-between items-center mt-4">
-                <select className="p-3 rounded-md" name="" id="">
+                <select className="px-3 py-2 rounded-md font-medium" name="" id="">
                     <option value="" disabled>Kategori</option>
-                    <option value="">A</option>
+                    <option value="">Nama</option>
                 </select>
                 <input type="text" placeholder="Name" className="rounded-md px-2 py-1 border-[1.5px] border-slate-300"/>
             </div>
@@ -66,14 +73,10 @@ const Table: React.FC<TableProps> = ({
             </table>
 
             <div className="flex justify-between items-center mt-6 px-4 py-2">
-                <p>Showing 10 Data</p>
-                <div className="flex text-sm">
-                    <button className="border-2 border-r-0 border-gray-400 px-3 py-1 font-medium">Prev</button>
-                    <button className="border-2 border-gray-400 px-3 py-1 font-medium">1</button>
-                    <button className="border-2 border-x-0 border-gray-400 px-3 py-1 font-medium">2</button>
-                    <button className="border-2 border-gray-400 px-3 py-1 font-medium">3</button>
-                    <button className="border-2 border-l-0 border-gray-400 px-3 py-1 font-medium">Next</button>
-                    
+                <p className="text-slate-600 font-medium">Menampilkan 1 sampai 10 dari 100 Data</p>
+                <div className="flex gap-x-2 text-sm">
+                    <button className="bg-primary rounded-md text-white px-4 py-1 font-medium">Prev</button>
+                    <button className="bg-primary rounded-md text-white px-4 py-1 font-medium">Next</button>
                 </div>
             </div>
         </div>

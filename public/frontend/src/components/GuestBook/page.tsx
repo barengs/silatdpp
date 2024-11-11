@@ -14,7 +14,23 @@ const DUMMY_DATA = [
     needs: "Mengubah Data Ijazah",
     position: "CEO",
     contact: "+6285334277450"
-  }
+  },
+  {
+    name: "Alvin Setya Pranata",
+    institution_name: "BlizbyteCo",
+    institution_address: "Jl. Jembatan Baru",
+    needs: "Mengubah Data Ijazah",
+    position: "CEO",
+    contact: "+6285334277450"
+  },
+  {
+    name: "Alvin Setya Pranata",
+    institution_name: "BlizbyteCo",
+    institution_address: "Jl. Jembatan Baru",
+    needs: "Mengubah Data Ijazah",
+    position: "CEO",
+    contact: "+6285334277450"
+  },
 ]
 
 
@@ -26,7 +42,7 @@ const GuestBook: React.FC = () => {
   return (
     <>
       <Breadcrumb pageName='Buku Tamu' />
-      <Table addButtonName='Tambah Tamu' name='Daftar Tamu' column={cleanColumnName(columns)} data={value}   />
+      <Table addButtonLink='/guestBook/addData' addButtonName='Tambah Tamu' name='Daftar Tamu' column={cleanColumnName(columns)} data={value}   />
     </>
   )
 }

@@ -4,25 +4,7 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import InputFields from '@/components/Fields/InputFields'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
-
-
-
-// For development purpose
-function getData() {
-    return [
-        {
-            id: 1,
-            guestName: "John Doe",
-            instutionName: "Tech University",
-            instutionAddress: "123 Tech Lane, Silicon Valley, CA",
-            needs: "Projector, Whiteboard",
-            position: "Professor",
-            contact: "+1 (123) 456-7890"
-        }
-    ];
-}
-// For development purpose
+import React, { useState } from 'react'
 
 
 interface dataProps {
@@ -48,10 +30,6 @@ export default function GuestBookDetail() {
         contact: ""
     }])
 
-
-    useEffect(() => {
-      setData(getData())
-    }, [])
 
 
   return (

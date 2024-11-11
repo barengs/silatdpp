@@ -34,7 +34,7 @@ const Chart: React.FC = () => {
     return (
         <>
             <Breadcrumb pageName="Managemen Pengguna" />
-            <Table addButtonName="Tambah Pengguna" name="Daftar Pengguna" column={cleanColumnName(columns)} data={value} />
+            <Table addButtonLink="/users/addData" addButtonName="Tambah Pengguna" name="Daftar Pengguna" column={cleanColumnName(columns)} data={value} />
         </>
     );
 };
