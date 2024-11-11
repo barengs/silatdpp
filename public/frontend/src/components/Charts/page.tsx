@@ -14,26 +14,28 @@ const DUMMY_DATA = [
         position: "Kepala Dinas",
         role: "Admin",
     },
+    {
+        id: "1",
+        name: "Alvin Setya Pranata",
+        position: "Kepala Dinas",
+        role: "Admin",
+    },
+    {
+        id: "1",
+        name: "Alvin Setya Pranata",
+        position: "Kepala Dinas",
+        role: "Admin",
+    },
 ];
 
 const Chart: React.FC = () => {
     const { columns, value } = extractDataColumnName(DUMMY_DATA);
 
     return (
-        <div className="p-6">
-
+        <>
             <Breadcrumb pageName="Managemen Pengguna" />
-
-            <div className="flex justify-end">
-                <Link
-                    href="/users/addData"
-                    className="mb-4 mt-2 rounded-md bg-blue-500 px-2 py-3 text-white"
-                >
-                    Tambah Tamu
-                </Link>
-            </div>
-            <Table column={cleanColumnName(columns)} data={value} />
-        </div>
+            <Table addButtonName="Tambah Pengguna" name="Daftar Pengguna" column={cleanColumnName(columns)} data={value} />
+        </>
     );
 };
 

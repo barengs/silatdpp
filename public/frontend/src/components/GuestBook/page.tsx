@@ -25,12 +25,8 @@ const GuestBook: React.FC = () => {
 
   return (
     <>
-    
       <Breadcrumb pageName='Buku Tamu' />
-      <div className="flex justify-end">
-        <button className='px-2 py-3 bg-blue-500 text-white rounded-md mt-2 mb-4'>Tambah Tamu</button>
-      </div>
-      <Table column={cleanColumnName(columns)} data={value}   />
+      <Table addButtonName='Tambah Tamu' name='Daftar Tamu' column={cleanColumnName(columns)} data={value}   />
     </>
   )
 }
