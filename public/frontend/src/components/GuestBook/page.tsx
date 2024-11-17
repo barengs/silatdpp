@@ -8,6 +8,7 @@ import { cleanColumnName, extractDataColumnName } from '../../../utils/data'
 // FOR DEVELOPMENT PURPOSE
 const DUMMY_DATA = [
   {
+    id: "2",
     name: "Alvin Setya Pranata",
     institution_name: "BlizbyteCo",
     institution_address: "Jl. Jembatan Baru",
@@ -16,6 +17,7 @@ const DUMMY_DATA = [
     contact: "+6285334277450"
   },
   {
+    id: "2",
     name: "Alvin Setya Pranata",
     institution_name: "BlizbyteCo",
     institution_address: "Jl. Jembatan Baru",
@@ -24,6 +26,7 @@ const DUMMY_DATA = [
     contact: "+6285334277450"
   },
   {
+    id: "3",
     name: "Alvin Setya Pranata",
     institution_name: "BlizbyteCo",
     institution_address: "Jl. Jembatan Baru",
@@ -42,7 +45,7 @@ const GuestBook: React.FC = () => {
   return (
     <>
       <Breadcrumb pageName='Buku Tamu' />
-      <Table addButtonLink='/guestBook/addData' addButtonName='Tambah Tamu' name='Daftar Tamu' column={cleanColumnName(columns)} data={value}   />
+      <Table addButtonLink='/guestBook/addData' addButtonName='Tambah Tamu' name='Daftar Tamu' column={cleanColumnName(columns)} data={value} detailLink={{name: "Pengaturan", to: "/guestBook"}}   />
     </>
   )
 }

@@ -1,14 +1,20 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
+
+
+type detailLinkType = {
+    name: string,
+    to: string,
+}
+
 interface TableProps {
-    name: string;
-    addButtonName: string;
-    addButtonLink: string;
-    column: string[];
-    data: Record<string, string>[];
-    detailLink?: string;
-    excludes?: string[];
+    name: string,
+    addButtonName: string,
+    addButtonLink: string,
+    column: string[],
+    data: Record<string, string>[],
+    detailLink?: detailLinkType,
 }
 
 const Table: React.FC<TableProps> = ({
@@ -17,8 +23,8 @@ const Table: React.FC<TableProps> = ({
     addButtonLink,
     column,
     data,
-    detailLink = "",
-    excludes = []
+    detailLink = {name: "Pengaturan", to: "#"},
+
 }) => {
 
     const [pageIndex, setPageIndex] = useState(0)
@@ -64,9 +70,14 @@ const Table: React.FC<TableProps> = ({
                                     {rowData[colData]}
                                 </td>
                             ))}
+                            {detailLink.name && detailLink.to ? 
                             <td className="text-center text-blue-500 underline">
-                                <Link href={detailLink}>Pengaturan</Link>
+                                <Link href={`${detailLink.to}/${rowData["id"]}`}>{detailLink.name}</Link>
                             </td>
+                            
+                            : 
+                            ""
+                            }
                         </tr>
                     ))}
                 </tbody>
