@@ -4,6 +4,7 @@ import React from 'react'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import Table from '../Table/page'
 import { cleanColumnName, extractDataColumnName } from '../../../utils/data'
+import Link from 'next/link'
 
 // FOR DEVELOPMENT PURPOSE
 const DUMMY_DATA = [
@@ -183,6 +184,12 @@ const GuestBook: React.FC = () => {
       name: "Contact",
       selector: (row: { contact: string }) => row.contact,
       sortable: true,
+    },
+    {
+      name: "Aksi",
+      cell: (row: typeof DUMMY_DATA[0]) => (
+        <Link href={`/guestBook/${row.id}`}>Edit</Link>
+      ),
     },
   ];
 
