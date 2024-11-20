@@ -1,5 +1,6 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { ChangeEvent, ReactEventHandler, useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 
 
 
@@ -12,10 +13,17 @@ interface TableProps {
     name: string,
     addButtonName: string,
     addButtonLink: string,
-    column: string[],
+    column: Record<string, unknown>[],
     data: Record<string, string>[],
     detailLink?: detailLinkType,
 }
+
+
+// const formatColumn = (column: string[][]) => {
+//     const res = []
+
+//     column.map(column => )
+// }
 
 const Table: React.FC<TableProps> = ({
     name,
@@ -27,7 +35,43 @@ const Table: React.FC<TableProps> = ({
 
 }) => {
 
-    const [pageIndex, setPageIndex] = useState(0)
+  const [searchText, setSearchText] = useState('');
+  const [filteredData, setFilteredData] = useState(data);
+  const [category, setCategory] = useState('name')
+
+  // Handle search input change
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchText(searchValue);
+    
+    const filtered = data.filter(
+      item =>
+        item[category].toLowerCase().includes(searchValue) 
+    );
+    setFilteredData(filtered);
+  };
+
+    const customStyles = {
+        rows: {
+          style: {
+            fontSize: '1rem', // Increase row font size
+          },
+        },
+        headCells: {
+          style: {
+            fontSize: '1rem', // Increase header font size
+            fontWeight: 'bold',
+          },
+        },
+        cells: {
+          style: {
+            fontSize: '1rem', // Increase cell font size
+          },
+        },
+      };
+
+      const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => setCategory(event.target.value)
+
 
     return (
         <div className="w-full bg-white px-4 py-2">
@@ -44,52 +88,18 @@ const Table: React.FC<TableProps> = ({
             </div>
 
             <div className="flex justify-between items-center mt-4">
-                <select className="px-3 py-2 rounded-md font-medium" name="" id="">
+                <select onChange={handleSelectChange} value={category} className="px-3 py-2 rounded-md font-medium text-sm" name="" id="">
                     <option value="" disabled>Kategori</option>
-                    <option value="">Nama</option>
-                </select>
-                <input type="text" placeholder="Name" className="rounded-md px-2 py-1 border-[1.5px] border-slate-300"/>
-            </div>
-
-            <table className="w-full mt-4"> 
-                <thead>
-                    <tr className="bg-primary text-white">
-                        {column.map((column, index) => (
-                            <th className="py-4" key={index}>
-                                {column}
-                            </th>
-                        ))}
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((rowData, rowIndex) => (
-                        <tr className={rowIndex % 2 == 0 ? '' : 'bg-gray-200'} key={rowIndex}>
-                            {Object.keys(rowData).map((colData, colIndex) => (
-                                <td className="py-4 text-center" key={colIndex}>
-                                    {rowData[colData]}
-                                </td>
-                            ))}
-                            {detailLink.name && detailLink.to ? 
-                            <td className="text-center text-blue-500 underline">
-                                <Link href={`${detailLink.to}/${rowData["id"]}`}>{detailLink.name}</Link>
-                            </td>
-                            
-                            : 
-                            ""
-                            }
-                        </tr>
+                    {Object.keys(data[0]).map((option, index) => (
+                      <option key={index} value={option}>{option}</option>
                     ))}
-                </tbody>
-            </table>
-
-            <div className="flex justify-between items-center mt-6 px-4 py-2">
-                <p className="text-slate-600 font-medium">Menampilkan 1 sampai 10 dari 100 Data</p>
-                <div className="flex gap-x-2 text-sm">
-                    <button className="bg-primary rounded-md text-white px-4 py-1 font-medium">Prev</button>
-                    <button className="bg-primary rounded-md text-white px-4 py-1 font-medium">Next</button>
-                </div>
+                </select>
+                <input onChange={handleSearch} value={searchText} type="text" placeholder="Cari data" className="rounded-md px-2 py-2 border-[1.5px] border-slate-300 text-sm"/>
             </div>
+
+            <DataTable  title="" className="mt-6" data={filteredData} columns={column} pagination highlightOnHover customStyles={customStyles} />
+
+
         </div>
     );
 };
