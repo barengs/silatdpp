@@ -12,7 +12,9 @@ class BukuTamuController extends Controller
      */
     public function index()
     {
-        //
+        $data = BukuTamu::all();
+
+        return response()->json(['message' => 'success', 'table' => 'buku_tamu', 'data' => $data]);
     }
 
     /**
