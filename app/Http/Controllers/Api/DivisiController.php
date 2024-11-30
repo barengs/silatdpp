@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\DivisiResource;
 use App\Models\Divisi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DivisiController extends Controller
 {
@@ -12,15 +15,10 @@ class DivisiController extends Controller
      */
     public function index()
     {
-        return 'hello';
-    }
+        // return 'hello';
+        $divisi = Divisi::latest()->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return new DivisiResource(true, 'List data divisi', $divisi);
     }
 
     /**
@@ -28,21 +26,27 @@ class DivisiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        $divisi = Divisi::create([
+            'nama' => $request->nama,
+        ]);
+
+        if ($divisi) {
+            return new DivisiResource(true, 'Berhasil input data divisi!', $divisi);
+        }
     }
 
     /**
      * Display the specified resource.
      */
     public function show(Divisi $divisi)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Divisi $divisi)
     {
         //
     }

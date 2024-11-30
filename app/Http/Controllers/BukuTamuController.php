@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BukuTamuResource;
 use App\Models\BukuTamu;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class BukuTamuController extends Controller
     {
         $data = BukuTamu::all();
 
-        return response()->json(['message' => 'success', 'table' => 'buku_tamu', 'data' => $data]);
+        return new BukuTamuResource(true, 'List data buku tamu', $data);
     }
 
     /**
