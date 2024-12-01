@@ -22,4 +22,4 @@ Route::middleware('auth:api')->get('user', function (Request $request) {
 Route::apiResource('buku-tamu', BukuTamuController::class);
 Route::apiResource('divisi', DivisiController::class);
 Route::apiResource('institusi-tamu', InstitusiTamuController::class);
-Route::apiResource('user', UserController::class);
+// Route::apiResource('user', UserController::class);
