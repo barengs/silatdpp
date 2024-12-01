@@ -22,7 +22,7 @@ const menuGroups = [
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="size-6"
+                        className="size-6 shrink-0"
                     >
                         <path
                             strokeLinecap="round"
@@ -37,7 +37,7 @@ const menuGroups = [
             {
                 icon: (
                     <svg
-                        className="fill-current"
+                        className="fill-current size-6 shrink-0"
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
@@ -65,7 +65,7 @@ const menuGroups = [
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="size-6"
+                        className="size-6 shrink-0"
                     >
                         <path
                             strokeLinecap="round"
@@ -93,12 +93,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 className={`flex fixed z-999 h-screen w-72.5 flex-col overflow-hidden bg-black duration-300 ease-linear dark:bg-boxdark ${
                     sidebarOpen
                         ? "w-4/8 fixed z-9999 lg:static duration-500 ease-in"
-                        : "w-[0px] fixed z-9999 lg:static lg:w-[200px] duration-500 ease-in"
+                        : "w-[0px] fixed z-9999 lg:static lg:w-[80px] duration-500 ease-in"
                 }`}
             >
                 <div className="flex w-full items-center justify-between pl-8 pr-4 pt-12 overflow-hidden">
-                    <h1 className="text-2xl font-bold text-white">
-                        SILATDPP
+                    <h1 className={`text-2xl font-bold text-white overflow-hidden ${sidebarOpen ? '' : ''}`}>
+                    {sidebarOpen ? 'SILATDPP' : 'S'}
                     </h1>
                     <button onClick={() => setSidebarOpen(false)}>
                     <svg
@@ -119,7 +119,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
                 <div className="flex flex-col overflow-y-auto">
                     {/* <!-- Sidebar Menu --> */}
-                    <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
+                    <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6 overflow-hidden">
                         {menuGroups.map((group, groupIndex) => (
                             <div key={groupIndex}>
                                 <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
