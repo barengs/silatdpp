@@ -40,13 +40,14 @@ const Table: React.FC<TableProps> = ({
         const searchValue = event.target.value.toLowerCase();
         setSearchText(searchValue);
 
-        const filtered = data.filter((item) => {
+        const filtered = data.filter((item) => 
           item[category].toLowerCase().includes(searchValue)
-        })
+        )
 
+        
         if (searchValue == "") {
-          setFilteredData(data)
-        } else {
+            setFilteredData(data)
+        } else {  
           setFilteredData(filtered)
         }
     };
