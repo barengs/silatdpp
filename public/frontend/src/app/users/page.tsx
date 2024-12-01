@@ -1,4 +1,4 @@
-import Chart from "@/components/Charts/page";
+import Chart from "@/components/Users/page";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import React from "react";

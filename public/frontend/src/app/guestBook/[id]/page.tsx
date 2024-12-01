@@ -74,7 +74,7 @@ export default function GuestBookDetail() {
             </Link>
             <Breadcrumb pageName="Detail Pengguna" />
 
-            <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                 {data.map((data, index) => (
                     <div key={index} className="flex flex-col gap-9">
                         <InputFields name="Nama Tamu" defaultValue={data.guestName} />

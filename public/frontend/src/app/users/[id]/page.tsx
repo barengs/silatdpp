@@ -89,9 +89,15 @@ const UserDetail = ({ params }: userDetailProps) => {
 
                     </div>
                 ))}
+                <div className="space-y-6 mt-12">
+
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     Perbarui Data
                 </button>
+                <button className="flex w-full justify-center rounded bg-red-500 p-3 font-medium text-gray hover:bg-opacity-90">
+                    Hapus Data
+                </button>
+                </div>
             </div>
         </DefaultLayout>
     );
