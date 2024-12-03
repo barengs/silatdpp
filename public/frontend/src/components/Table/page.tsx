@@ -8,11 +8,18 @@ type detailLinkType = {
     to: string;
 };
 
+type columnType = {
+    name: string;
+    selector?: (row: Record<string, string>) => string;
+    sortable?: boolean;
+    cell?: (row: Record<string, string>) => React.ReactElement
+}
+
 interface TableProps {
     name: string;
     addButtonName: string;
     addButtonLink: string;
-    column: Record<string, unknown>[];
+    column: columnType[];
     data: Record<string, string>[];
     detailLink?: detailLinkType;
 }
