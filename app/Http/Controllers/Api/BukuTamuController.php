@@ -6,6 +6,7 @@ use App\Models\BukuTamu;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BukuTamuResource;
+use App\Models\InstitusiTamu;
 use Illuminate\Support\Facades\Validator;
 
 class BukuTamuController extends Controller
@@ -26,30 +27,45 @@ class BukuTamuController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-					'nama_tamu' => 'required',
-					'alamat'		=> 'required',
-					'no_telpon'	=> 'required',
-					'keperluan'	=> 'required',
-				]);
+			'nama_tamu' => 'required',
+			'alamat'	=> 'required',
+			'no_telpon'	=> 'required',
+			'keperluan'	=> 'required',
+			'institusi_tamu_id' => 'required',
+		]);
 
-				if ($validator->fails()) {
-					return response()->json($validator->errors(), 422);
-				}
+		if ($validator->fails()) {
+			return response()->json($validator->errors(), 422);
+		}
 
-				$tamu = BukuTamu::create([
-					'nama_tamu'	=> $request->nama_tamu,
-					'alamat'		=> $request->alamat,
-					'no_telpon'	=> $request->no_telpon,
-					'institusi_tamu_id' => $request->institusi_tamu_id,
-					'divisi_id'	=> $request->divisi_id,
-					'keperluan'	=> $request->keperluan,
-					'user_id'		=> 1,
-				]);
+		// cek jika institusi tamu berupa nama baru
+		if (strlen($request->institusi_tamu_id) > 3) {
+			
+			$institusiBaru = InstitusiTamu::create([
+				'nama' => $request->institusi_tamu_id,
+				'alamat' => $request->alamat_institusi,
+				'kontak' => $request->kontak_institusi,
+			]);
 
-				if ($tamu) {
-					return new BukuTamuResource(true, 'Tamu berhasil di simpan!', $tamu);
-				}
-				return new BukuTamuResource(true, 'Tamu berhasil di simpan!', $tamu);
+			$institusi = $institusiBaru->id;
+		}else {
+			$institusi = $request->isntitusi_tamu_id;
+		}
+
+		$tamu = BukuTamu::create([
+			'nama_tamu'	=> $request->nama_tamu,
+			'alamat'	=> $request->alamat,
+			'no_telpon'	=> $request->no_telpon,
+			'institusi_tamu_id' => $institusi,
+			'divisi_id'	=> $request->divisi_id,
+			'keperluan'	=> $request->keperluan,
+			'user_id'	=> 1,
+		]);
+
+		if ($tamu) {
+			return new BukuTamuResource(true, 'Tamu berhasil di simpan!', $tamu);
+		}
+		return new BukuTamuResource(true, 'Tamu berhasil di simpan!', $tamu);
     }
 
     /**

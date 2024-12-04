@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Divisi;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class DivisiSeeder extends Seeder
+class SppdPengajuanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Divisi::create(['nama' => 'Bidang SD']);
+        //
     }
 }
