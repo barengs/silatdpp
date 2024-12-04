@@ -3,9 +3,9 @@
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import InputFields from '@/components/Fields/InputFields'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import { GuestBookGetInstance } from '@/types/pages/guest'
+import { GuestBookGetInstance, InstitutionsDataTypes } from '@/types/pages/guest'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 interface dataProps {
@@ -33,6 +33,31 @@ export default function GuestBookDetail() {
     })
 
 
+    // Will be removed
+    const [institutionData, setInstitutionData] = useState<string[]>([])
+
+    useEffect(() => {
+        const getData = async() => {
+            await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi-tamu`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data) {
+                        const instituionsName = data.data.data.map(instutionData => instutionData.nama)
+                        
+                        setInstitutionData(instituionsName)
+                    }
+                })
+        }
+
+
+        getData()
+    }, [])
+
+
+    useEffect(() => console.log(institutionData), [institutionData])
+
+    
+
 
   return (
     <DefaultLayout>
@@ -56,7 +81,7 @@ export default function GuestBookDetail() {
 
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                
-                <div className="grid grid-cols-2 gap-9">
+                <div className="grid grid-cols-2 gap-3">
                     <InputFields title="Nama Tamu" />
                     <InputFields
                         title="Alamat"
@@ -69,7 +94,7 @@ export default function GuestBookDetail() {
                     />
                     <InputFields
                         title="Instansi Asal"
-                        autoCompleteData={["BlizbyteCo", "DISPORAPAR"]}
+                        autoCompleteData={institutionData}
                     />
                     <InputFields
                         title="Divisi Tujuan"
