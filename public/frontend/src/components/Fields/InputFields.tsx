@@ -4,13 +4,13 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 
 interface InputFieldsProps {
     title: string,
+    onValueChange?: (value: string) => void,
     name?: string,
-    placeholder?: string,
     defaultValue?: string,
     autoCompleteData?: string[]
 }
 
-const InputFields = ({ title, autoCompleteData, defaultValue="", name="", placeholder=name }: InputFieldsProps) => {
+const InputFields = ({ title, autoCompleteData, onValueChange, defaultValue="", name="" }: InputFieldsProps) => {
 
     const [inputValue, setInputValue] = useState(defaultValue)
     const [data, setData] = useState<string[]>([])
@@ -27,8 +27,10 @@ const InputFields = ({ title, autoCompleteData, defaultValue="", name="", placeh
         setInputValue(event.target.value)
     }
 
+
+    // useEffect(() => onValueChange(inputValue), [inputValue])
+
     const handleButtonClick = (data: string) => {
-        console.log(data)
         setAutoCompleteState(false)
         setInputValue(data)
     }
@@ -60,7 +62,7 @@ const InputFields = ({ title, autoCompleteData, defaultValue="", name="", placeh
                 name={name}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
-            <div className={`rounded-md bg-gray-100 w-full overflow-hidden py-2 mt-2 ${ autoCompleteState ? '' : 'hidden'}`}>
+            <div className={`rounded-md bg-gray-100 w-full overflow-hidden py-2 mt-2 ${ (autoCompleteState && autoCompleteData) ? '' : 'hidden'}`}>
                 {data?.filter(name => {
                     if (!name) return true
                     return name.toLowerCase().includes(inputValue.toLowerCase())
