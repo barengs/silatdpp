@@ -26,11 +26,13 @@ export default function GuestBookDetail() {
         nama_tamu: "",
         alamat: "",
         no_telpon: "",
-        institusi_tamu_id: 0,
-        divisi_id: 0,
+        institusi_tamu_id: "0",
+        divisi_id: "0",
         keperluan: "",
-        user_id: 0,
+        user_id: "0",
     })
+
+    const [formData, setFormData] = useState({})
 
 
     // Will be removed
@@ -42,9 +44,7 @@ export default function GuestBookDetail() {
                 .then(res => res.json())
                 .then(data => {
                     if (data) {
-                        const instituionsName = data.data.data.map(instutionData => instutionData.nama)
-                        
-                        setInstitutionData(instituionsName)
+                        setInstitutionData(data.data.data)
                     }
                 })
         }
@@ -54,9 +54,23 @@ export default function GuestBookDetail() {
     }, [])
 
 
-    useEffect(() => console.log(institutionData), [institutionData])
+    // useEffect(() => console.log(institutionData), [institutionData])
 
     
+    const handlePostData = async () => {
+
+        const data = new FormData()
+        
+        
+        Object.keys(formData).map(fieldKey => data.append(fieldKey, formData[fieldKey]))
+        
+
+        await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`, { 
+            method: "post",
+            body: JSON.stringify(formData)
+        })
+            .then(res => console.log(res))
+    }
 
 
   return (
@@ -82,27 +96,35 @@ export default function GuestBookDetail() {
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                
                 <div className="grid grid-cols-2 gap-3">
-                    <InputFields title="Nama Tamu" />
+                    <InputFields 
+                        title="Nama Tamu" 
+                    
+                    />
                     <InputFields
                         title="Alamat"
+                    
                     />
                     <InputFields
                         title="No Telepon"
+                      
                     />
                     <InputFields
                         title="Keperluan"
+                   
                     />
                     <InputFields
                         title="Instansi Asal"
-                        autoCompleteData={institutionData}
+                        autoCompleteData={institutionData.map(field => field.nama)}
+                       
                     />
                     <InputFields
                         title="Divisi Tujuan"
+                       
                     />                    
 
                 </div>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                <button onClick={handlePostData} className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     Tambahkan tamu
                 </button>
             </div>
