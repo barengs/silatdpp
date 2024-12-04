@@ -1,5 +1,7 @@
+"use client"
+
 import Link from "next/link";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { cleanColumnName } from "../../../utils/data";
 
@@ -12,7 +14,7 @@ type columnType = {
     name: string;
     selector?: (row: Record<string, string>) => string;
     sortable?: boolean;
-    cell?: (row: Record<string, string>) => React.ReactElement
+    cell?: (row: Record<string, string>) => React.JSX.Element
 }
 
 interface TableProps {
@@ -30,7 +32,7 @@ interface TableProps {
 //     column.map(column => )
 // }
 
-const Table: React.FC<TableProps> = ({
+const Table :React.FC<TableProps> = ({
     name,
     addButtonName,
     addButtonLink,
@@ -85,6 +87,8 @@ const Table: React.FC<TableProps> = ({
       setSearchText("")
       setFilteredData(data)
     }
+
+    // useEffect(() => console.log(data), [])
 
     return (
         <div className="w-full bg-white px-4 py-2">
