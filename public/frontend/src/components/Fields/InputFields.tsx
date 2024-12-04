@@ -4,7 +4,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 
 interface InputFieldsProps {
     title: string,
-    onValueChange?: (value: string) => void,
+    onValueChange: (value: string) => void,
     name?: string,
     defaultValue?: string,
     autoCompleteData?: string[]
@@ -28,7 +28,7 @@ const InputFields = ({ title, autoCompleteData, onValueChange, defaultValue="", 
     }
 
 
-    // useEffect(() => onValueChange(inputValue), [inputValue])
+    useEffect(() => onValueChange(inputValue), [inputValue])
 
     const handleButtonClick = (data: string) => {
         setAutoCompleteState(false)

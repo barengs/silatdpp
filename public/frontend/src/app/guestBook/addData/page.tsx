@@ -60,16 +60,36 @@ export default function GuestBookDetail() {
     const handlePostData = async () => {
 
         const data = new FormData()
-        
+     
         
         Object.keys(formData).map(fieldKey => data.append(fieldKey, formData[fieldKey]))
         
+
+        console.log(data)
+
+        return
+
 
         await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`, { 
             method: "post",
             body: JSON.stringify(formData)
         })
             .then(res => console.log(res))
+    }
+
+
+    const handleStoreInput = (name: string, value: string) => {
+        // console.log(name + " ==== " + value)
+        if (name == "instansi_tamu_id") {
+            const id = institutionData.map(institution => institution.nama == value ? institution.id : null)
+            
+            if (id.length > 0) {
+                setFormData(state => {
+                    state[name] = id[0]
+                    return state
+                })
+            }
+        }
     }
 
 
@@ -98,27 +118,32 @@ export default function GuestBookDetail() {
                 <div className="grid grid-cols-2 gap-3">
                     <InputFields 
                         title="Nama Tamu" 
-                    
+                        onValueChange={(value) => handleStoreInput("nama_tamu", value)}
                     />
                     <InputFields
                         title="Alamat"
+                        onValueChange={(value) => handleStoreInput("alamat", value)}
                     
                     />
                     <InputFields
                         title="No Telepon"
+                        onValueChange={(value) => handleStoreInput("no_telpon", value)}
                       
                     />
                     <InputFields
                         title="Keperluan"
+                        onValueChange={(value) => handleStoreInput("keperluan", value)}
                    
                     />
                     <InputFields
                         title="Instansi Asal"
                         autoCompleteData={institutionData.map(field => field.nama)}
+                        onValueChange={(value) => handleStoreInput("instansi_tamu_id", value)}
                        
                     />
                     <InputFields
                         title="Divisi Tujuan"
+                        onValueChange={(value) => handleStoreInput("divisi_id", value)}
                        
                     />                    
 
