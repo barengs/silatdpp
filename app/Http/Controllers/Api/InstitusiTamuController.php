@@ -15,7 +15,7 @@ class InstitusiTamuController extends Controller
      */
     public function index()
     {
-        $institusi = InstitusiTamu::latest()->paginate(10);
+        $institusi = InstitusiTamu::latest();
 
         return new InstitusiTamuResource(true, 'List data institusi', $institusi);
     }
