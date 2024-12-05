@@ -38,7 +38,7 @@ const MapOne: React.FC = () => {
           },
         },
       },
-    });
+    }, []);
 
     return () => {
       const map = document.getElementById("mapOne");

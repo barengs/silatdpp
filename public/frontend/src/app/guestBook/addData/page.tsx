@@ -65,10 +65,10 @@ export default function GuestBookDetail() {
     };
 
     const handlePostData = async () => {
-        if (!router.isReady) return; // Ensure the router is ready
 
         const data = new FormData();
         Object.keys(formData).forEach(fieldKey => data.append(fieldKey, formData[fieldKey]));
+
 
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`, {
@@ -132,6 +132,7 @@ export default function GuestBookDetail() {
                         title="Instansi Asal"
                         autoCompleteData={institutionData.map(field => field.nama)}
                         onValueChange={value => handleStoreInput('institusi_tamu_id', value)}
+                        addItemPath='/institution/addData'
                     />
                     <InputFields
                         title="Divisi Tujuan"

@@ -4,28 +4,10 @@ import React from 'react'
 
 
 
-export const dynamic = 'force-dynamic'
+const GuestBookPage: React.FC = async () => {
 
-async function getData() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`)
   const data = await res.json()
-
-  if (!data) {
-    return {
-      data: {
-        data: null
-      }
-    }
-  }
-
-  return data
-
-}
-
-
-const GuestBookPage: React.FC = () => {
-
-  const data = getData()
 
 
   return (
