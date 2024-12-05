@@ -37,7 +37,7 @@ const menuGroups = [
             {
                 icon: (
                     <svg
-                        className="fill-current size-6 shrink-0"
+                        className="size-6 shrink-0 fill-current"
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
@@ -77,6 +77,26 @@ const menuGroups = [
                 label: "Daftar Tamu",
                 route: "/guestBook",
             },
+            {
+                icon: (
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6 shrink-0"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
+                        />
+                    </svg>
+                ),
+                label: "Daftar Instansi",
+                route: "/institution",
+            },
         ],
     },
 ];
@@ -89,24 +109,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     );
 
     return (
-            <aside
-                className={`flex fixed z-999 h-screen w-72.5 flex-col overflow-hidden bg-black duration-300 ease-linear dark:bg-boxdark ${
-                    sidebarOpen
-                        ? "w-4/8 fixed z-9999 lg:static duration-500 ease-in"
-                        : "w-[0px] fixed z-9999 lg:static lg:w-[80px] duration-500 ease-in"
-                }`}
-            >
-                <div className="flex w-full items-center justify-between pl-8 pr-4 pt-12 overflow-hidden">
-                    <h1 className={`text-2xl font-bold text-white overflow-hidden ${sidebarOpen ? '' : ''}`}>
-                    {sidebarOpen ? 'SILATDPP' : 'S'}
-                    </h1>
-                    <button onClick={() => setSidebarOpen(false)}>
+        <aside
+            className={`fixed z-999 flex h-screen w-72.5 flex-col overflow-hidden bg-black duration-300 ease-linear dark:bg-boxdark ${
+                sidebarOpen
+                    ? "w-4/8 fixed z-9999 duration-500 ease-in lg:static"
+                    : "fixed z-9999 w-[0px] duration-500 ease-in lg:static lg:w-[80px]"
+            }`}
+        >
+            <div className="flex w-full items-center justify-between overflow-hidden pl-8 pr-4 pt-12">
+                <h1
+                    className={`overflow-hidden text-2xl font-bold text-white ${sidebarOpen ? "" : ""}`}
+                >
+                    {sidebarOpen ? "SILATDPP" : "S"}
+                </h1>
+                <button onClick={() => setSidebarOpen(false)}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
-                        className="size-6 stroke-white block lg:hidden"
+                        className="block size-6 stroke-white lg:hidden"
                     >
                         <path
                             strokeLinecap="round"
@@ -114,35 +136,33 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
                         />
                     </svg>
-                    </button>
-                </div>
+                </button>
+            </div>
 
-                <div className="flex flex-col overflow-y-auto">
-                    {/* <!-- Sidebar Menu --> */}
-                    <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6 overflow-hidden">
-                        {menuGroups.map((group, groupIndex) => (
-                            <div key={groupIndex}>
-                                <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-                                    {group.name}
-                                </h3>
+            <div className="flex flex-col overflow-y-auto">
+                {/* <!-- Sidebar Menu --> */}
+                <nav className="mt-5 overflow-hidden px-4 py-4 lg:mt-9 lg:px-6">
+                    {menuGroups.map((group, groupIndex) => (
+                        <div key={groupIndex}>
+                            <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
+                                {group.name}
+                            </h3>
 
-                                <ul className="mb-6 flex flex-col gap-y-6">
-                                    {group.menuItems.map(
-                                        (menuItem, menuIndex) => (
-                                            <SidebarItem
-                                                key={menuIndex}
-                                                item={menuItem}
-                                                pageName={pageName}
-                                                setPageName={setPageName}
-                                            />
-                                        ),
-                                    )}
-                                </ul>
-                            </div>
-                        ))}
-                    </nav>
-                </div>
-            </aside>
+                            <ul className="mb-6 flex flex-col gap-y-6">
+                                {group.menuItems.map((menuItem, menuIndex) => (
+                                    <SidebarItem
+                                        key={menuIndex}
+                                        item={menuItem}
+                                        pageName={pageName}
+                                        setPageName={setPageName}
+                                    />
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+                </nav>
+            </div>
+        </aside>
     );
 };
 
