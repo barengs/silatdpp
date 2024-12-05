@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 
 interface InputFieldsProps {
@@ -7,14 +8,18 @@ interface InputFieldsProps {
     onValueChange: (value: string) => void,
     name?: string,
     defaultValue?: string,
-    autoCompleteData?: string[]
+    autoCompleteData?: string[],
+    addItemPath?: string
 }
 
-const InputFields = ({ title, autoCompleteData, onValueChange, defaultValue="", name="" }: InputFieldsProps) => {
+const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, defaultValue="", name="" }: InputFieldsProps) => {
 
     const [inputValue, setInputValue] = useState(defaultValue)
     const [data, setData] = useState<string[]>([])
     const [autoCompleteState, setAutoCompleteState] = useState(false)
+
+
+    const router = useRouter()
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 
@@ -28,7 +33,7 @@ const InputFields = ({ title, autoCompleteData, onValueChange, defaultValue="", 
     }
 
 
-    useEffect(() => onValueChange(inputValue), [inputValue, onValueChange])
+    useEffect(() => onValueChange(inputValue), [inputValue])
 
     const handleButtonClick = (data: string) => {
         setAutoCompleteState(false)
@@ -42,8 +47,7 @@ const InputFields = ({ title, autoCompleteData, onValueChange, defaultValue="", 
 
 
     const onBlurHandler = () => {
-        const delay = setTimeout(() => setAutoCompleteState(false), 500)
-        // clearTimeout(delay)
+        setTimeout(() => setAutoCompleteState(false), 500)
     }
 
     return (
@@ -62,13 +66,14 @@ const InputFields = ({ title, autoCompleteData, onValueChange, defaultValue="", 
                 name={name}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
-            <div className={`rounded-md bg-gray-100 w-full overflow-hidden py-2 mt-2 ${ (autoCompleteState && autoCompleteData) ? '' : 'hidden'}`}>
+            <div className={`rounded-md bg-gray-100 w-full overflow-hidden px-4 py-2 mt-2 flex flex-col gap-y-4 text-left ${ (autoCompleteState && autoCompleteData) ? '' : 'hidden'}`}>
                 {data?.filter(name => {
                     if (!name) return true
                     return name.toLowerCase().includes(inputValue.toLowerCase())
                 }).map((data, index) => (
-                    <button key={index} onClick={() => handleButtonClick(data)} className="hover:bg-blue-500 hover:text-white w-full">{data}</button>
+                    <button key={index} onClick={() => handleButtonClick(data)} className="hover:bg-blue-500 hover:text-white w-full text-left">{data}</button>
                 ))}
+                <button onClick={() => router.push(addItemPath)} className="hover:bg-blue-500 hover:text-white w-full">+</button>
             </div>
         </div>
     );

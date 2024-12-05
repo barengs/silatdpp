@@ -50,7 +50,7 @@ const GuestBook: React.FC<GuestBookProps> = ({data}) => {
   return (
     <>
       <Breadcrumb pageName='Buku Tamu' />
-      <Table addButtonLink='/guestBook/addData' name='Daftar Tamu' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/guestBook"}}   />
+      <Table addButtonName='Tambah Tamu' addButtonLink='/guestBook/addData' name='Daftar Tamu' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/guestBook"}}   />
     </>
   )
 }
