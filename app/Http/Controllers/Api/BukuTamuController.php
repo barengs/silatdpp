@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BukuTamuResource;
 use App\Models\InstitusiTamu;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class BukuTamuController extends Controller
@@ -26,12 +27,14 @@ class BukuTamuController extends Controller
      */
     public function store(Request $request)
     {
+		$institusi = null;
+
         $validator = Validator::make($request->all(), [
 			'nama_tamu' => 'required',
 			'alamat'	=> 'required',
 			'no_telpon'	=> 'required',
-			'keperluan'	=> 'required',
 			'institusi_tamu_id' => 'required',
+			'keperluan'	=> 'required',
 		]);
 
 		if ($validator->fails()) {
@@ -59,13 +62,17 @@ class BukuTamuController extends Controller
 			'institusi_tamu_id' => $institusi,
 			'divisi_id'	=> $request->divisi_id,
 			'keperluan'	=> $request->keperluan,
-			'user_id'	=> 1,
+			'user_id'	=> Auth::id(),
 		]);
 
 		if ($tamu) {
 			return new BukuTamuResource(true, 'Tamu berhasil di simpan!', $tamu);
+		}else {
+			return response()->json([
+				'status' => false,
+				'message' => 'gagal input data'
+			]);
 		}
-		return new BukuTamuResource(true, 'Tamu berhasil di simpan!', $tamu);
     }
 
     /**
