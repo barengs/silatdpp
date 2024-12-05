@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import Table from '@/components/Table/page'
 import Link from 'next/link'
@@ -8,8 +8,12 @@ import { GuestBookProps } from '@/types/pages/guest'
 
 
 
-
 const GuestBook: React.FC<GuestBookProps> = ({data}) => {
+
+  if (!data) {
+    return <h1>Not Available</h1>
+  }
+
 
   const columns = [
     {

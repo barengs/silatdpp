@@ -28,7 +28,7 @@ const InputFields = ({ title, autoCompleteData, onValueChange, defaultValue="", 
     }
 
 
-    useEffect(() => onValueChange(inputValue), [inputValue])
+    useEffect(() => onValueChange(inputValue), [inputValue, onValueChange])
 
     const handleButtonClick = (data: string) => {
         setAutoCompleteState(false)
