@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BukuTamu extends Model
 {
@@ -16,4 +17,19 @@ class BukuTamu extends Model
         'keperluan',
         'user_id',
     ];
+
+    public function institusi_tamu(): BelongsTo
+    {
+        return $this->belongsTo(InstitusiTamu::class);
+    }
+
+    public function divisi(): BelongsTo
+    {
+        return $this->belongsTo(Divisi::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }
