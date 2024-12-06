@@ -17,7 +17,7 @@ class BukuTamuController extends Controller
      */
     public function index()
     {
-        $tamu = BukuTamu::latest()->paginate(10);
+        $tamu = BukuTamu::with('institusi_tamu')->with('divisi')->latest()->paginate(10);
 
         return new BukuTamuResource(true, 'List data buku tamu', $tamu);
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\DivisiController;
 use App\Http\Controllers\Api\BukuTamuController;
 use App\Http\Controllers\Api\InstitusiTamuController;
 use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\SppdPengajuanController;
 use App\Http\Controllers\Api\UserController;
 
 // Route::get('/user', function (Request $request) {
@@ -22,4 +23,5 @@ Route::middleware('auth:api')->get('user', function (Request $request) {
 Route::apiResource('buku-tamu', BukuTamuController::class);
 Route::apiResource('divisi', DivisiController::class);
 Route::apiResource('institusi-tamu', InstitusiTamuController::class);
+Route::apiResource('sppd', SppdPengajuanController::class);
 // Route::apiResource('user', UserController::class);
