@@ -2,6 +2,7 @@
 
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 import InputFields from '@/components/Fields/InputFields';
+import SelectFields from '@/components/Fields/SelectFields';
 import DefaultLayout from '@/components/Layouts/DefaultLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,7 +12,7 @@ export default function GuestBookDetail() {
     const router = useRouter();
 
     const [formData, setFormData] = useState<Record<string, any>>({});
-    const [institutionData, setInstitutionData] = useState<{ id: string; nama: string }[]>([]);
+    const [institutionData, setInstitutionData] = useState<{ id: string; nama: string }[]>([{id: "", nama: ""}]);
     const [divisionData, setDivisionData] = useState<{ id: string; nama: string }[]>([]);
 
     useEffect(() => {
@@ -24,12 +25,19 @@ export default function GuestBookDetail() {
 
                 if (institutionRes.ok) {
                     const institutionData = await institutionRes.json();
-                    setInstitutionData(institutionData.data.data);
+
+                    if (Object.keys(institutionData.data).length > 0) {
+                        setInstitutionData(institutionData.data.data);
+                    }
+
                 }
 
                 if (divisionRes.ok) {
                     const divisionData = await divisionRes.json();
-                    setDivisionData(divisionData.data.data);
+
+                    if (Object.keys(divisionData.data).length > 0){
+                        setDivisionData(divisionData.data.data);
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -63,6 +71,11 @@ export default function GuestBookDetail() {
             }));
         }
     };
+
+
+    const handleInstitutionCheck = async (institutionName: string) => {
+        
+    }
 
     const handlePostData = async () => {
 
@@ -136,6 +149,21 @@ export default function GuestBookDetail() {
                     />
                     <InputFields
                         title="Divisi Tujuan"
+                        autoCompleteData={divisionData.map(field => field.nama)}
+                        onValueChange={value => handleStoreInput('divisi_id', value)}
+                    />
+                    <InputFields
+                        title="Nama Instansi"
+                        autoCompleteData={divisionData.map(field => field.nama)}
+                        onValueChange={value => handleStoreInput('divisi_id', value)}
+                    />
+                    <InputFields
+                        title="Alamat Instansi"
+                        autoCompleteData={divisionData.map(field => field.nama)}
+                        onValueChange={value => handleStoreInput('divisi_id', value)}
+                    />
+                    <InputFields
+                        title="Kontak Instansi"
                         autoCompleteData={divisionData.map(field => field.nama)}
                         onValueChange={value => handleStoreInput('divisi_id', value)}
                     />

@@ -10,7 +10,7 @@ type optionType = {
 
 interface selectFieldsProps {
     title: string;
-    options?: optionType[];
+    options: optionType[];
     defaultValue?: string
 }
 
@@ -24,9 +24,12 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValu
 
     return (
         <div>
+            {isOptionSelected &&
+            
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 {title}
             </label>
+            }
 
             <div className="relative z-20 bg-white dark:bg-form-input">
                 <select
@@ -35,6 +38,8 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValu
                         setSelectedOption(e.target.value);
                         changeTextColor();
                     }}
+                    onFocus={() => setIsOptionSelected(true)}
+                    onBlur={() => setIsOptionSelected(false)}
                     className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
                         isOptionSelected ? "text-black dark:text-white" : ""
                     }`}
