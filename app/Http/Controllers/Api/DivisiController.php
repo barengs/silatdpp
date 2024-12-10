@@ -16,7 +16,7 @@ class DivisiController extends Controller
     public function index()
     {
         // return 'hello';
-        $divisi = Divisi::latest();
+        $divisi = Divisi::all();
 
         return new DivisiResource(true, 'List data divisi', $divisi);
     }
