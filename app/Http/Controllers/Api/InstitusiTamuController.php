@@ -15,7 +15,7 @@ class InstitusiTamuController extends Controller
      */
     public function index()
     {
-        $institusi = InstitusiTamu::latest();
+        $institusi = InstitusiTamu::all();
 
         return new InstitusiTamuResource(true, 'List data institusi', $institusi);
     }

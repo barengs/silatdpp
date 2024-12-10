@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SppdPengajuanResource;
+use App\Models\DokumenKegiatan;
 use App\Models\SppdPengajuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +17,7 @@ class SppdPengajuanController extends Controller
      */
     public function index()
     {
-        $sppd = SppdPengajuan::latest()->paginate(10);
+        $sppd = SppdPengajuan::with('user')->with('approval')->with('dokumens')->latest()->paginate(10);
 
         return new SppdPengajuanResource(true, 'List Pengajuan SPPD', $sppd);
     }
@@ -40,6 +41,8 @@ class SppdPengajuanController extends Controller
             'nama_kegiatan' => 'required',
             'tempat_kegiatan' => 'required',
             'tanggal_kegiatan' => 'required',
+            'files' => 'required',
+            'files.*' => 'mimes:png,jpg,jpeg,pdf',
         ]);
 
         // cek jika hasil validasi error
@@ -55,8 +58,28 @@ class SppdPengajuanController extends Controller
             'tanggal_kegiatan' => $request->tanggal_kegiatan,
         ]);
 
+        
         if ($sppd) {
-            return new SppdPengajuanResource(true, 'Berhasil input Pengajuan SPPD!', $sppd);
+
+            if ($request->hasFile('files')){
+                // validasi
+                // $allowFileExtention = ['pdf', 'jpg', 'jpeg'];
+                $files = $request->file('files');
+                
+                foreach ($files as $file) {
+                    DokumenKegiatan::create([
+                        'sppd_pengajuan_id' => $sppd->id,
+                        'nama_dokumen' => $file->hasName(),
+                        'alamat_dokumen' => $file->store('documents'),
+                        'tipe_dokumen' => $file->getClientOriginalExtention(),
+                    ]);
+                }
+    
+                return new SppdPengajuanResource(true, 'Berhasil input Pengajuan SPPD!', $sppd);
+                
+            }
+        } else {
+            return response()->json(['status' => false]);
         }
     }
 

@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dokumen_kegiatans', function (Blueprint $table) {
+        Schema::create('sppd_approvals', function (Blueprint $table) {
             $table->id();
-            $table->text('nama_dokumen');
-            $table->text('alamat_dokumen');
-            $table->string('tipe_dokumen');
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('sppd_pengajuan_id')->constrained()->cascadeOnDelete();
+            $table->timestamp('tanggal_disetujui');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dokumen_kegiatans');
+        Schema::dropIfExists('sppd_approvals');
     }
 };
