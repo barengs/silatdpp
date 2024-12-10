@@ -3,22 +3,18 @@
 
 import { useRouter } from "next/navigation"
 import React from "react"
-
-
+import { useDispatch } from "react-redux"
+import { setToken } from "@/store/authSlice"
 
 const LoginPage: React.FC = () => {
 
     const router = useRouter()
+    const dispatch = useDispatch()
 
     const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
-        
-
-        const form = event.target
-        const formData = new FormData()
-
-        formData.append("email", form.email.value)
-        formData.append("password", form.password.value)
+    
+        const formData = new FormData(event.target)
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/login`, { 
             method: "POST",
@@ -30,6 +26,9 @@ const LoginPage: React.FC = () => {
             return
         }
 
+        const data = await res.json()
+
+        dispatch(setToken(data.token))        
 
         alert("Berhasil Masuk")
         router.push("/")
