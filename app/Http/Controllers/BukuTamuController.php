@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BukuTamuResource;
 use App\Models\BukuTamu;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class BukuTamuController extends Controller
      */
     public function index()
     {
-        //
+        $data = BukuTamu::all();
+
+        return new BukuTamuResource(true, 'List data buku tamu', $data);
     }
 
     /**

@@ -91,7 +91,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, []);
 
   return (
     <div className="relative z-50">

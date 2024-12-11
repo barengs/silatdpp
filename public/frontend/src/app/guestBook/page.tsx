@@ -1,19 +1,21 @@
-import GuestBook from '@/components/GuestBook/page'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
+import GuestBook from '@/pages/GuestBook/page'
 import React from 'react'
 
 
-interface GuestBookProps {
 
-}
+const GuestBookPage: React.FC = async () => {
 
-const GuestBookPage: React.FC<GuestBookProps> = ({}) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`)
+  const data = await res.json()
+
+
   return (
     <DefaultLayout>
-        <GuestBook />
+      <GuestBook data={data.data.data} />
     </DefaultLayout>
-  )
-}
+  );
+};
 
 
 
