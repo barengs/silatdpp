@@ -1,18 +1,24 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
 import Table from '@/components/Table/page'
 import Link from 'next/link'
 import { GuestBookProps } from '@/types/pages/guest'
+import { GUEST_BOOK_DEFAULT_DATA } from '../../../utils/constans'
 
 
 
 const GuestBook: React.FC<GuestBookProps> = ({data}) => {
 
-  if (!data) {
-    return <h1>Not Available</h1>
-  }
+  const [tableData, setTableData] = useState<typeof data>(data)
+
+  useEffect(() => {
+    if (!data){
+      setTableData([GUEST_BOOK_DEFAULT_DATA])
+      return
+    }
+  }, [])
 
 
   const columns = [
@@ -50,7 +56,7 @@ const GuestBook: React.FC<GuestBookProps> = ({data}) => {
   return (
     <>
       <Breadcrumb pageName='Buku Tamu' />
-      <Table addButtonName='Tambah Tamu' addButtonLink='/guestBook/addData' name='Daftar Tamu' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/guestBook"}}   />
+      <Table addButtonName='Tambah Tamu' addButtonLink='/guestBook/addData' name='Daftar Tamu' column={columns} data={tableData} detailLink={{name: "Pengaturan", to: "/guestBook"}}   />
     </>
   )
 }
