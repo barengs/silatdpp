@@ -4,16 +4,22 @@ import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb';
 import InputFields from '@/components/Fields/InputFields';
 import SelectFields from '@/components/Fields/SelectFields';
 import DefaultLayout from '@/components/Layouts/DefaultLayout';
+import { InstitutionsDataTypes } from '@/types/pages/institution';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { INSTITUTION_DEFAULT_DATA } from '../../../../utils/constans';
 
 export default function GuestBookDetail() {
     const router = useRouter();
 
     const [formData, setFormData] = useState<Record<string, any>>({});
-    const [institutionData, setInstitutionData] = useState<{ id: string; nama: string }[]>([{id: "", nama: ""}]);
+
+    const [institutionsData, setInstitutionsData] = useState<InstitutionsDataTypes[]>([INSTITUTION_DEFAULT_DATA]);
+
     const [divisionData, setDivisionData] = useState<{ id: string; nama: string }[]>([]);
+
+    const [selectedInstitutionData, setSelectedInstitutionData] = useState<InstitutionsDataTypes>(INSTITUTION_DEFAULT_DATA)
 
     useEffect(() => {
         const getData = async () => {
@@ -23,20 +29,21 @@ export default function GuestBookDetail() {
                     fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/divisi`),
                 ]);
 
+                
                 if (institutionRes.ok) {
-                    const institutionData = await institutionRes.json();
-
-                    if (Object.keys(institutionData.data).length > 0) {
-                        setInstitutionData(institutionData.data.data);
+                    const institutionsData = await institutionRes.json();
+                    
+                    if (Object.keys(institutionsData.data).length > 0) {
+                        setInstitutionsData(institutionsData.data);
                     }
-
+                    
                 }
 
                 if (divisionRes.ok) {
                     const divisionData = await divisionRes.json();
 
                     if (Object.keys(divisionData.data).length > 0){
-                        setDivisionData(divisionData.data.data);
+                        setDivisionData(divisionData.data);
                     }
                 }
             } catch (error) {
@@ -49,7 +56,7 @@ export default function GuestBookDetail() {
 
     const handleStoreInput = (name: string, value: string) => {
         if (name === 'institusi_tamu_id') {
-            const id = institutionData.find(institution => institution.nama === value)?.id || null;
+            const id = institutionsData.find(institution => institution.nama === value)?.id || null;
             if (id) {
                 setFormData(prevState => ({
                     ...prevState,
@@ -73,14 +80,29 @@ export default function GuestBookDetail() {
     };
 
 
-    const handleInstitutionCheck = async (institutionName: string) => {
-        
+    const handleInstitutionChange = (institutionName: string) => {
+
+        const institutionData = institutionsData.find(data => data.nama == institutionName)
+
+        if (!institutionData) {
+            return
+        }
+
+        setSelectedInstitutionData(institutionData);
     }
+
+    const handleAutoCompleteField = (newValue: string, attributeName: string) => {
+        selectedInstitutionData[attributeName] = newValue
+    }
+
 
     const handlePostData = async () => {
 
         const data = new FormData();
         Object.keys(formData).forEach(fieldKey => data.append(fieldKey, formData[fieldKey]));
+
+
+        
 
 
         try {
@@ -143,8 +165,9 @@ export default function GuestBookDetail() {
                     />
                     <InputFields
                         title="Instansi Asal"
-                        autoCompleteData={institutionData.map(field => field.nama)}
+                        autoCompleteData={institutionsData.map(field => field.nama)}
                         onValueChange={value => handleStoreInput('institusi_tamu_id', value)}
+                        onSelectAutoComplete={handleInstitutionChange}
                         addItemPath='/institution/addData'
                     />
                     <InputFields
@@ -153,19 +176,16 @@ export default function GuestBookDetail() {
                         onValueChange={value => handleStoreInput('divisi_id', value)}
                     />
                     <InputFields
-                        title="Nama Instansi"
-                        autoCompleteData={divisionData.map(field => field.nama)}
-                        onValueChange={value => handleStoreInput('divisi_id', value)}
-                    />
-                    <InputFields
                         title="Alamat Instansi"
                         autoCompleteData={divisionData.map(field => field.nama)}
-                        onValueChange={value => handleStoreInput('divisi_id', value)}
+                        onValueChange={value => handleAutoCompleteField(value, "alamat")}
+                        defaultValue={selectedInstitutionData.alamat}
                     />
                     <InputFields
                         title="Kontak Instansi"
                         autoCompleteData={divisionData.map(field => field.nama)}
-                        onValueChange={value => handleStoreInput('divisi_id', value)}
+                        onValueChange={value => handleAutoCompleteField(value, "kontak")}
+                        defaultValue={selectedInstitutionData.kontak}
                     />
                 </div>
 

@@ -1,5 +1,5 @@
 export interface InstitutionsDataTypes {
-    id: number,
+    id: string,
     nama: string,
     alamat: string,
     kontak: string,

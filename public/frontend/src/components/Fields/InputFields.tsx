@@ -9,10 +9,11 @@ interface InputFieldsProps {
     name?: string,
     defaultValue?: string,
     autoCompleteData?: string[],
+    onSelectAutoComplete?: (value: string) => void,
     addItemPath?: string
 }
 
-const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, defaultValue="", name="" }: InputFieldsProps) => {
+const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSelectAutoComplete, defaultValue="", name="" }: InputFieldsProps) => {
 
     const [inputValue, setInputValue] = useState(defaultValue)
     const [data, setData] = useState<string[]>([])
@@ -34,10 +35,12 @@ const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, defa
 
 
     useEffect(() => onValueChange(inputValue), [inputValue])
+    useEffect(() => setInputValue(defaultValue), [defaultValue])
 
-    const handleButtonClick = (data: string) => {
+    const handleButtonClick = (name: string) => {
         setAutoCompleteState(false)
-        setInputValue(data)
+        setInputValue(name)
+        onSelectAutoComplete(name)
     }
 
 
