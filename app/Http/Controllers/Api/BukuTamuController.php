@@ -52,7 +52,7 @@ class BukuTamuController extends Controller
 
 			$institusi = $institusiBaru->id;
 		}else {
-			$institusi = $request->isntitusi_tamu_id;
+			$institusi = $request->institusi_tamu_id;
 		}
 
 		$tamu = BukuTamu::create([
