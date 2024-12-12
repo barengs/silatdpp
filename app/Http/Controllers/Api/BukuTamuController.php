@@ -62,7 +62,7 @@ class BukuTamuController extends Controller
 			'institusi_tamu_id' => $institusi,
 			'divisi_id'	=> $request->divisi_id,
 			'keperluan'	=> $request->keperluan,
-			'user_id'	=> Auth::id(),
+			'user_id'	=> $request->user_id,
 		]);
 
 		if ($tamu) {
