@@ -9,7 +9,7 @@ const GuestBookPage: React.FC = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`)
   const data = await res.json()
 
-  console.log(data.data.data)
+  // console.log(data.data.data)
 
   return (
     <DefaultLayout>
