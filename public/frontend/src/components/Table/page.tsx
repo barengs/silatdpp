@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { cleanColumnName } from "../../../utils/data";
+import { exportDocument } from "../../../utils/documents";
 
 type detailLinkType = {
     name: string;
@@ -43,6 +44,7 @@ const Table: React.FC<TableProps> = ({
     const [searchText, setSearchText] = useState("");
     const [filteredData, setFilteredData] = useState(data);
     const [category, setCategory] = useState("name");
+    const [exportType, setExportType] = useState("pdf")
 
     useEffect(() => {
         if (!searchText) {
@@ -59,6 +61,8 @@ const Table: React.FC<TableProps> = ({
         setSearchText(event.target.value.toLowerCase());
 
     const handleErase = () => setSearchText("");
+
+    const handleExport = () => exportDocument(exportType, data)
 
     const customStyles = {
         rows: { style: { fontSize: "1rem" } },
@@ -128,7 +132,16 @@ const Table: React.FC<TableProps> = ({
                             </option>
                         ))}
                 </select>
-                <button className="rounded-md bg-gray-200 px-3 py-2 text-sm font-medium">
+                <select
+                    className="rounded-md px-3 py-2 text-sm font-medium"
+                    onChange={(event: ChangeEvent<HTMLSelectElement>) => setExportType(event.target.value)}
+                >
+                    <option value="pdf">PDF</option>
+                    <option value="csv">CSV</option>
+                </select>
+                <button 
+                onClick={handleExport}
+                className="rounded-md px-3 py-2 text-sm font-medium col-span-2 bg-primary hover:bg-gray-200 text-white hover:text-gray-600">
                     Export
                 </button>
             </div>
