@@ -40,6 +40,8 @@ const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSe
     const handleButtonClick = (name: string) => {
         setAutoCompleteState(false)
         setInputValue(name)
+
+        if (!onSelectAutoComplete)  return
         onSelectAutoComplete(name)
     }
 

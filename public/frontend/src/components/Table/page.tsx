@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import React, { ChangeEvent, useEffect, useState } from "react";
@@ -14,8 +14,8 @@ type columnType = {
     name: string;
     selector?: (row: Record<string, string>) => string;
     sortable?: boolean;
-    cell?: (row: Record<string, string>) => React.JSX.Element
-}
+    cell?: (row: Record<string, string>) => React.JSX.Element;
+};
 
 interface TableProps {
     name: string;
@@ -49,7 +49,7 @@ const Table: React.FC<TableProps> = ({
             setFilteredData(data);
         } else {
             const filtered = data.filter((item) =>
-                item[category]?.toLowerCase().includes(searchText)
+                item[category]?.toLowerCase().includes(searchText),
             );
             setFilteredData(filtered);
         }
@@ -96,7 +96,20 @@ const Table: React.FC<TableProps> = ({
                     />
                     {searchText && (
                         <button onClick={handleErase}>
-                            <svg /* SVG Icon */ />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="size-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                />
+                            </svg>
                         </button>
                     )}
                 </div>
@@ -135,4 +148,3 @@ const Table: React.FC<TableProps> = ({
 };
 
 export default Table;
-

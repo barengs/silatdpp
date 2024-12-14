@@ -14,6 +14,7 @@ const GuestBook: React.FC<GuestBookProps> = ({data}) => {
   const [tableData, setTableData] = useState<typeof data>(data)
 
   useEffect(() => {
+
     if (!data){
       setTableData([GUEST_BOOK_DEFAULT_DATA])
       return

@@ -13,7 +13,7 @@ export const GUEST_BOOK_DEFAULT_DATA = {
 
 
 export const INSTITUTION_DEFAULT_DATA = {
-  id: "0",
+  id: null,
   nama: "",
   alamat: "",
   kontak: "",

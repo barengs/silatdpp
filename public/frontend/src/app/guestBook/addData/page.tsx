@@ -62,6 +62,11 @@ export default function GuestBookDetail() {
                     ...prevState,
                     [name]: id,
                 }));
+            } else {
+                setFormData(prevState => ({
+                    ...prevState,
+                    [name]: value,
+                }));
             }
         } else if (name === 'divisi_id') {
             const id = divisionData.find(division => division.nama === value)?.id || null;
@@ -101,9 +106,12 @@ export default function GuestBookDetail() {
         const data = new FormData();
         Object.keys(formData).forEach(fieldKey => data.append(fieldKey, formData[fieldKey]));
 
+        if (!isFinite(data.get("institusi_tamu_id"))) {
+            data.append("alamat_institusi", selectedInstitutionData.alamat)
+            data.append("kontak_institusi", selectedInstitutionData.kontak)
+        }
 
-        
-
+        data.append("user_id", "1")
 
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`, {
