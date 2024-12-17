@@ -11,6 +11,7 @@ import { GUEST_BOOK_DEFAULT_DATA } from '../../../utils/constans'
 
 const GuestBook: React.FC<GuestBookProps> = ({data}) => {
 
+
   const [tableData, setTableData] = useState<typeof data>(data)
 
   useEffect(() => {
@@ -52,7 +53,9 @@ const GuestBook: React.FC<GuestBookProps> = ({data}) => {
   ];
   
 
-  // DEVELOPMENT PURPOSE
+  if (!data) {
+    return <h1>Not Available</h1>
+  }
 
   return (
     <>

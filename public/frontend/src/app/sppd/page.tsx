@@ -5,7 +5,7 @@ import React from 'react'
 
  const Sppd: React.FC = async () => {
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`, { cache: 'no-store'})
   const data = await res.json()
 
   return (

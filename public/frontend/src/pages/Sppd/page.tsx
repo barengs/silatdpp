@@ -6,6 +6,13 @@ import React from "react"
 import { getDateTime } from "../../../utils/data"
 
 const SppdPage: React.FC<SppdPropsType> = ({ data }) => {
+
+    if (!data) {
+        return <h1>Not Available</h1>
+      }
+    
+
+
     const columns = [
         {
             name: "Nama Kegiatan",
