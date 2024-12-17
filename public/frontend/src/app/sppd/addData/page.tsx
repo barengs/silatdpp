@@ -12,7 +12,8 @@ import React, { useState } from "react";
 const SppdAddData: React.FC = () => {
 
     const [postData, setPostData] = useState<Record<string, unknown>>({
-        file: []
+        file: [],
+        user_id: 1
     })
 
     const router = useRouter()
@@ -33,17 +34,19 @@ const SppdAddData: React.FC = () => {
             method: 'post',
             body: formData,
             headers: {
-                Authorization: `${process.env.NEXT_PUBLIC_TEMP_CREDENTIAL}`
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEMP_CREDENTIAL}`
             }
         })
 
-        const data = await res.json()
+        if (res.ok) {
+            alert("Berhasil mengajukan SPPD")
+            router.push("/sppd")
+            return
+        }
 
-        console.log(data)
-        // if (res.ok) {
-        
-        //     router.push("/sppd")
-        // }
+        console.log(res)
+
+        alert("Galat pada prosess pengajuan")
         
     }
 
@@ -54,7 +57,7 @@ const SppdAddData: React.FC = () => {
                 <InputFields title="Nama Kegiatan" onValueChange={(value: string) => handleDataChange("nama_kegiatan", value)} />
                 <InputFields title="Tempat Kegiatan" onValueChange={(value: string) => handleDataChange("tempat_kegiatan", value)} />
                 <InputFields title="Tanggal Kegiatan" onValueChange={(value: string) => handleDataChange("tanggal_kegiatan", value)}type="date"/>
-                <FilesFields setter={(files: File[]) => handleDataChange("file", JSON.stringify(files))} title="Bukti Kegiatan" />
+                <FilesFields setter={(files: File[]) => handleDataChange("files", JSON.stringify(files))} title="Bukti Kegiatan" />
                 <button
                     onClick={handlePostData}
                     className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"

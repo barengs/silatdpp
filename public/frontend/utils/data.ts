@@ -15,3 +15,14 @@ export function extractDataColumnName(data:  Record<string, string>[]): { column
 
     return {columns: Object.keys(data[0]).map(colName => {return {name: cleanColumnName(colName), selector: (row: any) => row[colName], sortable: true}}), value: data}
 }
+
+
+export function getDateTime(date_stamp: string) {
+    const date = new Date(date_stamp)
+
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+}
