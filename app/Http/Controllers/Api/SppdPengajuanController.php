@@ -39,7 +39,7 @@ class SppdPengajuanController extends Controller
         
         // Validasi inputan dari front end
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
+            
             'nama_kegiatan' => 'required',
             'tempat_kegiatan' => 'required',
             'tanggal_kegiatan' => 'required',
@@ -60,31 +60,47 @@ class SppdPengajuanController extends Controller
             'tanggal_kegiatan' => $request->tanggal_kegiatan,
         ]);
 
-        
-        if ($sppd) {
+        if ($request->hasFile('files')){
+            // validasi
+            // $allowFileExtention = ['pdf', 'jpg', 'jpeg'];
+            $files = $request->file('files');
 
-            if ($request->hasFile('files')){
-                // validasi
-                // $allowFileExtention = ['pdf', 'jpg', 'jpeg'];
-                $files = $request->file('files');
-                
-                foreach ($files as $file) {
-                    DokumenKegiatan::create([
-                        'sppd_pengajuan_id' => $sppd->id,
-                        'nama_dokumen' => $file->hasName(),
-                        'alamat_dokumen' => $file->store('documents'),
-                        'tipe_dokumen' => $file->getClientOriginalExtention(),
-                    ]);
-                }
+            // dd($files);
+            
+            foreach ($files as $file) {
+                $fileName = time() . '-' . $file->getClientOriginalName();
+                $filePath = $file->move(public_path('documents'), $fileName);
 
-                $doc = DokumenKegiatan::find($sppd->id);
-    
-                return new SppdPengajuanResource(true, 'Berhasil input Pengajuan SPPD!', $sppd->merge($doc));
-                
+                $doc = DokumenKegiatan::create([
+                    'sppd_pengajuan_id' => $sppd->id,
+                    'nama_dokumen' => $fileName,
+                    'alamat_dokumen' => $filePath,
+                    'tipe_dokumen' => $file->clientExtension(),
+                ]);
             }
+
+            // $fileName = time() . '-' . $files->getClientOriginalName();
+            // $filePath = $files->move(public_path('documents'), $fileName);
+
+            // $doc = DokumenKegiatan::create([
+            //     'sppd_pengajuan_id' => $sppd->id,
+            //     'nama_dokumen' => $fileName,
+            //     'alamat_dokumen' => $filePath,
+            //     'tipe_dokumen' => $files->clientExtension(),
+            // ]);
+
+            $data = SppdPengajuan::where('id', $sppd->id)->with('dokumens')->first();
+
+            return new SppdPengajuanResource(true, 'Berhasil input Pengajuan SPPD!', $data);
+            
         } else {
             return response()->json(['status' => false]);
         }
+        
+    //     if ($sppd) {
+
+    //     } else {
+    //     }
     }
 
     /**
