@@ -1,5 +1,33 @@
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 function exportAsPdf(data) {
-    return
+
+    if (Object.keys(data[0]).length == 0) return
+
+    const doc = new jsPDF();
+
+    // Title for the PDF
+    doc.text('Employee List', 14, 10);
+
+    // Extract table headers and rows
+    const tableColumn = Object.keys(data[0]).map(col => col);
+    const tableRows = data.map(item => Object.values(item));
+
+    // console.log(tableRows)
+    // return 
+
+    autoTable(doc, {
+        head: [tableColumn],
+        body: tableRows,
+        headStyles: {
+            cellWidth: 'wrap'
+        }
+    });
+
+
+    // Save the PDF
+    doc.save('table_data.pdf');
 }
 
 

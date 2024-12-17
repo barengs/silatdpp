@@ -15,4 +15,3 @@ export function extractDataColumnName(data:  Record<string, string>[]): { column
 
     return {columns: Object.keys(data[0]).map(colName => {return {name: cleanColumnName(colName), selector: (row: any) => row[colName], sortable: true}}), value: data}
 }
-
