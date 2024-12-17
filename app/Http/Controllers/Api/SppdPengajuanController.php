@@ -76,8 +76,10 @@ class SppdPengajuanController extends Controller
                         'tipe_dokumen' => $file->getClientOriginalExtention(),
                     ]);
                 }
+
+                $doc = DokumenKegiatan::find($sppd->id);
     
-                return new SppdPengajuanResource(true, 'Berhasil input Pengajuan SPPD!', $sppd);
+                return new SppdPengajuanResource(true, 'Berhasil input Pengajuan SPPD!', $sppd->merge($doc));
                 
             }
         } else {
