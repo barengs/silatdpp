@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Validator;
 class SppdPengajuanController extends Controller
 {
     /**
+     * Create a new AuthController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index']]);
+    }
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -27,14 +36,7 @@ class SppdPengajuanController extends Controller
      */
     public function store(Request $request)
     {
-        // cek jika user login
-        if (!Auth::check())
-        {
-            return response()->json([
-                'status' => false,
-                'message' => 'Anda belum login'
-            ]);
-        }
+        
         // Validasi inputan dari front end
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
