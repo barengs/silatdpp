@@ -1,6 +1,6 @@
 "use client"
 
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import SelectFields from "@/components/Fields/SelectFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";

@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import Breadcrumb from '@/components/Breadcrumbs/Breadcrumb'
-import Table from '@/components/Table/page'
+import Breadcrumb from '@/components/Breadcrumb'
+import Table from '@/components/Table'
 import Link from 'next/link'
 import { GuestBookProps } from '@/types/pages/guest'
 import { GUEST_BOOK_DEFAULT_DATA } from '../../../utils/constans'

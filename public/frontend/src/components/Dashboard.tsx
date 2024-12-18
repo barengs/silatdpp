@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Card from "../Card/page";
+import Card from "./Card";
 
 
 const ECommerce: React.FC = () => {

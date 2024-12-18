@@ -3,8 +3,8 @@
 import Link from "next/link";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { cleanColumnName } from "../../../utils/data";
-import { exportDocument } from "../../../utils/documents";
+import { cleanColumnName } from "../../utils/data";
+import { exportDocument } from "../../utils/documents";
 
 type detailLinkType = {
     name: string;

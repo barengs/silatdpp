@@ -1,9 +1,10 @@
 "use client"
 
-import Table from "@/components/Table/page"
+import Table from "@/components/Table"
 import { SppdDataType, SppdPropsType } from "@/types/pages/sppd"
 import React from "react"
 import { getDateTime } from "../../../utils/data"
+import Link from "next/link"
 
 const SppdPage: React.FC<SppdPropsType> = ({ data }) => {
 
@@ -20,6 +21,11 @@ const SppdPage: React.FC<SppdPropsType> = ({ data }) => {
             sortable: true,
         },
         {
+            name: "Nama Pegawai",
+            selector: (row: SppdDataType) => row.user.name,
+            sortable: true,
+        },
+        {
             name: "Tempat Kegiatan",
             selector: (row: SppdDataType) => row.tempat_kegiatan,
             sortable: true,
@@ -33,6 +39,12 @@ const SppdPage: React.FC<SppdPropsType> = ({ data }) => {
             name: "Status Persetujuan",
             selector: (row: SppdDataType) => row.approval ? 'Disetujui' : 'Sedang Menunggu',
             sortable: true,
+        },
+        {
+            name: "Aksi",
+            cell: (row: Record<string, string>) => (
+                <Link className="text-blue-500 hover:underline" href={`/sppd/${row.id}`}>Detail</Link>
+            )
         },
     ]
 

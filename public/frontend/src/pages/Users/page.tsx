@@ -1,7 +1,7 @@
 "use client";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import React, { useEffect } from "react";
-import Table from "../../components/Table/page";
+import Table from "../../components/Table";
 import { cleanColumnName, extractDataColumnName } from "../../../utils/data";
 import Link from "next/link";
 
