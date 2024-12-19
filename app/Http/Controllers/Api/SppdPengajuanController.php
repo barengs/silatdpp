@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SppdPengajuanResource;
 use App\Models\DokumenKegiatan;
+use App\Models\SppdHistory;
 use App\Models\SppdPengajuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class SppdPengajuanController extends Controller
      */
     public function index()
     {
-        $sppd = SppdPengajuan::with('user')->with('approval')->with('dokumens')->latest()->paginate(10);
+        $sppd = SppdPengajuan::with('user')->with('approval')->with('dokumens')->with('history')->latest()->paginate(10);
 
         return new SppdPengajuanResource(true, 'List Pengajuan SPPD', $sppd);
     }
@@ -55,21 +56,32 @@ class SppdPengajuanController extends Controller
         // simpan data
         $sppd = SppdPengajuan::create([
             'user_id' => Auth::user()->id,
-            'nama_kegiatan' => $request->nama_kegiatan,
-            'tempat_kegiatan' => $request->tempat_kegiatan,
+            'maksud_kegiatan' => $request->maksud_kegiatan,
+            'tempat_berangkat' => $request->tempat_berangkat,
             'tanggal_kegiatan' => $request->tanggal_kegiatan,
+            'alat_transportasi_id' => $request->alat_transportasi_id,
+            'tempat_tujuan' => $request->tempat_tujuan,
+            'lama_perjalanan' => $request->lama_perjalanan,
+            'tanggal_berangkat' => $request->tanggal_berangkat,
+            'tanggal_kembali' => $request->tanggal_kembali,
+            'tingkat_biaya_id' => $request->tingkat_biaya_id,
         ]);
+
+        if ($sppd) {
+            SppdHistory::create([
+                'sppd_pengajuan_id' => $sppd->id,
+                'history_id' => 1,
+            ]);
+        }
 
         if ($request->hasFile('files')){
             // validasi
             // $allowFileExtention = ['pdf', 'jpg', 'jpeg'];
             $files = $request->file('files');
-
-            // dd($files);
             
             foreach ($files as $file) {
                 $fileName = time() . '-' . $file->getClientOriginalName();
-                $filePath = $file->move(public_path('documents'), $fileName);
+                $filePath = $file->move('documents', $fileName);
 
                 $doc = DokumenKegiatan::create([
                     'sppd_pengajuan_id' => $sppd->id,
@@ -78,16 +90,6 @@ class SppdPengajuanController extends Controller
                     'tipe_dokumen' => $file->clientExtension(),
                 ]);
             }
-
-            // $fileName = time() . '-' . $files->getClientOriginalName();
-            // $filePath = $files->move(public_path('documents'), $fileName);
-
-            // $doc = DokumenKegiatan::create([
-            //     'sppd_pengajuan_id' => $sppd->id,
-            //     'nama_dokumen' => $fileName,
-            //     'alamat_dokumen' => $filePath,
-            //     'tipe_dokumen' => $files->clientExtension(),
-            // ]);
 
             $data = SppdPengajuan::where('id', $sppd->id)->with('dokumens')->first();
 

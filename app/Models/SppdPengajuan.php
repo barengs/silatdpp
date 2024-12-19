@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SppdPengajuan extends Model
@@ -28,5 +29,10 @@ class SppdPengajuan extends Model
     public function approval(): BelongsTo
     {
         return $this->belongsTo(SppdApproval::class);
+    }
+
+    public function history(): BelongsToMany
+    {
+        return $this->belongsToMany(History::class, 'sppd_histories');
     }
 }
