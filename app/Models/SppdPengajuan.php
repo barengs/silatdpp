@@ -11,9 +11,15 @@ class SppdPengajuan extends Model
 {
     protected $fillable = [
         'user_id',
-        'nama_kegiatan',
-        'tempat_kegiatan',
+        'maksud_kegiatan',
+        'tempat_berangkat',
         'tanggal_kegiatan',
+        'alat_transportasi_id',
+        'tempat_tujuan',
+        'lama_perjalanan',
+        'tanggal_berangkat',
+        'tanggal_kembali',
+        'tingkat_biaya_id',
     ];
 
     public function dokumens(): HasMany
@@ -34,5 +40,15 @@ class SppdPengajuan extends Model
     public function history(): BelongsToMany
     {
         return $this->belongsToMany(History::class, 'sppd_histories');
+    }
+
+    public function biaya(): HasMany
+    {
+        return $this->hasMany(TingkatBiaya::class);
+    }
+
+    public function alat_transportasi(): BelongsTo
+    {
+        return $this->belongsTo(AlatTransportasi::class);
     }
 }
