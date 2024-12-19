@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserProfileSeeder::class,
             InstitusiTamuSeeder::class,
             DivisiSeeder::class,
+            HistorySeeder::class,
         ]);
     }
 }
