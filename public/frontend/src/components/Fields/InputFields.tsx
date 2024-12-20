@@ -58,7 +58,7 @@ const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSe
     }
 
     return (
-        <div onBlur={onBlurHandler}>
+        <div className="flex-1" onBlur={onBlurHandler}>
             {(autoCompleteState || inputValue || type == "date") &&
 
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
