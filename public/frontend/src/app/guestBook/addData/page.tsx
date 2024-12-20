@@ -9,11 +9,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { INSTITUTION_DEFAULT_DATA } from '../../../../utils/constans';
+import { useStore } from 'react-redux';
 
 export default function GuestBookDetail() {
     const router = useRouter();
 
     const [formData, setFormData] = useState<Record<string, any>>({});
+    const store = useStore()
+    const state = store.getState().auth
 
     const [institutionsData, setInstitutionsData] = useState<InstitutionsDataTypes[]>([INSTITUTION_DEFAULT_DATA]);
 
@@ -111,13 +114,13 @@ export default function GuestBookDetail() {
             data.append("kontak_institusi", selectedInstitutionData.kontak)
         }
 
-        data.append("user_id", "1")
+        data.append("user_id", state.userId)
 
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`, {
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEMP_USER_TOKEN}`,
+                    Authorization: `Bearer ${state.token}`,
                 },
                 body: data,
             });
