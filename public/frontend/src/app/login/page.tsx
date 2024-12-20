@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
 
         const data = await res.json()
 
-        dispatch(setToken(data.token))        
+        dispatch(setToken(data))        
 
         alert("Berhasil Masuk")
         router.push("/")
