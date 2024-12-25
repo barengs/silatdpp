@@ -25,13 +25,9 @@ interface TableProps {
     column: columnType[];
     data: Record<string, string>[];
     detailLink?: detailLinkType;
+    excludes?: string[];
 }
 
-// const formatColumn = (column: string[][]) => {
-//     const res = []
-
-//     column.map(column => )
-// }
 
 const Table: React.FC<TableProps> = ({
     name,
@@ -40,6 +36,7 @@ const Table: React.FC<TableProps> = ({
     column,
     data,
     detailLink = { name: "Pengaturan", to: "#" },
+    excludes = []
 }) => {
     const [searchText, setSearchText] = useState("");
     const [filteredData, setFilteredData] = useState(data);
@@ -57,12 +54,14 @@ const Table: React.FC<TableProps> = ({
         }
     }, [searchText, category, data]);
 
+    // useEffect(() => console.log(data), [])
+
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) =>
         setSearchText(event.target.value.toLowerCase());
 
     const handleErase = () => setSearchText("");
 
-    const handleExport = () => exportDocument(exportType, data)
+    const handleExport = () => exportDocument(exportType, data, excludes)
 
     const customStyles = {
         rows: { style: { fontSize: "1rem" } },
@@ -75,18 +74,6 @@ const Table: React.FC<TableProps> = ({
 
     return (
         <div className="w-full bg-white px-4 py-2">
-            {/* Header */}
-            <div className="flex w-full flex-col border-b-[1px] border-b-slate-400 py-2 lg:flex-row lg:items-center lg:justify-between">
-                <h1 className="text-lg font-semibold text-black">{name}</h1>
-                <div className="flex lg:justify-end">
-                    <Link
-                        href={addButtonLink}
-                        className="mb-4 mt-2 rounded-md bg-blue-500 px-2 py-3 text-sm text-white"
-                    >
-                        {addButtonName}
-                    </Link>
-                </div>
-            </div>
 
             {/* Search and Filter */}
             <div className="grid grid-cols-2 gap-x-2 gap-y-4 py-6">
@@ -126,7 +113,7 @@ const Table: React.FC<TableProps> = ({
                         Kategori
                     </option>
                     {data.length > 0 &&
-                        Object.keys(data[0]).map((option, index) => (
+                        Object.keys(data[0]).filter(data => !excludes.some(exclduedCategory => data == exclduedCategory)).map((option, index) => (
                             <option key={index} value={option}>
                                 {cleanColumnName(option)}
                             </option>
@@ -155,6 +142,7 @@ const Table: React.FC<TableProps> = ({
                 pagination
                 highlightOnHover
                 customStyles={customStyles}
+                noDataComponent="Tidak ada data"
             />
         </div>
     );
