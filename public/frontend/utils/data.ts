@@ -26,3 +26,8 @@ export function getDateTime(date_stamp: string) {
 
     return `${day} ${month} ${year}`;
 }
+
+
+export function trimText(text: string, end=15) {
+    return [text.substring(0, end), "..."].join("")
+}
