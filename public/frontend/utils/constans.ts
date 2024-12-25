@@ -1,15 +1,5 @@
 // FOR DEVELOPMENT PURPOSE
 
-export const GUEST_BOOK_DEFAULT_DATA = {
-  id: "0",
-  nama_tamu: "",
-  alamat: "",
-  no_telpon: "",
-  institusi_tamu_id: "",
-  divisi_id: "",
-  keperluan: "",
-  user_id: "",
-}
 
 
 export const INSTITUTION_DEFAULT_DATA = {
@@ -31,3 +21,17 @@ export const DEFAULT_USER_DATA = {
   updated_at: ""
 }
 
+
+export const GUEST_BOOK_DEFAULT_DATA = {
+  id: "0",
+  nama_tamu: "",
+  alamat: "",
+  no_telpon: "",
+  institusi_tamu_id: "",
+  divisi_id: "",
+  keperluan: "",
+  user_id: "",
+  institusi_tamu: INSTITUTION_DEFAULT_DATA,
+  divisi: {}
+  
+}
