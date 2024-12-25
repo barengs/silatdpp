@@ -5,16 +5,7 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-
-interface dataProps {
-    id: number;
-    guestName: string;
-    instutionName: string;
-    instutionAddress: string;
-    needs: string;
-    position: string;
-    contact: string;
-}
+import { GUEST_BOOK_DEFAULT_DATA } from "../../../../utils/constans";
 
 interface pageProps {
     params: {
@@ -22,23 +13,38 @@ interface pageProps {
     };
 }
 
+
+async function getData(id: string) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu/${id}`)
+
+    if (!res.ok) return GUEST_BOOK_DEFAULT_DATA
+
+    const data = await res.json()
+
+    return data
+}
+
 const GuestBookDetail = ({ params }: pageProps) => {
-    const [data, setData] = useState<dataProps>({
-        id: 0,
-        guestName: "",
-        instutionName: "",
-        instutionAddress: "",
-        needs: "",
-        position: "",
-        contact: "",
-    });
+    const [data, setData] = useState<typeof GUEST_BOOK_DEFAULT_DATA>(GUEST_BOOK_DEFAULT_DATA);
 
     const onValueChange = (value: string, name: string) => {
-        setData((state) => {
+        setData(state => {
             state[name] = value;
             return state;
         });
     };
+
+
+    useEffect(() => {
+
+        const caller = async () =>{
+            const detailData = await getData(params.id)
+            setData(detailData.data)
+            console.log(data)
+        }
+
+        caller()
+    }, [])
 
     return (
         <DefaultLayout>
@@ -64,44 +70,38 @@ const GuestBookDetail = ({ params }: pageProps) => {
                 <div className="grid grid-cols-2 gap-9">
                     <InputFields
                         title="Nama Tamu"
-                        defaultValue={data.guestName}
+                        defaultValue={data.nama_tamu}
                         onValueChange={(value) =>
-                            onValueChange(value, "guestName")
+                            onValueChange(value, "nama_tamu")
                         }
                     />
                     <InputFields
-                        title="Nama Instusi"
-                        defaultValue={data.instutionName}
+                        title="Alamat"
+                        defaultValue={data.alamat}
                         onValueChange={(value) =>
-                            onValueChange(value, "instutionName")
+                            onValueChange(value, "alamat")
                         }
                     />
                     <InputFields
-                        title="Alamat Instusi"
-                        defaultValue={data.instutionAddress}
+                        title="Nomor Telepon"
+                        defaultValue={data.no_telpon}
                         onValueChange={(value) =>
-                            onValueChange(value, "instutionAddress")
+                            onValueChange(value, "no_telpon")
                         }
                     />
                     <InputFields
                         title="Keperluan"
-                        defaultValue={data.needs}
-                        onValueChange={(value) => onValueChange(value, "needs")}
+                        defaultValue={data.keperluan}
+                        onValueChange={(value) => onValueChange(value, "keperluan")}
                     />
                     <InputFields
-                        title="Jabatan"
-                        defaultValue={data.position}
+                        title="Divisi Tujuan"
+                        defaultValue={data.divisi_id}
                         onValueChange={(value) =>
-                            onValueChange(value, "position")
+                            onValueChange(value, "divisi_id")
                         }
                     />
-                    <InputFields
-                        title="Kontak"
-                        defaultValue={data.contact}
-                        onValueChange={(value) =>
-                            onValueChange(value, "contact")
-                        }
-                    />
+            
                 </div>
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 mt-4">
                     Perbarui Data
