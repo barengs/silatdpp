@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-function exportAsPdf(data) {
+function exportAsPdf(data, excludes: string[]) {
 
     if (Object.keys(data[0]).length == 0) return
 
@@ -11,8 +11,8 @@ function exportAsPdf(data) {
     doc.text('Employee List', 14, 10);
 
     // Extract table headers and rows
-    const tableColumn = Object.keys(data[0]).map(col => col);
-    const tableRows = data.map(item => Object.values(item));
+    const tableColumn = Object.keys(data[0]).filter(item => !excludes.some(excludeItem => item == excludeItem)).map(col => col);
+    const tableRows = data.filter(item => !excludes.some(excludeItem => item == excludeItem)).map(item => Object.values(item));
 
     // console.log(tableRows)
     // return 
@@ -46,9 +46,9 @@ function exportAsCsv(data) {
 }
 
 
-export function exportDocument(type, data) {
+export function exportDocument(type, data, excludes: string[]) {
     if (type == "pdf") {
-        exportAsPdf(data)
+        exportAsPdf(data, excludes)
     } else if (type == "csv") {
         exportAsCsv(data)
     }
