@@ -32,24 +32,23 @@ export default function GuestBookDetail() {
 
 
     useEffect(() => {
-      const getData = async () => {
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`)
-          .then(res => res.json())
-          .then(data => setTableData(data.data.data[0]))
-      }
-
-      getData()
-    })
-
-    useEffect(() => {
         const getData = async () => {
             try {
-                const [institutionRes, divisionRes] = await Promise.all([
+                const [lastGuest, institutionRes, divisionRes] = await Promise.all([
+                    fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`),
                     fetch(
                         `${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi-tamu`,
                     ),
                     fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/divisi`),
                 ]);
+
+                if (lastGuest.ok) {
+                    const lastGuestData = await lastGuest.json();
+
+                    if (Object.keys(lastGuestData.data).length > 0) {
+                        setTableData(lastGuestData.data.data[0])
+                    }
+                }
 
                 if (institutionRes.ok) {
                     const institutionsData = await institutionRes.json();
@@ -141,27 +140,26 @@ export default function GuestBookDetail() {
 
         data.append("user_id", state.userId);
 
-        try {
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${state.token}`,
-                    },
-                    body: data,
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${state.token}`,
                 },
-            );
+                body: data,
+            },
+        );
 
-            if (res.ok) {
-                alert("Data berhasil ditambahkan");
-                router.push("/guestBook"); // Redirect to guestBook page
-            } else {
-                console.error("Failed to submit data", await res.json());
-            }
-        } catch (error) {
-            console.error("Error submitting data:", error);
-        }
+        //     if (res.ok) {
+        //         alert("Data berhasil ditambahkan");
+        //         router.push("/guestBook");
+        //     } else {
+        //         console.error("Galat saat menambahkan data");
+        //     }
+        // } catch (error) {
+        //     console.error("Galat saat menambahkan data:", error);
+        // }
     };
 
     return (
