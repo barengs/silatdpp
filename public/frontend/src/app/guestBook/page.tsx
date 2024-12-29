@@ -100,6 +100,7 @@ export default function GuestBookDetail() {
                     [name]: id,
                 }));
             }
+
         } else {
             setFormData((prevState) => ({
                 ...prevState,
@@ -140,6 +141,8 @@ export default function GuestBookDetail() {
 
         data.append("user_id", state.userId);
 
+        try {
+
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
             {
@@ -151,15 +154,15 @@ export default function GuestBookDetail() {
             },
         );
 
-        //     if (res.ok) {
-        //         alert("Data berhasil ditambahkan");
-        //         router.push("/guestBook");
-        //     } else {
-        //         console.error("Galat saat menambahkan data");
-        //     }
-        // } catch (error) {
-        //     console.error("Galat saat menambahkan data:", error);
-        // }
+            if (res.ok) {
+                alert("Data berhasil ditambahkan");
+                router.push("/guestBook");
+            } else {
+                console.error("Galat saat menambahkan data");
+            }
+        } catch (error) {
+            console.error("Galat saat menambahkan data:", error);
+        }
     };
 
     return (
