@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ApiResource;
-use App\Models\AlatTransportasi;
 use Illuminate\Http\Request;
+use App\Models\AlatTransportasi;
+use App\Http\Resources\ApiResource;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class AlatTransportasiController extends Controller
 {
