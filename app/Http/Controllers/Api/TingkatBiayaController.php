@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ApiResource;
+use App\Models\TingkatBiaya;
 use Illuminate\Http\Request;
 
 class TingkatBiayaController extends Controller
@@ -12,7 +14,9 @@ class TingkatBiayaController extends Controller
      */
     public function index()
     {
-        //
+        $data = TingkatBiaya::all();
+
+        return new ApiResource(true, 'data tingkatan biaya', $data);
     }
 
     /**
@@ -20,7 +24,19 @@ class TingkatBiayaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'biaya' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        $biaya = TingkatBiaya::create($request->all());
+
+        if ($biaya) {
+            return new ApiResource(true,'berhasil simpan data biaya', $biaya);
+        }
     }
 
     /**

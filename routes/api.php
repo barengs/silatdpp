@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AlatTransportasiController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\TingkatBiayaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\DivisiController;
@@ -28,4 +30,6 @@ Route::apiResource('buku-tamu', BukuTamuController::class);
 Route::apiResource('divisi', DivisiController::class);
 Route::apiResource('institusi-tamu', InstitusiTamuController::class);
 Route::apiResource('sppd', SppdPengajuanController::class);
+Route::apiResource('transportasi', AlatTransportasiController::class);
+Route::apiResource('biaya', TingkatBiayaController::class);
 // Route::apiResource('user', UserController::class);

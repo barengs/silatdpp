@@ -10,6 +10,7 @@ use App\Models\SppdPengajuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SppdPengajuanController extends Controller
 {
@@ -53,9 +54,10 @@ class SppdPengajuanController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        $user = JWTAuth::user();
         // simpan data
         $sppd = SppdPengajuan::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => $user->id,
             'maksud_kegiatan' => $request->maksud_kegiatan,
             'tempat_berangkat' => $request->tempat_berangkat,
             'tanggal_kegiatan' => $request->tanggal_kegiatan,

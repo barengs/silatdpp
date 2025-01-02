@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ApiResource;
+use App\Models\AlatTransportasi;
 use Illuminate\Http\Request;
 
 class AlatTransportasiController extends Controller
@@ -12,7 +14,9 @@ class AlatTransportasiController extends Controller
      */
     public function index()
     {
-        //
+        $data = AlatTransportasi::all();
+
+        return new ApiResource(true, 'data transportasi', $data);
     }
 
     /**
@@ -20,7 +24,20 @@ class AlatTransportasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'jenis' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+
+        $transportasi = AlatTransportasi::create($request->all());
+
+        if ($transportasi) {
+            return new ApiResource(true, 'berhasil simpan data', $transportasi);
+        }
     }
 
     /**
