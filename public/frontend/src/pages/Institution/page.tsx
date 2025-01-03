@@ -4,11 +4,11 @@ import React from 'react'
 import Breadcrumb from '@/components/Breadcrumb'
 import Table from '@/components/Table'
 import Link from 'next/link'
-import { InstitutionsDataTypes } from '@/types/pages/institution'
+import { InstituionProps } from '@/types/pages/institution'
 
 
 
-const InstutionsPage: React.FC<InstitutionsDataTypes> = ({data}) => {
+const InstutionsPage: React.FC<InstituionProps> = ({data}) => {
 
   if (!data) {
     return <h1>Not Available</h1>
@@ -44,7 +44,7 @@ const InstutionsPage: React.FC<InstitutionsDataTypes> = ({data}) => {
 
   return (
     <>
-      <Breadcrumb pageName='Buku Institusi' />
+      <Breadcrumb pageName='Data Institusi' />
       <Table addButtonName='Tambah Institusi' addButtonLink='/institution/addData' name='Daftar Institusi' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/institution"}}   />
     </>
   )
