@@ -11,6 +11,8 @@ const ECommerce: React.FC = () => {
         <Card title="Manajemen Pengguna" link="/users"/>
         <Card title="Pengajuan SPPD" link="/sppd"/>
         <Card title="Daftar Instansi" link="/institution"/>
+        <Card title="Data Transportasi" link="/institution"/>
+        <Card title="Data Tingkat Biaya" link="/institution"/>
       </div>
     </>
   );
