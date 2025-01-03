@@ -13,16 +13,14 @@ import { getDateTime, trimText } from "../../../utils/data";
 
 export default function GuestBookDetail() {
     const router = useRouter();
+    const store = useStore();
+    const state = store.getState();
 
     const [formData, setFormData] = useState<Record<string, any>>({});
     const [tableData, setTableData] = useState(GUEST_BOOK_DEFAULT_DATA)
-    const store = useStore();
-    const state = store.getState().auth;
-
     const [institutionsData, setInstitutionsData] = useState<
         InstitutionsDataTypes[]
-    >([INSTITUTION_DEFAULT_DATA]);
-
+    >([INSTITUTION_DEFAULT_DATA]);  
     const [divisionData, setDivisionData] = useState<
         { id: string; nama: string }[]
     >([]);
@@ -156,13 +154,15 @@ export default function GuestBookDetail() {
 
             if (res.ok) {
                 alert("Data berhasil ditambahkan");
-                router.push("/guestBook");
+                window.location.reload()
             } else {
                 console.error("Galat saat menambahkan data");
             }
         } catch (error) {
             console.error("Galat saat menambahkan data:", error);
         }
+
+        router.replace("/guestBook")
     };
 
     return (
