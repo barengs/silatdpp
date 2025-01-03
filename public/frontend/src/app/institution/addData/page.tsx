@@ -11,7 +11,7 @@ export default function InstitutionAddData() {
     const [formData, setFormData] = useState<Record<string, any>>({});
     const router = useRouter()
     const store = useStore()
-    const state = store.getState().auth
+    const state = store.getState()
 
     const handleStoreInput = (name: string, value: string) => {
         setFormData((prevState) => ({
