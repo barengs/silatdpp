@@ -1,6 +1,6 @@
 "use client";
 
-import React, { xuseState } from "react";
+import React, { useState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Table from "@/components/Table";
 import Link from "next/link";
