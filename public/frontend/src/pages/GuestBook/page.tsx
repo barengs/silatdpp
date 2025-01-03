@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { xuseState } from "react";
 import Breadcrumb from "@/components/Breadcrumb";
 import Table from "@/components/Table";
 import Link from "next/link";
@@ -9,14 +9,7 @@ import { GUEST_BOOK_DEFAULT_DATA } from "../../../utils/constans";
 
 
 const GuestBook: React.FC<GuestBookProps> = ({ data }) => {
-    const [tableData, setTableData] = useState<typeof data>(data);
-
-    useEffect(() => {
-        if (!data) {
-            setTableData([GUEST_BOOK_DEFAULT_DATA]);
-            return;
-        }
-    }, []);
+    const [tableData, setTableData] = useState<typeof data>(data ? data : [GUEST_BOOK_DEFAULT_DATA]);
 
     const columns = [
         {
