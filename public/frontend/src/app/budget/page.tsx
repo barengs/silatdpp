@@ -9,7 +9,7 @@ import { BUDGET_DEFAULT_DATA } from "@/utils/constans"
 const Page: React.FC = async () => {
 
     let data = [BUDGET_DEFAULT_DATA]
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/biaya`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/biaya`, { cache: 'no-store'})
     
     if (res.ok) {
         data = await res.json()

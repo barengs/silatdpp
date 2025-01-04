@@ -7,7 +7,7 @@ import React from "react"
 
 const Page: React.FC = async () => {
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/transportasi`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/transportasi`, { cache: 'no-store' })
     const data = await res.json()
 
     return (
