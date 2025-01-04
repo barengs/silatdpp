@@ -8,14 +8,12 @@ interface InputFieldsProps {
     onValueChange: (value: string) => void,
     name?: string,
     defaultValue?: string,
-    multiple?: boolean,
-    type?: string,
     autoCompleteData?: string[],
     onSelectAutoComplete?: (value: string) => void,
     addItemPath?: string
 }
 
-const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSelectAutoComplete, defaultValue="", type="text", multiple=true, name="" }: InputFieldsProps) => {
+const TextFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSelectAutoComplete, defaultValue="", name="" }: InputFieldsProps) => {
 
     const [inputValue, setInputValue] = useState(defaultValue)
     const [data, setData] = useState<string[]>([])
@@ -24,7 +22,7 @@ const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSe
 
     const router = useRouter()
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
 
         if (event.target.value) {
             setAutoCompleteState(true)
@@ -59,21 +57,13 @@ const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSe
 
     return (
         <div className="flex-1" onBlur={onBlurHandler}>
-            {(autoCompleteState || inputValue || type == "date") &&
-
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                {title}
-            </label>
-            }
-            <input
-                type={type}
+            <textarea
                 placeholder={title}
                 value={inputValue}
                 onChange={handleInputChange}
                 name={name}
-                multiple={multiple}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            />
+            ></textarea>
             <div className={`rounded-md bg-gray-100 w-full overflow-hidden px-4 py-2 mt-2 flex flex-col gap-y-4 text-left ${ (autoCompleteState && autoCompleteData) ? '' : 'hidden'}`}>
                 {data?.filter(name => {
                     if (!name) return true
@@ -87,4 +77,4 @@ const InputFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSe
     );
 };
 
-export default InputFields;
+export default TextFields;

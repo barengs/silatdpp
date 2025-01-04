@@ -1,14 +1,17 @@
 "use client";
 
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useStore } from "react-redux";
 
 export default function InstitutionAddData() {
     const [formData, setFormData] = useState<Record<string, any>>({});
     const router = useRouter()
+    const store = useStore()
+    const state = store.getState()
 
     const handleStoreInput = (name: string, value: string) => {
         setFormData((prevState) => ({
@@ -27,7 +30,7 @@ export default function InstitutionAddData() {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi-tamu`, {
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_TEMP_USER_TOKEN}`,
+                    Authorization: `Bearer ${state.token}`,
                 },
                 body: data,
             });

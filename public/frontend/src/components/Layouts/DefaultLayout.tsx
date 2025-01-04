@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { useRouter } from "next/navigation";
+import { useStore } from "react-redux";
 
 export default function DefaultLayout({
   children,
@@ -9,6 +11,16 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter()
+  const store = useStore()
+
+  useEffect(() => {
+    const authState = store.getState()
+    
+    if (authState.token && authState.isAuthenticated && authState.userId) return
+
+    router.push("/login")
+  },[])
 
   return (
     <>

@@ -1,5 +1,5 @@
 export interface GuestBookGetInstance {
-    id: number,
+    id: string,
     nama_tamu: string,
     alamat: string,
     no_telpon: string,

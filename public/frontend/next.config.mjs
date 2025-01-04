@@ -3,11 +3,25 @@ const nextConfig = {
     typescript: {
         ignoreBuildErrors: true
     },
-    output: 'export',
-    trailingSlash: true,
-    images: {
-        unoptimized: true
-    }
+    async headers() {
+        return [
+          {
+            source: '/:path*',
+            headers: [
+              {
+                key: 'Set-Cookie',
+                value: 'SameSite=None; Secure',
+              },
+            ],
+          },
+        ];
+      },
+    
+    // output: 'export',
+    // trailingSlash: true,
+    // images: {
+    //     unoptimized: true
+    // }
 };
 
 export default nextConfig;
