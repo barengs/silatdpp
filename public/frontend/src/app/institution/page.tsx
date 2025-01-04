@@ -1,5 +1,5 @@
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import InstutionsPage from '@/pages/Institution/page';
+import InstutionsPage from '@/components/pages/Institution/page';
 import React from 'react'
 
 

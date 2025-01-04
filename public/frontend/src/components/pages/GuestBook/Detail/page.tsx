@@ -5,7 +5,7 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { GUEST_BOOK_DEFAULT_DATA } from "../../../../utils/constans";
+import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 
 interface pageProps {
     params: {

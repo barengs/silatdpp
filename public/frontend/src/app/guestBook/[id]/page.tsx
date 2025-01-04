@@ -1,4 +1,4 @@
-import GuestBookDetail from "@/pages/GuestBook/Detail/page";
+import GuestBookDetail from "@/components/pages/GuestBook/Detail/page";
 
 
 // Generate static paths for guestBook/[id]

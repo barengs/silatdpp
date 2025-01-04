@@ -5,7 +5,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Table from "@/components/Table";
 import Link from "next/link";
 import { GuestBookProps } from "@/types/pages/guest";
-import { GUEST_BOOK_DEFAULT_DATA } from "../../../utils/constans";
+import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 
 
 const GuestBook: React.FC<GuestBookProps> = ({ data }) => {

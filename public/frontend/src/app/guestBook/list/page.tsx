@@ -1,5 +1,5 @@
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import GuestBook from '@/pages/GuestBook/page'
+import GuestBook from '@/components/pages/GuestBook/page'
 import React from 'react'
 
 

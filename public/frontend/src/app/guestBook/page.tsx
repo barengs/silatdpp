@@ -8,8 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useStore } from "react-redux";
-import { GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "../../../utils/constans";
-import { getDateTime, trimText } from "../../../utils/data";
+import { GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans";
+import { getDateTime, trimText } from "@/utils/data";
 
 export default function GuestBookDetail() {
     const router = useRouter();

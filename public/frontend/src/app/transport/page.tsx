@@ -1,6 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import TransportPage from "@/pages/Transport/page"
+import TransportPage from "@/components/pages/Transport/page"
 import React from "react"
 
 

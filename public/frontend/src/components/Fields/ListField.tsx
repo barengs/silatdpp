@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { USERS_DUMMIES_DATA } from "../../../utils/dummies";
+import { USERS_DUMMIES_DATA } from "../@/utils/dummies";
 
 interface ComponentProps {
     title: string;

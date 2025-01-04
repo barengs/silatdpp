@@ -1,6 +1,6 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
-import SppdPage from '@/pages/Sppd/page'
+import SppdPage from '@/components/pages/Sppd/page'
 import Link from 'next/link'
 import React from 'react'
 

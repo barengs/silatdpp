@@ -3,7 +3,7 @@
 import Table from "@/components/Table"
 import { SppdDataType, SppdPropsType } from "@/types/pages/sppd"
 import React from "react"
-import { getDateTime } from "../../../utils/data"
+import { getDateTime } from "@/utils/data"
 import Link from "next/link"
 
 const SppdPage: React.FC<SppdPropsType> = ({ data }) => {
