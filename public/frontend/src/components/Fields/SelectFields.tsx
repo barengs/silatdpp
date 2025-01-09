@@ -11,10 +11,11 @@ type optionType = {
 interface selectFieldsProps {
     title: string;
     options: optionType[];
-    defaultValue?: string
+    onSelected?: (value: string) => void;
+    defaultValue?: string;
 }
 
-const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValue }) => {
+const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValue, onSelected }) => {
     const [selectedOption, setSelectedOption] = useState<string>("");
     const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
@@ -22,9 +23,15 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValu
         setIsOptionSelected(true);
     };
 
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedOption(e.target.value);
+        changeTextColor();
+        onSelected(e.target.value)
+    }
+
     return (
         <div>
-            {isOptionSelected &&
+            {selectedOption != title &&
             
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 {title}
@@ -34,10 +41,7 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValu
             <div className="relative z-20 bg-white dark:bg-form-input">
                 <select
                     value={selectedOption}
-                    onChange={(e) => {
-                        setSelectedOption(e.target.value);
-                        changeTextColor();
-                    }}
+                    onChange={handleChange}
                     onFocus={() => setIsOptionSelected(true)}
                     onBlur={() => setIsOptionSelected(false)}
                     className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${

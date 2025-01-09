@@ -1,10 +1,24 @@
-import { useState } from "react";
+"use client"
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
+import { useStore } from "react-redux";
+import { DEFAULT_USER_DATA } from "@/utils/constans";
+import { UserCredentialType } from "@/types/common/user";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userData, setUserData] = useState<UserCredentialType>(DEFAULT_USER_DATA)
+  const store = useStore()
+
+  useEffect(() => {
+    const state = store.getState()
+  
+    setUserData(state.user)
+    
+  }, [])
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -15,9 +29,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {userData.name}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">Admin</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">

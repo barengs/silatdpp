@@ -17,19 +17,19 @@ export default function DefaultLayout({
   useEffect(() => {
     const authState = store.getState()
     
-    if (authState.token && authState.isAuthenticated && authState.userId) return
+    if (authState.token && authState.user) return
 
     router.push("/login")
   },[])
 
   return (
     <>
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
+     
       <div className="flex">
-        {/* <!-- ===== Sidebar Start ===== --> */}
+       
 
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {/* <!-- ===== Sidebar End ===== --> */}
+      
 
         {/* touchable overlay sidebar control */}
         <div className={`w-screen h-screen fixed left-0 top-0 bg-black z-99 lg:hidden bg-opacity-75 ${sidebarOpen ? 'block' : 'hidden'}`}></div>

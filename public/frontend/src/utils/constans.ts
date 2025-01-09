@@ -3,7 +3,7 @@
 
 
 export const INSTITUTION_DEFAULT_DATA = {
-  id: null,
+  id: "",
   nama: "",
   alamat: "",
   kontak: "",
@@ -13,7 +13,7 @@ export const INSTITUTION_DEFAULT_DATA = {
 
 
 export const DEFAULT_USER_DATA = {
-  id: 0,
+  id: "",
   name: "",
   email: "",
   email_verified_at: null,
@@ -40,6 +40,15 @@ export const GUEST_BOOK_DEFAULT_DATA = {
 export const BUDGET_DEFAULT_DATA = {
   id: "",
   biaya: "",
+  created_at: "",
+  updated_at: ""
+}
+
+export const DEDFAULT_USER_CREDENTIAL = {
+  id: "",
+  name: "",
+  email: "",
+  email_verified_at: null,
   created_at: "",
   updated_at: ""
 }

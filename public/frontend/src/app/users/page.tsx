@@ -1,20 +1,21 @@
-import Chart from "@/components/pages/Users/page";
+import UserPage from "@/components/pages/Users/page";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Chart | TailAdmin - Next.js Dashboard Template",
+  title: "Sistem Informasi Layanan Terpadu",
   description:
-    "This is Next.js Chart page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
+    "Sistem layanan yang dimiliki oleh kementrian pendidikan kabupaten pamekasan",
 };
 
-const UserPage: React.FC = () => {
+const Page: React.FC = () => {
+
   return (
     <DefaultLayout>
-      <Chart />
+      <UserPage />
     </DefaultLayout>
   );
 };
 
-export default UserPage;
+export default Page;
