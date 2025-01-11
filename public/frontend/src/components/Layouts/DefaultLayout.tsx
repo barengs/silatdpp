@@ -15,8 +15,8 @@ export default function DefaultLayout({
   const store = useStore()
 
   useEffect(() => {
-    const authState = store.getState()
-    
+    const authState = store.getState().auth
+
     if (authState.token && authState.user) return
 
     router.push("/login")

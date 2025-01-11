@@ -11,42 +11,24 @@ type optionType = {
 interface selectFieldsProps {
     title: string;
     options: optionType[];
-    onSelected?: (value: string) => void;
+    name: string;
     defaultValue?: string;
 }
 
-const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValue, onSelected }) => {
-    const [selectedOption, setSelectedOption] = useState<string>("");
-    const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
-
-    const changeTextColor = () => {
-        setIsOptionSelected(true);
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedOption(e.target.value);
-        changeTextColor();
-        onSelected(e.target.value)
-    }
+const SelectFields: React.FC<selectFieldsProps> = ({ title, options, name, defaultValue }) => {
 
     return (
         <div>
-            {selectedOption != title &&
             
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 {title}
             </label>
-            }
 
             <div className="relative z-20 bg-white dark:bg-form-input">
                 <select
-                    value={selectedOption}
-                    onChange={handleChange}
-                    onFocus={() => setIsOptionSelected(true)}
-                    onBlur={() => setIsOptionSelected(false)}
-                    className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-                        isOptionSelected ? "text-black dark:text-white" : ""
-                    }`}
+                    value={defaultValue}
+                    name={name}
+                    className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input `}
                 >
                     <option
                         value=""

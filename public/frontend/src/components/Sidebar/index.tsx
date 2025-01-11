@@ -157,6 +157,11 @@ const menuGroups = [
                 label: "Biaya",
                 route: "/budget",
             },
+            {
+                icon: "",
+                label: "Penggantian Bendahara",
+                route: "/exchequer",
+            },
         ],
     },
 ];

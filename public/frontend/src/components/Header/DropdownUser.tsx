@@ -14,9 +14,9 @@ const DropdownUser = () => {
   const store = useStore()
 
   useEffect(() => {
-    const state = store.getState()
-  
-    setUserData(state.user)
+    const servicesState = store.getState().auth
+    
+    setUserData(servicesState.user ? servicesState.user : DEFAULT_USER_DATA)
     
   }, [])
 

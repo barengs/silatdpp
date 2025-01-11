@@ -1,23 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from '@/utils/constans';
+import { DEFAULT_DIVISION_DATA, DEFAULT_TRANSPORTATION, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from '@/utils/constans';
 
 const servicesSlice = createSlice({
     name: 'services',
     initialState: {
       institutions: [INSTITUTION_DEFAULT_DATA],
-      guestBook: [GUEST_BOOK_DEFAULT_DATA]
+      guestBook: [GUEST_BOOK_DEFAULT_DATA],
+      transportation: [DEFAULT_TRANSPORTATION],
+      divisions: [DEFAULT_DIVISION_DATA]
     },
     reducers: {
       setInstitution: (state, action) => {
-        state.institutions = action.payload.data
+        state.institutions = action.payload
       },
       setGuestBook: (state, action) => {
-        state.guestBook = action.payload.data
+        state.guestBook = action.payload
+      },
+      setTransportation: (state, action) => {
+        state.transportation = action.payload
+      },
+      setDivision: (state, action) => {
+        state.divisions = action.payload
       }
     },
   });
 
 
-export const { setInstitution, setGuestBook } = servicesSlice.actions
+export const { setInstitution, setGuestBook, setTransportation, setDivision } = servicesSlice.actions
 export default servicesSlice.reducer
 

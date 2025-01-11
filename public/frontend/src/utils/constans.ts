@@ -23,7 +23,7 @@ export const DEFAULT_USER_DATA = {
 
 
 export const GUEST_BOOK_DEFAULT_DATA = {
-  id: "0",
+  id: "",
   nama_tamu: "",
   alamat: "",
   no_telpon: "",
@@ -49,6 +49,21 @@ export const DEDFAULT_USER_CREDENTIAL = {
   name: "",
   email: "",
   email_verified_at: null,
+  created_at: "",
+  updated_at: ""
+}
+
+export const DEFAULT_TRANSPORTATION = {
+  id: "",
+  nama: "",
+  jenis: "",
+  created_at: "",
+  updated_at: ""
+}
+
+export const DEFAULT_DIVISION_DATA = {
+  id: "",
+  nama: "",
   created_at: "",
   updated_at: ""
 }

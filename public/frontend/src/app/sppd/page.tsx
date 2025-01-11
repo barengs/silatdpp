@@ -3,7 +3,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import FilesFields from "@/components/Fields/FileFields";
 import InputFields from "@/components/Fields/InputFields";
-import ListFields from "@/components/Fields/ListField";
 import SelectFields from "@/components/Fields/SelectFields";
 import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
@@ -47,14 +46,14 @@ const SppdAddData: React.FC = () => {
             }
         })
 
-        // if (res.ok) {
-        //     alert("Berhasil mengajukan SPPD")
-        //     router.push("/sppd")
-        //     return
-        // }
+        if (res.ok) {
+            alert("Berhasil mengajukan SPPD")
+            router.push("/sppd")
+            return
+        }
 
-        // console.log(res)
-        // alert("Galat pada prosess pengajuan")
+        console.log(res)
+        alert("Galat pada prosess pengajuan")
         
     }
 
@@ -79,8 +78,8 @@ const SppdAddData: React.FC = () => {
                     <InputFields title="Tanggal Berangkat" onValueChange={(value: string) => handleDataChange("tanggal_kegiatan", value)}type="date"/>
                     <InputFields title="Tanggal Sampai" onValueChange={(value: string) => handleDataChange("tanggal_kegiatan", value)}type="date"/>
                 </div>
-                <SelectFields options={[{name: "Transportasi", value: "transportasi"}]} title="Transportasi Perjalanan" />
-                <SelectFields options={[{name: "Dalam kota", value: "transportasi"}, {name: "Luar kota", value: "transportasi"}]} title="Biaya Perjalanan" />
+                <SelectFields onSelected={(value: string) => handleDataChange("alat_traansportasi_id", value)} options={[{name: "Transportasi", value: "transportasi"}]} title="Transportasi Perjalanan" />
+                <SelectFields onSelected={(value: string) => handleDataChange("tingkat_biaya_id", value)} options={[{name: "Dalam kota", value: "transportasi"}, {name: "Luar kota", value: "transportasi"}]} title="Biaya Perjalanan" />
                 <FilesFields setter={(files: File[]) => handleDataChange("files", JSON.stringify(files))} title="Bukti Kegiatan" />
                 {/* <ListFields title="Peserta Perjalanan" addText="Tambah Peserta" dataURL="" /> */}
                 <button
