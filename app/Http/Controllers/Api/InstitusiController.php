@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\InstitusiTamuResource;
-use App\Models\InstitusiTamu;
+use App\Http\Resources\InstitusiResource;
+use App\Models\Institusi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class InstitusiTamuController extends Controller
+class InstitusiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $institusi = InstitusiTamu::all();
+        $institusi = Institusi::all();
 
-        return new InstitusiTamuResource(true, 'List data institusi', $institusi);
+        return new InstitusiResource(true, 'List data institusi', $institusi);
     }
 
     /**
@@ -26,24 +26,23 @@ class InstitusiTamuController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama'      => 'required',
-            'alamat'    => 'required',
-            'kontak'    => 'required',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'kontak' => 'required',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator, 422);
         }
 
-        $institusi = InstitusiTamu::create([
-            'nama'      => $request->nama,
-            'alamat'    => $request->alamat,
-            'kontak'    => $request->kontak,
+        $institusi = Institusi::create([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'kontak' => $request->kontak,
         ]);
 
         if ($institusi) {
-            return new InstitusiTamuResource(true, 'Input data Institusi berhasil!', $institusi);
+            return new InstitusiResource(true, 'Input data Institusi berhasil!', $institusi);
         } else {
             return response()->json($institusi);
         }
@@ -52,7 +51,7 @@ class InstitusiTamuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(InstitusiTamu $institusiTamu)
+    public function show(Institusi $institusiTamu)
     {
         //
     }
@@ -60,7 +59,7 @@ class InstitusiTamuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, InstitusiTamu $institusiTamu)
+    public function update(Request $request, Institusi $institusiTamu)
     {
         //
     }
@@ -68,7 +67,7 @@ class InstitusiTamuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(InstitusiTamu $institusiTamu)
+    public function destroy(Institusi $institusiTamu)
     {
         //
     }

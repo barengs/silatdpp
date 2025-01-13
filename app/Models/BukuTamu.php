@@ -12,15 +12,15 @@ class BukuTamu extends Model
         'nama_tamu',
         'alamat',
         'no_telpon',
-        'institusi_tamu_id',
+        'institusi_id',
         'divisi_id',
         'keperluan',
         'user_id',
     ];
 
-    public function institusi_tamu(): BelongsTo
+    public function institusi(): BelongsTo
     {
-        return $this->belongsTo(InstitusiTamu::class);
+        return $this->belongsTo(Institusi::class);
     }
 
     public function divisi(): BelongsTo
