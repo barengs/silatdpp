@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\RekomResource;
 use App\Models\Rekom;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RekomResource;
+use Illuminate\Support\Facades\Validator;
 
 class RekomController extends Controller
 {
@@ -24,7 +25,27 @@ class RekomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama_pejabat' => 'required',
+            'nama_pejabat_pengganti' => 'required',
+            'nip_pejabat' => 'required',
+            'nip_pejabat_pengganti' => 'required',
+            'rekanan_id' => 'required',
+            'institusi_id' => 'required',
+            'alamat_pejabat_pengganti' => 'required',
+            'jabatan' => 'required',
+            'konten' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([$validator->errors()], 422);
+        }
+
+        $data = Rekom::create($request->all());
+
+        if ($data) {
+            return new RekomResource(true, 'data berhasil di simpan', $data);
+        }
     }
 
     /**
