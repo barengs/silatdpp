@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\RekananController;
+use App\Http\Controllers\Api\RekomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -32,4 +34,6 @@ Route::apiResource('institusi', InstitusiController::class);
 Route::apiResource('sppd', SppdPengajuanController::class);
 Route::apiResource('transportasi', AlatTransportasiController::class);
 Route::apiResource('biaya', TingkatBiayaController::class);
+Route::apiResource('rekom', RekomController::class);
+Route::apiResource('rekanan', RekananController::class);
 // Route::apiResource('user', UserController::class);
