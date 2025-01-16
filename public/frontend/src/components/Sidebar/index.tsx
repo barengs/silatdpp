@@ -162,6 +162,11 @@ const menuGroups = [
                 label: "Penggantian Bendahara",
                 route: "/exchequer",
             },
+            {
+                icon: "",
+                label: "Rekanan",
+                route: "/partners",
+            },
         ],
     },
 ];
@@ -175,7 +180,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
     return (
         <aside
-            className={`fixed z-999 flex h-screen w-72.5 flex-col overflow-hidden bg-black duration-300 ease-linear dark:bg-boxdark ${
+            className={`fixed z-999 flex h-screen w-72.5 flex-col overflow-hidden overflow-y-auto bg-black duration-300 ease-linear dark:bg-boxdark ${
                 sidebarOpen
                     ? "w-4/8 fixed z-9999 duration-500 ease-in lg:static"
                     : "fixed z-9999 w-[0px] duration-500 ease-in lg:static lg:w-[80px]"

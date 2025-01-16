@@ -4,40 +4,34 @@ import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormEvent } from "react";
 import { useStore } from "react-redux";
 
 export default function InstitutionAddData() {
-    const [formData, setFormData] = useState<Record<string, any>>({});
     const router = useRouter()
     const store = useStore()
-    const state = store.getState()
+    const authState = store.getState().auth
 
-    const handleStoreInput = (name: string, value: string) => {
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
 
-    const handlePostData = async () => {
+    const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
 
-        const data = new FormData();
-        Object.keys(formData).forEach(fieldKey => data.append(fieldKey, formData[fieldKey]));
+        const formData = event.currentTarget
 
+        const data = new FormData(formData);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi-tamu`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi`, {
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${state.token}`,
+                    Authorization: `Bearer ${authState.token}`,
                 },
                 body: data,
             });
 
             if (res.ok) {
                 alert('Data Institusi berhasil ditambahkan');
-                router.back(); // Redirect to guestBook page
+                router.back();
             } else {
                 console.error('Failed to submit data', await res.json());
             }
@@ -50,32 +44,26 @@ export default function InstitutionAddData() {
         <DefaultLayout>
             <Breadcrumb pageName="Tambah Institusi" />
 
-            <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
+            <form onSubmit={handlePostData} className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <InputFields
                     title="Nama Institusi"
-                    onValueChange={(value) =>
-                        handleStoreInput("nama", value)
-                    }
+                    name="nama"
                 />
                 <InputFields
                     title="Alamat Institusi"
-                    onValueChange={(value) =>
-                        handleStoreInput("alamat", value)
-                    }
+                    name="alamat"
                 />
                 <InputFields
                     title="kontak Institusi"
-                    onValueChange={(value) =>
-                        handleStoreInput("kontak", value)
-                    }
+                    name="kontak"
                 />
-            </div>
                 <button
-                    onClick={handlePostData}
                     className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    type="submit"
                 >
                     Tambahkan Institusi
                 </button>
+            </form>
         </DefaultLayout>
     );
 }

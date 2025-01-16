@@ -10,12 +10,14 @@ interface InputFieldsProps {
   multiple?: boolean;
   type?: React.HTMLInputTypeAttribute;
   autoCompleteData?: string[];
+  onSelectedAutoComplete?: (value: string) => void;
   addItemPath?: string;
 }
 
 const InputFields: React.FC<InputFieldsProps> = ({
   title,
   autoCompleteData = [],
+  onSelectedAutoComplete=(value: string) => undefined, 
   addItemPath = "",
   defaultValue = "",
   type = "text",
@@ -31,8 +33,11 @@ const InputFields: React.FC<InputFieldsProps> = ({
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
+    
+
     setInputValue(value);
     setAutoCompleteState(!!value);
+    onSelectedAutoComplete(value)
   };
 
   const handleButtonClick = (value: string) => {

@@ -45,6 +45,9 @@ const InstutionsPage: React.FC<InstituionProps> = ({data}) => {
   return (
     <>
       <Breadcrumb pageName='Data Institusi' />
+      <div className="flex justify-end">
+        <Link href="/institution/addData" className='bg-primary text-white px-2 py-3 rounded-md text-sm'>Tambah Data</Link>
+      </div>
       <Table addButtonName='Tambah Institusi' addButtonLink='/institution/addData' name='Daftar Institusi' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/institution"}}   />
     </>
   )

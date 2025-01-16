@@ -36,7 +36,7 @@ const Table: React.FC<TableProps> = ({
     column,
     data,
     detailLink = { name: "Pengaturan", to: "#" },
-    excludes = []
+    excludes = ["id", "created_at", "updated_at"]
 }) => {
     const [searchText, setSearchText] = useState("");
     const [filteredData, setFilteredData] = useState(data);

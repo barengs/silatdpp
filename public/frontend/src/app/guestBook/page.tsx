@@ -5,10 +5,11 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useStore } from "react-redux";
 import { getDateTime, trimText } from "@/utils/data";
 import SelectFields from "@/components/Fields/SelectFields";
+import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 
 export default function GuestBookDetail() {
     const router = useRouter();
@@ -16,6 +17,23 @@ export default function GuestBookDetail() {
     const authState =state.auth;
     const servicesState =state.services;
     const lastGuest = servicesState.guestBook[0]
+    
+    const [selectedInstitution, setSelectedInstitution] = useState("")
+
+    // useEffect(() => console.log(servicesState), [])
+
+
+    const getInstitutionData = (name: string, type: string) => {
+        const res = servicesState.institutions.map(institution => {
+            // console.log(institution[type], name)
+        })
+
+
+        // if (res.length == 0) return ""
+
+        // return res[0][type]
+
+    }
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -30,7 +48,7 @@ export default function GuestBookDetail() {
         }
 
 
-        // try {
+        try {
 
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
@@ -49,9 +67,9 @@ export default function GuestBookDetail() {
             } else {
                 console.error("Galat saat menambahkan data");
             }
-        // } catch (error) {
-        //     console.error("Galat saat menambahkan data:", error);
-        // }
+        } catch (error) {
+            console.error("Galat saat menambahkan data:", error);
+        }
 
         router.replace("/guestBook")
     };
@@ -92,6 +110,7 @@ export default function GuestBookDetail() {
                         autoCompleteData={servicesState.institutions.map(
                             (field) => field.nama,
                         )}
+                        onSelectedAutoComplete={(value: string) => setSelectedInstitution(value)}
                         addItemPath="/institution/addData"
                     />
                     <SelectFields
@@ -104,10 +123,12 @@ export default function GuestBookDetail() {
                     <InputFields
                         title="Alamat Instansi"
                         name="alamat_institusi"
+                        defaultValue={getInstitutionData(selectedInstitution, "alamat")}
                     />
                     <InputFields
                         title="Kontak Instansi"
                         name="kontak_institusi"
+                        defaultValue={getInstitutionData(selectedInstitution, "kontak")}
                     />
                 <button
                     type="submit"
@@ -122,11 +143,18 @@ export default function GuestBookDetail() {
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-6 pb-12 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <h1 className="font-semibold text-black-2">Data terakhir</h1>
                 <div className="flex justify-between items-center px-4">
-                  <p>{lastGuest["nama_tamu"]}</p>
-                  <p>{trimText(lastGuest["keperluan"], 20)}</p>
-                  <p>{trimText(lastGuest["institusi_tamu"]["nama"], 20)}</p>
-                  <p>{lastGuest["divisi"]["nama"]}</p>
-                  <p>{getDateTime(lastGuest["created_at"])}</p>
+                  {lastGuest ?
+                  <>
+                    <p>{lastGuest["nama_tamu"]}</p>
+                    <p>{trimText(lastGuest["keperluan"], 20)}</p>
+                    <p>{trimText(lastGuest["institusi_tamu"]["nama"], 20)}</p>
+                    <p>{lastGuest["divisi"]["nama"]}</p>
+                    <p>{getDateTime(lastGuest["created_at"])}</p>
+                  </>
+                    :
+                    <p>Tidak ada pengunjung</p>
+
+                  }
                 </div>
             </div>
         </DefaultLayout>
