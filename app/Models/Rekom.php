@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rekom extends Model
 {
-    protected $fillables = [
+    protected $fillable = [
         'regno',
         'user_id',
         'rekanan_id',
