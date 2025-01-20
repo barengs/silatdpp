@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use Str;
 use App\Models\Rekom;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RekomResource;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Testing\Fakes\Fake;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RekomController extends Controller
 {
@@ -41,7 +44,23 @@ class RekomController extends Controller
             return response()->json([$validator->errors()], 422);
         }
 
-        $data = Rekom::create($request->all());
+        $docNumb = Str::upper(Str::random(5)) . fake()->randomNumber(4);
+
+        $user = JWTAuth::parseToken()->authenticate();
+
+        $data = Rekom::create([
+            'noreg' => $docNumb,
+            'user_id' => $user->id,
+            'nama_pejabat' => $request->nama_pejabat,
+            'nip_pejabat' => $request->nip_pejabat,
+            'nama_pejabat_pengganti' => $request->nama_pejabat_pengganti,
+            'nip_pejabat_pengganti' => $request->nip_pejabat_pengganti,
+            'rekanan_id' => $request->rekanan_id,
+            'institusi_id' => $request->institusi_id,
+            'alamat_pejabat_pengganti' => $request->alamat_pejabat_pengganti,
+            'jabatan' => $request->jabatan,
+            'konten' => $request->konten,
+        ]);
 
         if ($data) {
             return new RekomResource(true, 'data berhasil di simpan', $data);
