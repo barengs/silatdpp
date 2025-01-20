@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string('nip_pejabat')->nullable();
             $table->string('nama_pejabat_pengganti')->nullable();
             $table->string('nip_pejabat_pengganti')->nullable();
-            $table->string('alamt_pejabat_pengganti')->nullable();
+            $table->string('alamat_pejabat_pengganti')->nullable();
             $table->string('jabatan')->nullable();
             $table->text('konten')->nullable();
             $table->enum('status', ['pengajuan', 'proses', 'disetuji'])->default('pengajuan');
