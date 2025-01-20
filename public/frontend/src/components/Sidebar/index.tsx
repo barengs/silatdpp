@@ -160,7 +160,7 @@ const menuGroups = [
             {
                 icon: "",
                 label: "Penggantian Bendahara",
-                route: "/exchequer",
+                route: "/recomendation",
             },
             {
                 icon: "",
