@@ -20,18 +20,17 @@ export default function GuestBookDetail() {
     
     const [selectedInstitution, setSelectedInstitution] = useState("")
 
-    // useEffect(() => console.log(servicesState), [])
-
 
     const getInstitutionData = (name: string, type: string) => {
-        const res = servicesState.institutions.map(institution => {
-            // console.log(institution[type], name)
-        })
+        if (!name) return 
+
+        const res = servicesState.institutions
 
 
-        // if (res.length == 0) return ""
+        if (res.length == 0) return ""
 
-        // return res[0][type]
+
+        return res[0][type]
 
     }
 
@@ -40,13 +39,14 @@ export default function GuestBookDetail() {
 
         const data = new FormData(event.currentTarget)
 
-        const currentInstitution = data.get("institusi_tamu_id")
+        const currentInstitution = data.get("institusi_id")
 
-        if (servicesState.institutions.filter(institution => institution.nama == currentInstitution).length == 0) {
-            data.append("alamat_institusi", servicesState.institutions.alamat);
-            data.append("kontak_institusi", servicesState.institutions.kontak);
-        }
-
+        servicesState.institutions.map(institution => {
+            if (institution.nama == currentInstitution) {
+                data.delete("institusi_id")
+                data.append("institusi_id", institution.id)
+            }
+        })
 
         try {
 
@@ -106,7 +106,7 @@ export default function GuestBookDetail() {
                     />
                     <InputFields
                         title="Instansi Asal"
-                        name="institusi_tamu_id"
+                        name="institusi_id"
                         autoCompleteData={servicesState.institutions.map(
                             (field) => field.nama,
                         )}
@@ -117,7 +117,7 @@ export default function GuestBookDetail() {
                         title="Divisi Tujuan"
                         name="divisi_id"
                         options={servicesState.divisions.map(division => {
-                            return { name: division.nama, value: division }
+                            return { name: division.nama, value: division.id }
                         })}
                     />
                     <InputFields
