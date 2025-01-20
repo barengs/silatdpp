@@ -9,6 +9,7 @@ use App\Http\Resources\BukuTamuResource;
 use App\Models\Institusi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class BukuTamuController extends Controller
 {
@@ -55,6 +56,8 @@ class BukuTamuController extends Controller
 			$institusi = $request->institusi_tamu_id;
 		}
 
+		$user = JWTAuth::parseToken()->authenticate();
+
 		$tamu = BukuTamu::create([
 			'nama_tamu' => $request->nama_tamu,
 			'alamat' => $request->alamat,
@@ -62,7 +65,7 @@ class BukuTamuController extends Controller
 			'institusi_id' => $institusi,
 			'divisi_id' => $request->divisi_id,
 			'keperluan' => $request->keperluan,
-			'user_id' => auth()->user()->id,
+			'user_id' => $user->id,
 		]);
 
 		if ($tamu) {
@@ -103,6 +106,9 @@ class BukuTamuController extends Controller
 		}
 		// ambil data berdasarkan id
 		$tamu = BukuTamu::find($bukuTamu->id);
+
+		$user = JWTAuth::parseToken()->authenticate();
+
 		// update data tamu
 		$tamu->update([
 			'nama_tamu' => $request->nama_tamu,
@@ -111,7 +117,7 @@ class BukuTamuController extends Controller
 			'institusi_id' => $request->institusi_id,
 			'divisi_id' => $request->divisi_id,
 			'keperluan' => $request->keperluan,
-			'user_id' => auth()->user()->id,
+			'user_id' => $user->id,
 		]);
 
 		return new BukuTamuResource(true, 'Berhasil update', $tamu);
