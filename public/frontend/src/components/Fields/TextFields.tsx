@@ -1,11 +1,10 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface InputFieldsProps {
     title: string,
-    onValueChange: (value: string) => void,
     name?: string,
     defaultValue?: string,
     autoCompleteData?: string[],
@@ -13,33 +12,18 @@ interface InputFieldsProps {
     addItemPath?: string
 }
 
-const TextFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSelectAutoComplete, defaultValue="", name="" }: InputFieldsProps) => {
+const TextFields = ({ title, autoCompleteData, addItemPath, onSelectAutoComplete, defaultValue="", name="" }: InputFieldsProps) => {
 
+    const router = useRouter()
     const [inputValue, setInputValue] = useState(defaultValue)
     const [data, setData] = useState<string[]>([])
     const [autoCompleteState, setAutoCompleteState] = useState(false)
 
 
-    const router = useRouter()
-
-    const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-
-        if (event.target.value) {
-            setAutoCompleteState(true)
-        } else {
-            setAutoCompleteState(false)
-        }
-
-        setInputValue(event.target.value)
-    }
-
-
-    useEffect(() => onValueChange(inputValue), [inputValue])
     useEffect(() => setInputValue(defaultValue), [defaultValue])
 
     const handleButtonClick = (name: string) => {
         setAutoCompleteState(false)
-        setInputValue(name)
 
         if (!onSelectAutoComplete)  return
         onSelectAutoComplete(name)
@@ -59,8 +43,6 @@ const TextFields = ({ title, autoCompleteData, onValueChange, addItemPath, onSel
         <div className="flex-1" onBlur={onBlurHandler}>
             <textarea
                 placeholder={title}
-                value={inputValue}
-                onChange={handleInputChange}
                 name={name}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             ></textarea>

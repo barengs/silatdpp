@@ -37,12 +37,12 @@ const InputFields: React.FC<InputFieldsProps> = ({
 
     setInputValue(value);
     setAutoCompleteState(!!value);
-    onSelectedAutoComplete(value)
   };
-
+  
   const handleButtonClick = (value: string) => {
     setInputValue(value);
     setAutoCompleteState(false);
+    onSelectedAutoComplete(value)
   };
 
   const onBlurHandler = () => {
