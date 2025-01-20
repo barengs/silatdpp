@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
-import SelectFields from "@/components/Fields/SelectFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { FormEvent } from "react";
 
 const options = [
     {
@@ -15,18 +15,37 @@ const options = [
 
     {
         name: "Kepala Sekolah",
-        value: "principal"
+        value: "principal",
     },
     {
         name: "Admin Sekolah",
-        value: "school_admin"
+        value: "school_admin",
+    },
+];
+
+const UserDetail: React.FC = () => {
+
+    const router = useRouter()
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+
+        const form = new FormData(event.currentTarget)
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/register`, {
+            method: 'post',
+            body: form
+        })
+
+        if (!res.ok) {
+            alert("Galat saat menambahkan data")
+            return
+        }
+
+
+        alert("Berhasil menambahkan data")
+        router.push("/users")
     }
-]
-
-const UserDetail = () => {
-    // const { id } = params;
-
-    const [data, setData] = useState<{ id: string; nama: string; position: string; role: string; }[]>([{id: "", nama: "", position: "", role: ""}])
 
     return (
         <DefaultLayout>
@@ -48,22 +67,27 @@ const UserDetail = () => {
             </Link>
             <Breadcrumb pageName="Detail Pengguna" />
 
-            <div className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
-                {data.map((data, index) => (
-                    <div key={index} className="flex flex-col gap-9">
-                        <InputFields name="Nama Pengguna" defaultValue={data.nama} />
-                        <InputFields
-                            name="Jabatan"
-                            defaultValue={data.position}
-                        />
-                        <SelectFields title="Hak Akses" options={options} defaultValue="principal"/>
-
-                    </div>
-                ))}
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+            <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <InputFields
+                    title="Nama"
+                    name="name"
+                />
+                <InputFields
+                    title="Email"
+                    name="email"
+                />
+                <InputFields
+                    title="Password"
+                    name="password"
+                />
+                <InputFields
+                    title="Konfirmasi Password"
+                    name="password_confirmation"
+                />
+                <button type="submit" className="col-span-2 w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     Tambah Pengguna
                 </button>
-            </div>
+            </form>
         </DefaultLayout>
     );
 };
