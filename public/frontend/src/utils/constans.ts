@@ -67,3 +67,12 @@ export const DEFAULT_DIVISION_DATA = {
   created_at: "",
   updated_at: ""
 }
+
+export const DEFAULT_PARTNERS_DATA =  {
+  id: "",
+  nama: "",
+  alamat: "",
+  kota: "",
+  created_at: "",
+  updated_at: ""
+}
