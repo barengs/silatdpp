@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Breadcrumb from "@/components/Breadcrumb";
 import FilesFields from "@/components/Fields/FileFields";
@@ -8,61 +8,66 @@ import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useStore } from "react-redux";
 
-
-
 const SppdAddData: React.FC = () => {
-
     const [postData, setPostData] = useState<Record<string, unknown>>({
         file: [],
-    })
+    });
 
-    const router = useRouter()
+    const router = useRouter();
 
-    const store = useStore()
+    const store = useStore();
     const state = store.getState()
+    const authState = state.auth;
+    const servicesState = state.services;
+
+    useEffect(() => console.log(servicesState), [])
 
     const handleDataChange = (name: string, value: unknown) => {
-        setPostData(prevState => {
-            prevState[name] = value
-            return prevState
-        })
-    }
-    
-    const handlePostData = async () => {
-        const formData = new FormData()
+        setPostData((prevState) => {
+            prevState[name] = value;
+            return prevState;
+        });
+    };
 
-        Object.keys(postData).map(keyName => formData.append(keyName, postData[keyName]))
+    const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
+        const formData = new FormData(event.currentTarget);
 
-        formData.append("user_id", state.userId)
+        console.log(formData);
+        return;
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`, {
-            method: 'post',
-            body: formData,
-            headers: {
-                Authorization: `Bearer ${state.token}`
-            }
-        })
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`,
+            {
+                method: "post",
+                body: formData,
+                headers: {
+                    Authorization: `Bearer ${authState.token}`,
+                },
+            },
+        );
 
         if (res.ok) {
-            alert("Berhasil mengajukan SPPD")
-            router.push("/sppd")
-            return
+            alert("Berhasil mengajukan SPPD");
+            router.push("/sppd");
+            return;
         }
 
-        console.log(res)
-        alert("Galat pada prosess pengajuan")
-        
-    }
+        console.log(res);
+        alert("Galat pada prosess pengajuan");
+    };
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Pengajuan SPPD" />
 
-            <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="flex lg:justify-end">
+            <form
+                onSubmit={handlePostData}
+                className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark"
+            >
+                <div className="flex lg:justify-end">
                     <Link
                         href="/sppd/list"
                         className="mb-4 mt-2 rounded-md bg-blue-500 px-2 py-3 text-sm text-white"
@@ -70,28 +75,50 @@ const SppdAddData: React.FC = () => {
                         Histori SPPD
                     </Link>
                 </div>
-                <InputFields title="Nama Kegiatan" onValueChange={(value: string) => handleDataChange("nama_kegiatan", value)} />
-                <TextFields title="Deskripsi Kegiatan" onValueChange={(value: string) => handleDataChange("maksud_kegiatan", value)} />
-                <InputFields title="Tempat Kegiatan" onValueChange={(value: string) => handleDataChange("tempat_kegiatan", value)} />
-                <InputFields title="Tempat Tujuan" onValueChange={(value: string) => handleDataChange("tempat_tujuan", value)} />
+                <TextFields title="Deskripsi Kegiatan" name="maksud_kegiatan" />
+                <InputFields title="Tempat Kegiatan" name="tempat_tujuan" />
+                <InputFields title="Tempat Berangkat" name="tempat_berangkat" />
                 <div className="flex gap-x-4">
-                    <InputFields title="Tanggal Berangkat" onValueChange={(value: string) => handleDataChange("tanggal_kegiatan", value)}type="date"/>
-                    <InputFields title="Tanggal Sampai" onValueChange={(value: string) => handleDataChange("tanggal_kegiatan", value)}type="date"/>
+                    <InputFields
+                        title="Tanggal Berangkat"
+                        name="tanggal_berangkat"
+                        type="date"
+                    />
+                    <InputFields
+                        title="Tanggal Sampai"
+                        name="tanggal_kembali"
+                        type="date"
+                    />
                 </div>
-                <SelectFields onSelected={(value: string) => handleDataChange("alat_traansportasi_id", value)} options={[{name: "Transportasi", value: "transportasi"}]} title="Transportasi Perjalanan" />
-                <SelectFields onSelected={(value: string) => handleDataChange("tingkat_biaya_id", value)} options={[{name: "Dalam kota", value: "transportasi"}, {name: "Luar kota", value: "transportasi"}]} title="Biaya Perjalanan" />
-                <FilesFields setter={(files: File[]) => handleDataChange("files", JSON.stringify(files))} title="Bukti Kegiatan" />
-                {/* <ListFields title="Peserta Perjalanan" addText="Tambah Peserta" dataURL="" /> */}
+                <SelectFields
+                    name="alat_transportasi_id"
+                    options={servicesState.transportation.map((institution) => {
+                        return {
+                            name: institution.nama,
+                            value: institution.id,
+                        };
+                    })}
+                    title="Transportasi Perjalanan"
+                />
+                <SelectFields
+                    name="tingkat_biaya_id"
+                    title="Biaya Perjalanan"
+                />
+                <FilesFields
+                    setter={(files: File[]) =>
+                        handleDataChange("files", JSON.stringify(files))
+                    }
+                    title="Bukti Kegiatan"
+                />
                 <button
                     onClick={handlePostData}
                     className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                 >
                     Ajukan SPPD
                 </button>
-            </div>
+            </form>
         </DefaultLayout>
-    )
-}
-
+    );
+};
 
 export default SppdAddData;

@@ -1,5 +1,6 @@
 import { DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
 
+
 export async function fetchInsitution() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi`)
 

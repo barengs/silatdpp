@@ -31,3 +31,9 @@ export function getDateTime(date_stamp: string) {
 export function trimText(text: string, end=15) {
     return [text.substring(0, end), "..."].join("")
 }
+
+export function getDateNow() {
+    const date = new Date()
+
+    return `${date.getDay()} ${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`
+}

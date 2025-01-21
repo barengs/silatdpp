@@ -10,7 +10,7 @@ export default function DefaultLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter()
   const store = useStore()
 

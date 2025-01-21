@@ -47,6 +47,9 @@ export default function GuestBookDetail() {
                 data.append("institusi_id", institution.id)
             }
         })
+        console.log(data)
+
+        return
 
         try {
 
@@ -79,14 +82,6 @@ export default function GuestBookDetail() {
             <Breadcrumb pageName="Buku Tamu" />
 
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="flex lg:justify-end">
-                    <Link
-                        href="/guestBook/list"
-                        className="mb-4 mt-2 rounded-md bg-blue-500 px-2 py-3 text-sm text-white"
-                    >
-                        Histori Buku Tamu
-                    </Link>
-                </div>
                 <form onSubmit={handlePostData} className="grid grid-cols-2 gap-4">
                     <InputFields
                         title="Nama Tamu"
