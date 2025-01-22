@@ -33,8 +33,6 @@ const InputFields: React.FC<InputFieldsProps> = ({
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
-    
-
     setInputValue(value);
     setAutoCompleteState(!!value);
   };
