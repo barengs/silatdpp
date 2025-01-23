@@ -1,12 +1,16 @@
 "use client"
 
 import Table from "@/components/Table";
+import { fetchTransportation } from "@/services/common";
+import { setTransportation } from "@/store/servicesSlice";
 import { TransportPropsType } from "@/types/pages/transports";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 const TransportPage: React.FC<TransportPropsType> = ({ data }) => {
 
+    const dispatch = useDispatch()
     const columns = [
         {
             name: "Nama Transportasi",
@@ -19,6 +23,15 @@ const TransportPage: React.FC<TransportPropsType> = ({ data }) => {
             sortable: true,
         },
     ]
+
+    useEffect(() => {
+        const setTransportData = async () => {
+            dispatch(setTransportation(await fetchTransportation()))
+        }
+
+        setTransportData()
+    }, [])
+
     return (
         <>
             <div className="flex justify-end">

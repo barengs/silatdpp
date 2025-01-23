@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation"
 import React from "react"
 import { useDispatch } from "react-redux"
 import { setToken } from "@/store/authSlice"
-import { fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners } from "@/services/common"
-import { setDivision, setGuestBook, setInstitution, setPartners } from "@/store/servicesSlice"
+import { fetchBudget, fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners, fetchTransportation } from "@/services/common"
+import { setBudget, setDivision, setGuestBook, setInstitution, setPartners, setTransportation } from "@/store/servicesSlice"
 
 const LoginPage: React.FC = () => {
 
@@ -35,6 +35,8 @@ const LoginPage: React.FC = () => {
         dispatch(setDivision(await fetchDivision()))
         dispatch(setGuestBook(await fetchGuestBook()))
         dispatch(setPartners(await fetchPartners()))
+        dispatch(setTransportation(await fetchTransportation()))
+        dispatch(setBudget(await fetchBudget()))
 
         alert("Berhasil Masuk")
         router.push("/")

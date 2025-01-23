@@ -31,7 +31,7 @@ export const GUEST_BOOK_DEFAULT_DATA = {
   divisi_id: "",
   keperluan: "",
   user_id: "",
-  institusi_tamu: INSTITUTION_DEFAULT_DATA,
+  institusi: INSTITUTION_DEFAULT_DATA,
   divisi: {}
   
 }
@@ -73,6 +73,13 @@ export const DEFAULT_PARTNERS_DATA =  {
   nama: "",
   alamat: "",
   kota: "",
+  created_at: "",
+  updated_at: ""
+}
+
+export const DEFAULT_BUDGET_DATA =  {
+  id: "",
+  biaya: "",
   created_at: "",
   updated_at: ""
 }

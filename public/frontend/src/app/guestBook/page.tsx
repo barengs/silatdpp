@@ -6,17 +6,20 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
-import { useStore } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import { getDateTime, trimText } from "@/utils/data";
 import SelectFields from "@/components/Fields/SelectFields";
 import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
+import { fetchGuestBook } from "@/services/common";
+import { setGuestBook } from "@/store/servicesSlice";
 
 export default function GuestBookDetail() {
     const router = useRouter();
     const state = useStore().getState();
     const authState = state.auth;
     const servicesState = state.services;
-    const lastGuest = servicesState.guestBook[0];
+    const lastGuest = servicesState.guestBook[0] || GUEST_BOOK_DEFAULT_DATA;
+    const dispatch = useDispatch()
 
     const [selectedInstitution, setSelectedInstitution] = useState("");
 
@@ -44,10 +47,6 @@ export default function GuestBookDetail() {
             }
         });
 
-        data.append("user_id", authState.user.id)
-        console.log(data)
-        return
-
         try {
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
@@ -62,6 +61,7 @@ export default function GuestBookDetail() {
 
             if (res.ok) {
                 alert("Data berhasil ditambahkan");
+                dispatch(setGuestBook(await fetchGuestBook()))
                 window.location.reload();
             } else {
                 console.error("Galat saat menambahkan data");
@@ -134,11 +134,11 @@ export default function GuestBookDetail() {
                 <div className="flex items-center justify-between px-4">
                     {lastGuest ? (
                         <>
-                            <p>{lastGuest["nama_tamu"]}</p>
+                            <p>{trimText(lastGuest["nama_tamu"], 20)}</p>
                             <p>{trimText(lastGuest["keperluan"], 20)}</p>
                             <p>
                                 {trimText(
-                                    lastGuest["institusi_tamu"]["nama"],
+                                    lastGuest["institusi"]["nama"],
                                     20,
                                 )}
                             </p>
