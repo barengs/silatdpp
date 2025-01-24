@@ -4,7 +4,7 @@ import PartnerPage from "@/components/pages/PartnerPage/page";
 import Link from "next/link";
 
 const Partner = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/rekanan`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/rekanan`, { cache: 'no-store' });
     if (!res) return <>Data Not Available</>;
 
     const data = await res.json();
