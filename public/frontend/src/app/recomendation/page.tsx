@@ -5,23 +5,18 @@ import InputFields from "@/components/Fields/InputFields";
 import SelectFields from "@/components/Fields/SelectFields";
 import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { getDateNow } from "@/utils/data";
-import { exportLetter } from "@/utils/documents";
-import { useRouter } from "next/navigation";
+import { exportRecomendation } from "@/utils/documents";
 import { FormEvent } from "react";
 import { useStore } from "react-redux";
 
 const ExchequerPage = () => {
     const state = useStore().getState();
-    const router = useRouter()
     const authState = state.auth;
     const servicesState = state.services;
 
     const handlePost = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        exportLetter()
-
-
+        
         const formData = new FormData(event.currentTarget)
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/rekom`, {
@@ -34,7 +29,9 @@ const ExchequerPage = () => {
         
         if (res.ok) {
             alert("Berhasil menambah data")
-            router.replace("/recomendation")
+            exportRecomendation(formData.get("konten"))
+            window.location.reload()
+            return
         }
 
         alert("Gagal menambah data")
@@ -43,7 +40,7 @@ const ExchequerPage = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Penggantian Bendahara" />
+            <Breadcrumb pageName="Pengajuan Rekomendasi" />
             <form onSubmit={handlePost} className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <InputFields title="Nama Pejabat" name="nama_pejabat"/>
                 <InputFields title="NIP Pejabat" name="nip_pejabat"/>
