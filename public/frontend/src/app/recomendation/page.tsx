@@ -48,13 +48,13 @@ const ExchequerPage = () => {
                 <InputFields title="NIP Pejabat Pengganti" name="nip_pejabat_pengganti"/>
                 <InputFields title="Alamat Pejabat Pengganti" name="alamat_pejabat_pengganti"/>
                 <InputFields title="Jabatan" name="jabatan"/>
-                <TextFields title="Konten" name="konten" />
                 <SelectFields title="institusi" name="institusi_id" options={servicesState.institutions.map(institution => { 
                     return {name: institution.nama, value: institution.id}
                 })} />
                 <SelectFields title="Institusi Rekan" name="rekanan_id" options={servicesState.partners.map(partner => { 
                     return {name: partner.nama, value: partner.id}
                 })} />
+                <TextFields title="Konten" name="konten" />
                 <button
                     type="submit"
                     className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"

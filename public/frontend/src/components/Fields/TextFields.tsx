@@ -16,10 +16,9 @@ const TextFields = ({ title, defaultValue="", name="" }: InputFieldsProps) => {
 
     return (
         <div className="flex-1">
-            {inputValue &&
+
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">{title}</label>
 
-            }
 
             <textarea
                 placeholder={title}
