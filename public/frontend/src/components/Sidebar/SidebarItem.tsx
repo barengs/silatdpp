@@ -23,16 +23,16 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
   const isItemActive = isActive(item);
 
   return (
-    
-      <li className="shrink-0 ">
+    <>
+      <li>
         <Link
           href={item.route}
           onClick={handleClick}
-          className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} whitespace-nowrap group flex items-center gap-2.5 rounded-sm pl-1 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 flex-1 shrink-0 overflow-hidden`}
+          className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
         >
           {item.icon}
           {item.label}
-          {/* {item.children && (
+          {item.children && (
             <svg
               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                 pageName === item.label.toLowerCase() && "rotate-180"
@@ -50,10 +50,10 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
                 fill=""
               />
             </svg>
-          )} */}
+          )}
         </Link>
 
-        {/* {item.children && (
+        {item.children && (
           <div
             className={`translate transform overflow-hidden ${
               pageName !== item.label.toLowerCase() && "hidden"
@@ -61,9 +61,9 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
           >
             <SidebarDropdown item={item.children} />
           </div>
-        )} */}
+        )}
       </li>
-  
+    </>
   );
 };
 
