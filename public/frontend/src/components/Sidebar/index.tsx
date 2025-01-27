@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { usePathname } from "next/navigation";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
@@ -52,7 +51,7 @@ const menuGroups = [
                     </svg>
                 ),
                 label: "Buku Tamu",
-                route: "/guestBook",
+                route: "#",
                 children: [
                     { label: "Registrasi Tamu", route: "/guestBook" },
                     { label: "List Tamu", route: "/guestBook/list" },
@@ -83,7 +82,7 @@ const menuGroups = [
                 children: [
                     { label: "Data Divisi", route: "/division" },
                     { label: "Data Instansi", route: "/institution" },
-                    { label: "Data Transportasi", route: "/transportation" },
+                    { label: "Data Transportasi", route: "/transport" },
                     { label: "Data Biaya", route: "/budget" },
                     { label: "Data Rekanan", route: "/partners" },
                 ],
@@ -158,7 +157,7 @@ const menuGroups = [
                 route: "#",
                 children: [
                     { label: "Tambah Karyawan", route: "/users" },
-                    { label: "Tugas", route: "/institution" },
+                    { label: "Tugas", route: "/users/list" },
                     { label: "Hak Akses", route: "/institution" },
                 ],
             },
