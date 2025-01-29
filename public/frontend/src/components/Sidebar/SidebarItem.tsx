@@ -28,7 +28,7 @@ const SidebarItem = ({ item, pageName, setPageName, sidebarOpened }: any) => {
         <Link
           href={item.route}
           onClick={handleClick}
-          className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} group relative flex items-center gap-2.5 rounded-sm py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
+          className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} group relative flex whitespace-nowrap items-center gap-2.5 rounded-sm py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
         >
           {item.icon}
             {sidebarOpened ? item.label : ''}
@@ -55,7 +55,7 @@ const SidebarItem = ({ item, pageName, setPageName, sidebarOpened }: any) => {
 
         {item.children && (
           <div
-            className={`overflow-hidden ${
+            className={`overflow-hidden shrink-0 ${
               pageName !== item.label.toLowerCase() && "hidden"
             }`}
           >
