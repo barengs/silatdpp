@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
-import { useStore } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
+import { setToken } from "@/store/authSlice";
 
 export default function DefaultLayout({
   children,
@@ -13,13 +14,33 @@ export default function DefaultLayout({
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const router = useRouter()
   const store = useStore()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const authState = store.getState().auth
+    const refreshTimer = setInterval(async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/login`, { 
+        method: "POST",
+        headers: {
+          Authorization: authState.token
+        }
+    })
+    
+    if (!res.ok) {
+        router.push("/login")
+    }
 
-    if (authState.token && authState.user) return
+      const data = await res.json()
+      dispatch(setToken(data))
+      
+    }, 3600000)
 
-    router.push("/login")
+    if (!authState.token || !authState.user) {
+      router.push("/login")
+    }
+
+    return () => clearInterval(refreshTimer)
+
   },[])
 
   return (
