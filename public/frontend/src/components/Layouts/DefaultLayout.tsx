@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { useRouter } from "next/navigation";
 import { useDispatch, useStore } from "react-redux";
 import { setToken } from "@/store/authSlice";
+import AlertContainer from "../molecules/AlertContainer";
 
 export default function DefaultLayout({
   children,
@@ -45,9 +46,9 @@ export default function DefaultLayout({
 
   return (
     <>
+      <AlertContainer />
      
       <div className="flex">
-       
 
         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       
