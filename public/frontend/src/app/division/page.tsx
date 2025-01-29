@@ -11,7 +11,7 @@ const Division: React.FC = async () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Divisi" />
+            <Breadcrumb pageName="Data Divisi" />
             <DivisonPage data={data.data} />
         </DefaultLayout>
     )

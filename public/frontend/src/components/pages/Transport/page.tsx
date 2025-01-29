@@ -34,9 +34,6 @@ const TransportPage: React.FC<TransportPropsType> = ({ data }) => {
 
     return (
         <>
-            <div className="flex justify-end">
-                <Link href="/transport/addData" className="bg-primary py-3 px-4 rounded-md text-white text-sm">Tambah Transportasi</Link>
-            </div>
             <Table data={data} column={columns} name="Data Trasportasi" addButtonLink="/transport/add" addButtonName="Tambah Transportasi" />
         </>
     )

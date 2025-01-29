@@ -12,14 +12,6 @@ const Partner = async () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Rekan" />
-            <div className="flex justify-end">
-                <Link
-                    href="/partners/addData"
-                    className="rounded-md bg-primary px-2 py-3 text-sm text-white"
-                >
-                    Tambah Data
-                </Link>
-            </div>
             <PartnerPage data={data.data} />
         </DefaultLayout>
     );
