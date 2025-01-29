@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { cleanColumnName } from "@/utils/data";
 import { exportDocument } from "@/utils/documents";
@@ -28,7 +27,6 @@ interface TableProps {
     excludes?: string[];
 }
 
-
 const Table: React.FC<TableProps> = ({
     name,
     addButtonName,
@@ -36,12 +34,17 @@ const Table: React.FC<TableProps> = ({
     column,
     data,
     detailLink = { name: "Pengaturan", to: "#" },
-    excludes = ["id", "created_at", "updated_at"]
+    excludes = ["id", "created_at", "updated_at"],
 }) => {
     const [searchText, setSearchText] = useState("");
     const [filteredData, setFilteredData] = useState(data);
     const [category, setCategory] = useState("name");
-    const [exportType, setExportType] = useState("pdf")
+    const [activedFloating, setActivedFloating] = useState("");
+
+    // Refs
+    const exportPopupRef = useRef()
+    const filterPopupRef = useRef()
+
 
     useEffect(() => {
         if (!searchText) {
@@ -54,14 +57,23 @@ const Table: React.FC<TableProps> = ({
         }
     }, [searchText, category, data]);
 
-    // useEffect(() => console.log(data), [])
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if ((exportPopupRef.current && !exportPopupRef.current.contains(event.target as Node) || (filterPopupRef.current && !filterPopupRef.current.contains(event.target as Node)))) {
+              setActivedFloating("");
+            }
+          }
+      
+          document.addEventListener("mousedown", handleClickOutside);
+          return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [])
 
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) =>
         setSearchText(event.target.value.toLowerCase());
 
     const handleErase = () => setSearchText("");
 
-    const handleExport = () => exportDocument(exportType, data, excludes)
+    const handleExport = (exportType) => exportDocument(exportType, data, excludes);
 
     const customStyles = {
         rows: { style: { fontSize: "1rem" } },
@@ -73,13 +85,12 @@ const Table: React.FC<TableProps> = ({
         setCategory(event.target.value);
 
     return (
-        <div className="w-full bg-white px-4 py-2">
-
+        <div className="relative w-full bg-white px-4 py-2">
             {/* Search and Filter */}
-            <div className="grid grid-cols-2 gap-x-2 gap-y-4 py-6">
-                <div className="col-span-2 flex items-center rounded-md border-[1.5px] border-slate-300 px-2 py-2 text-sm">
+            <div className="flex justify-end gap-x-4 gap-y-4 py-6">
+                <div className=" flex items-center rounded-md border-[1.5px] border-slate-300 px-2 py-2 text-sm">
                     <input
-                        className="w-full flex-1 outline-none"
+                        className="min-w-[300px] flex-1 outline-none"
                         onChange={handleSearch}
                         value={searchText}
                         type="text"
@@ -93,45 +104,78 @@ const Table: React.FC<TableProps> = ({
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                className="size-6"
+                                className="size-4"
                             >
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                                    d="M6 18 18 6M6 6l12 12"
                                 />
                             </svg>
                         </button>
                     )}
                 </div>
-                <select
-                    onChange={handleSelectChange}
-                    value={category}
-                    className="rounded-md px-3 py-2 text-sm font-medium"
+
+                <button className="bg w-max hover:cursor-pointer" onClick={() => setActivedFloating("filter")}>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-6"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"
+                        />
+                    </svg>
+                </button>
+
+                <button
+                    onClick={() => setActivedFloating("export")}
+                    className="col-span-2 flex items-center gap-x-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-white hover:bg-gray-200 hover:text-gray-600"
                 >
-                    <option value="" disabled>
-                        Kategori
-                    </option>
-                    {data.length > 0 &&
-                        Object.keys(data[0]).filter(data => !excludes.some(exclduedCategory => data == exclduedCategory)).map((option, index) => (
-                            <option key={index} value={option}>
-                                {cleanColumnName(option)}
-                            </option>
-                        ))}
-                </select>
-                <select
-                    className="rounded-md px-3 py-2 text-sm font-medium"
-                    onChange={(event: ChangeEvent<HTMLSelectElement>) => setExportType(event.target.value)}
-                >
-                    <option value="pdf">PDF</option>
-                    <option value="csv">CSV</option>
-                </select>
-                <button 
-                onClick={handleExport}
-                className="rounded-md px-3 py-2 text-sm font-medium col-span-2 bg-primary hover:bg-gray-200 text-white hover:text-gray-600">
                     Export
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-3"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                        />
+                    </svg>
                 </button>
             </div>
+
+            {activedFloating == "export" && (
+                <div ref={exportPopupRef} className="absolute right-3 top-20 z-99 flex min-w-[300px] flex-col items-start gap-y-4 rounded-md border-[1px] border-gray-200 bg-white p-4 text-sm" onBlur={() => setActivedFloating("")}>
+                    <button className="hover:underline" onClick={() => handleExport("csv")}>
+                        Expor ke CSV
+                    </button>
+                    <button className="hover:underline" onClick={() => handleExport("pdf")}>
+                        Expor ke PDF
+                    </button>
+                </div>
+            )}
+
+            {activedFloating == "filter" && (
+                <div ref={filterPopupRef} className="absolute right-6 top-20 z-99 flex min-w-[300px] flex-col items-start gap-y-4 rounded-md border-[1px] border-gray-200 bg-white p-4 text-sm" onBlur={() => setActivedFloating("")}>
+                    {data.length > 0 &&
+                        Object.keys(data[0]).filter(data => !excludes.some(exclduedCategory => data == exclduedCategory)).map((option, index) => (
+                            <button onClick={() => setCategory(option)} className={`hover:underline ${category == option ? 'font-semibold' : 'font-normal'}`} key={index}>
+                                {cleanColumnName(option)}
+                            </button>
+                        ))}
+                </div>
+            )}
 
             {/* Table */}
             <DataTable
