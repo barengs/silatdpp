@@ -3,6 +3,13 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import DivisonPage from "@/components/pages/Division/page";
 
 
+export const metadata: Metadata = {
+    title:
+      "SILATDPP - List data divisi",
+    description: "This is Next.js Home for TailAdmin Dashboard Template",
+  };
+  
+
 
 const Division: React.FC = async () => {
 
