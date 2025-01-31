@@ -38,8 +38,8 @@ Route::apiResource('transportasi', AlatTransportasiController::class);
 Route::apiResource('biaya', TingkatBiayaController::class);
 Route::apiResource('rekom', RekomController::class);
 Route::apiResource('rekanan', RekananController::class);
-// Route::apiResource('user', UserController::class);
 
+Route::apiResource('karyawan', UserController::class);
 Route::apiResource('tugas', RoleController::class);
 Route::apiResource('hak-akses', PermissionController::class);
 Route::post('hak-akses-tugas', [RoleController::class, 'permissionRole'])->name('role-permission');
