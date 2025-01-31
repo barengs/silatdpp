@@ -53,7 +53,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Role::findOrFail($id);
+        $data->name = $request->name;
+        $data->update();
+        return new ApiResource(true, 'Tugas berhasil di ubah!', $data);
     }
 
     /**

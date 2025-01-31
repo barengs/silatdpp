@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RekananController;
 use App\Http\Controllers\Api\RekomController;
+use App\Http\Controllers\Api\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -37,3 +39,6 @@ Route::apiResource('biaya', TingkatBiayaController::class);
 Route::apiResource('rekom', RekomController::class);
 Route::apiResource('rekanan', RekananController::class);
 // Route::apiResource('user', UserController::class);
+
+Route::apiResource('tugas', RoleController::class);
+Route::apiResource('hak-akses', PermissionController::class);
