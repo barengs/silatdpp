@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\KaryawanController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RekananController;
 use App\Http\Controllers\Api\RekomController;
@@ -39,7 +40,7 @@ Route::apiResource('biaya', TingkatBiayaController::class);
 Route::apiResource('rekom', RekomController::class);
 Route::apiResource('rekanan', RekananController::class);
 
-Route::apiResource('karyawan', UserController::class);
+Route::apiResource('karyawan', KaryawanController::class);
 Route::apiResource('tugas', RoleController::class);
 Route::apiResource('hak-akses', PermissionController::class);
 Route::post('hak-akses-tugas', [RoleController::class, 'permissionRole'])->name('role-permission');

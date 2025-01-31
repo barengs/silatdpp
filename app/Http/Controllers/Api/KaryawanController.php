@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\KaryawanResource;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class KaryawanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,8 +38,8 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->get('password')),
         ]);
 
@@ -52,16 +52,16 @@ class UserController extends Controller
                 'gender' => $request->gender,
                 'address' => $request->address,
             ]);
-            return new UserResource(true, 'Berhasil daftakan pengguna', $user);
+            return new KaryawanResource(true, 'Berhasil daftakan pengguna', $user);
         } else {
-            return new UserResource(false, 'gagal mendaftarkan pengguna', '');
+            return new KaryawanResource(false, 'gagal mendaftarkan pengguna', '');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(string $id)
     {
         //
     }
@@ -69,7 +69,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -77,7 +77,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(string $id)
     {
         //
     }
