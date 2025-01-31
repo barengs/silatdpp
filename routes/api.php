@@ -42,3 +42,4 @@ Route::apiResource('rekanan', RekananController::class);
 
 Route::apiResource('tugas', RoleController::class);
 Route::apiResource('hak-akses', PermissionController::class);
+Route::apiResource('hak-akses-tugas', RoleController::class);

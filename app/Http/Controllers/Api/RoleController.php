@@ -37,7 +37,12 @@ class RoleController extends Controller
             'guard_name' => $request->guard == '' ? 'web' : $request->guard,
         ]);
 
-        return new ApiResource(true, 'Tugas berhasil di tambahkan!', $role);
+        if ($role) {
+            $permission = $role->syncPermission($request->permission);
+            return new ApiResource(true, 'Tugas berhasil di tambahkan!', $role);
+        } else {
+            return new ApiResource(false, 'gagal membuat Tugas', $role);
+        }
     }
 
     /**
@@ -65,5 +70,13 @@ class RoleController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function permissionRole(Request $request, string $id)
+    {
+        $role = Role::findOrFail($id);
+        $role->syncPermission($request->permission);
+
+        return new ApiResource(true, 'berhsil sinkron tugas ke hak akses!', $role);
     }
 }
