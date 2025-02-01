@@ -29,8 +29,8 @@ export default function InstitutionAddData() {
             body: data,
         })
             .then(() => {
-                alert("Data Institusi berhasil ditambahkan");
-                router.back();
+                alert("Data Institusi berhasil ditambahkan")
+                router.push("/institution");
             })
             .catch(() => console.log("Error saat menambah data"));
 
@@ -48,7 +48,7 @@ export default function InstitutionAddData() {
                 <InputFields title="Alamat Institusi" name="alamat" />
                 <InputFields title="kontak Institusi" name="kontak" />
                 <button
-                    className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:bg-opacity-75 disabled:cursor-not-allowed"
                     type="submit"
                     disabled={isPending}
                 >

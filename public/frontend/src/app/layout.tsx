@@ -16,12 +16,13 @@ export default function RootLayout({
 }>) {
   const [loading, setLoading] = useState<boolean>(true);
 
-
   useEffect(() => {
     const timeout = setTimeout(() => setLoading(false), 1000);
 
     return () => clearTimeout(timeout)
   }, []);
+
+
 
   return (
     <html lang="en">

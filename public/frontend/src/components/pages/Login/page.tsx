@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux"
 import { setToken } from "@/store/authSlice"
 import { fetchBudget, fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners, fetchTransportation } from "@/services/common"
 import { setBudget, setDivision, setGuestBook, setInstitution, setPartners, setTransportation } from "@/store/servicesSlice"
-import { showAlert } from "@/store/alertSlice"
 
 const LoginPage: React.FC = () => {
 
@@ -38,7 +37,7 @@ const LoginPage: React.FC = () => {
         dispatch(setPartners(await fetchPartners()))
         dispatch(setTransportation(await fetchTransportation()))
         dispatch(setBudget(await fetchBudget()))
-        dispatch(showAlert({type: "success", message: "Berhasil Masuk"}))
+        alert("Berhasil Masuk")
         
         router.push("/")
     }
