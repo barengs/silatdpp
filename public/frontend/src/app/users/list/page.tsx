@@ -25,7 +25,7 @@ const Page: React.FC = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="List Pengguna" />
-            <Table columns={columns} data={data} name="Data Pengguna" />
+            <Table columns={columns} data={data} name="Data Pengguna" addButtonLink="" addButtonName="Tambah Pengguna"/>
         </DefaultLayout>
     )
 }
