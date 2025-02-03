@@ -15,7 +15,7 @@ const DivisonPage: React.FC<DivisionProps> = ({ data }) => {
 
     return (
         <>
-              <Table data={data} column={columns} name="Data Divisi" addButtonLink="/division" addButtonName="Tambah Divisi" />
+              <Table data={data} column={columns} name="Data Divisi" addButtonLink="/division/addData" addButtonName="Tambah Divisi" />
         </>
     )
 }

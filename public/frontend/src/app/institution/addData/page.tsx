@@ -7,6 +7,7 @@ import useFetch from "@/hooks/useFetch";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { useStore } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function InstitutionAddData() {
     const [isPending, fetchCaller] = useFetch();
@@ -21,7 +22,7 @@ export default function InstitutionAddData() {
 
         const data = new FormData(formData);
 
-        fetchCaller("institusi", {
+        await fetchCaller("institusi", {
             method: "POST",
             headers: {
                 Authorization: authState.token,
@@ -29,7 +30,9 @@ export default function InstitutionAddData() {
             body: data,
         })
             .then(() => {
-                alert("Data Institusi berhasil ditambahkan")
+                toast.success("Data institusi berhasil ditambahkan!", {
+                    position: "top-right"
+                });
                 router.push("/institution");
             })
             .catch(() => console.log("Error saat menambah data"));

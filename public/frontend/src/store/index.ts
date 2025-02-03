@@ -2,7 +2,6 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import authReducer from './authSlice';
 import servicesReducer from './servicesSlice'
-import alertReducer from './alertSlice'
 import storage from './storage';
 
 
@@ -15,7 +14,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   services: servicesReducer,
-  alert: alertReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

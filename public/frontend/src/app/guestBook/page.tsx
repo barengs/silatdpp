@@ -12,6 +12,7 @@ import SelectFields from "@/components/Fields/SelectFields";
 import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 import { fetchGuestBook } from "@/services/common";
 import { setGuestBook } from "@/store/servicesSlice";
+import { toast } from "react-toastify";
 
 export default function GuestBookDetail() {
     const router = useRouter();
@@ -47,30 +48,30 @@ export default function GuestBookDetail() {
             }
         });
 
-        try {
-            const res = await fetch(
-                `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${authState.token}`,
-                    },
-                    body: data,
+
+        await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${authState.token}`,
                 },
-            );
+                body: data,
+            },
+        )
+            .then(() => {
+                toast.success("Terima Kasih, telah mengisi!", {
+                    position: 'top-right'
+                })
+                window.location.reload()
+            })
+            .catch(() => {
+                toast.error("Galat saat menambahkan data!", {
+                    position: "top-right"
+                })
+            })
 
-            if (res.ok) {
-                alert("Data berhasil ditambahkan");
-                dispatch(setGuestBook(await fetchGuestBook()))
-                window.location.reload();
-            } else {
-                console.error("Galat saat menambahkan data");
-            }
-        } catch (error) {
-            console.error("Galat saat menambahkan data:", error);
-        }
 
-        router.replace("/guestBook");
     };
 
     return (

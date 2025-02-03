@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { setToken } from "@/store/authSlice"
 import { fetchBudget, fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners, fetchTransportation } from "@/services/common"
 import { setBudget, setDivision, setGuestBook, setInstitution, setPartners, setTransportation } from "@/store/servicesSlice"
+import { toast } from "react-toastify"
 
 const LoginPage: React.FC = () => {
 
@@ -24,7 +25,9 @@ const LoginPage: React.FC = () => {
         })
         
         if (!res.ok) {
-            alert("Gagal Masuk")
+            toast.error("Gagal Masuk!", {
+                position: "top-right"
+          });
             return
         }
 
@@ -37,7 +40,9 @@ const LoginPage: React.FC = () => {
         dispatch(setPartners(await fetchPartners()))
         dispatch(setTransportation(await fetchTransportation()))
         dispatch(setBudget(await fetchBudget()))
-        alert("Berhasil Masuk")
+        toast.success("Berhasil Masuk!", {
+              position: "top-right"
+        });
         
         router.push("/")
     }

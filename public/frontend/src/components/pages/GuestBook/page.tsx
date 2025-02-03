@@ -55,7 +55,7 @@ const GuestBook: React.FC<GuestBookProps> = ({ data }) => {
              {/* Header */}
             <Table
                 addButtonName="Tambah Tamu"
-                addButtonLink="/guestBook/addData"
+                addButtonLink="/guestBook"
                 name="Daftar Tamu"
                 column={columns}
                 data={tableData}
