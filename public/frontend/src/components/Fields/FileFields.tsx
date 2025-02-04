@@ -94,7 +94,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
                                     Upload Bukti
                                 </h1>
 
-                                <button onClick={() => setFieldActive(false)}>
+                                <button type="button" onClick={() => setFieldActive(false)}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -119,6 +119,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
                             >
                                 <p>Tarik dan letakkan disini</p>
                                 <button
+                                    type="button"
                                     onClick={onChooseFile}
                                     className="mt-4 rounded-md bg-primary p-2 text-sm font-medium text-white"
                                 >
@@ -149,7 +150,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
                         {files.map((file, index) => (
                             <div key={index} className="flex w-full items-center justify-between rounded-md border-[1.5px] border-black-2 px-2 py-2">
                                 <a target="_blank" href={URL.createObjectURL(file)} className="text-sm hover:underline">{file.name}</a>
-                                <button onClick={() => handleFileRemove(index)}>
+                                <button type="button" onClick={() => handleFileRemove(index)}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"

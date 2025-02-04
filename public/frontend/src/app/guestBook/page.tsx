@@ -3,166 +3,75 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { InstitutionsDataTypes } from "@/types/pages/institution";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useStore } from "react-redux";
-import { GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans";
+import React, { FormEvent, useEffect, useState } from "react";
+import { useDispatch, useStore } from "react-redux";
 import { getDateTime, trimText } from "@/utils/data";
+import SelectFields from "@/components/Fields/SelectFields";
+import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
+import { fetchGuestBook } from "@/services/common";
+import { setGuestBook } from "@/store/servicesSlice";
+import { toast } from "react-toastify";
 
 export default function GuestBookDetail() {
     const router = useRouter();
-    const store = useStore();
-    const state = store.getState();
+    const state = useStore().getState();
+    const authState = state.auth;
+    const servicesState = state.services;
+    const lastGuest = servicesState.guestBook[0] || GUEST_BOOK_DEFAULT_DATA;
+    const dispatch = useDispatch()
 
-    const [formData, setFormData] = useState<Record<string, any>>({});
-    const [tableData, setTableData] = useState(GUEST_BOOK_DEFAULT_DATA)
-    const [institutionsData, setInstitutionsData] = useState<
-        InstitutionsDataTypes[]
-    >([INSTITUTION_DEFAULT_DATA]);  
-    const [divisionData, setDivisionData] = useState<
-        { id: string; nama: string }[]
-    >([]);
+    const [selectedInstitution, setSelectedInstitution] = useState("");
 
-    const [selectedInstitutionData, setSelectedInstitutionData] =
-        useState<InstitutionsDataTypes>(INSTITUTION_DEFAULT_DATA);
+    const getInstitutionData = (name: string, type: string) => {
+        if (!name) return;
 
+        const res = servicesState.institutions;
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const [lastGuest, institutionRes, divisionRes] = await Promise.all([
-                    fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`),
-                    fetch(
-                        `${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi-tamu`,
-                    ),
-                    fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/divisi`),
-                ]);
+        if (res.length == 0) return "";
 
-                if (lastGuest.ok) {
-                    const lastGuestData = await lastGuest.json();
-
-                    if (Object.keys(lastGuestData.data).length > 0) {
-                        setTableData(lastGuestData.data.data[0])
-                    }
-                }
-
-                if (institutionRes.ok) {
-                    const institutionsData = await institutionRes.json();
-
-                    if (Object.keys(institutionsData.data).length > 0) {
-                        setInstitutionsData(institutionsData.data);
-                    }
-                }
-
-                if (divisionRes.ok) {
-                    const divisionData = await divisionRes.json();
-
-                    if (Object.keys(divisionData.data).length > 0) {
-                        setDivisionData(divisionData.data);
-                    }
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        getData();
-    }, []);
-
-    const handleStoreInput = (name: string, value: string) => {
-        if (name === "institusi_tamu_id") {
-            const id =
-                institutionsData.find(
-                    (institution) => institution.nama === value,
-                )?.id || null;
-            if (id) {
-                setFormData((prevState) => ({
-                    ...prevState,
-                    [name]: id,
-                }));
-            } else {
-                setFormData((prevState) => ({
-                    ...prevState,
-                    [name]: value,
-                }));
-            }
-        } else if (name === "divisi_id") {
-            const id =
-                divisionData.find((division) => division.nama === value)?.id ||
-                null;
-            if (id) {
-                setFormData((prevState) => ({
-                    ...prevState,
-                    [name]: id,
-                }));
-            }
-
-        } else {
-            setFormData((prevState) => ({
-                ...prevState,
-                [name]: value,
-            }));
-        }
+        return res[0][type];
     };
 
-    const handleInstitutionChange = (institutionName: string) => {
-        const institutionData = institutionsData.find(
-            (data) => data.nama == institutionName,
-        );
+    const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-        if (!institutionData) {
-            return;
-        }
+        const data = new FormData(event.currentTarget);
 
-        setSelectedInstitutionData(institutionData);
-    };
+        const currentInstitution = data.get("institusi_id");
 
-    const handleAutoCompleteField = (
-        newValue: string,
-        attributeName: string,
-    ) => {
-        selectedInstitutionData[attributeName] = newValue;
-    };
+        servicesState.institutions.map((institution) => {
+            if (institution.nama == currentInstitution) {
+                data.delete("institusi_id");
+                data.append("institusi_id", institution.id);
+            }
+        });
 
-    const handlePostData = async () => {
-        const data = new FormData();
-        Object.keys(formData).forEach((fieldKey) =>
-            data.append(fieldKey, formData[fieldKey]),
-        );
 
-        if (!isFinite(data.get("institusi_tamu_id"))) {
-            data.append("alamat_institusi", selectedInstitutionData.alamat);
-            data.append("kontak_institusi", selectedInstitutionData.kontak);
-        }
-
-        data.append("user_id", state.userId);
-
-        try {
-
-        const res = await fetch(
+        await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
             {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${state.token}`,
+                    Authorization: `Bearer ${authState.token}`,
                 },
                 body: data,
             },
-        );
-
-            if (res.ok) {
-                alert("Data berhasil ditambahkan");
+        )
+            .then(() => {
+                toast.success("Terima Kasih, telah mengisi!", {
+                    position: 'top-right'
+                })
                 window.location.reload()
-            } else {
-                console.error("Galat saat menambahkan data");
-            }
-        } catch (error) {
-            console.error("Galat saat menambahkan data:", error);
-        }
+            })
+            .catch(() => {
+                toast.error("Galat saat menambahkan data!", {
+                    position: "top-right"
+                })
+            })
 
-        router.replace("/guestBook")
+
     };
 
     return (
@@ -170,97 +79,76 @@ export default function GuestBookDetail() {
             <Breadcrumb pageName="Buku Tamu" />
 
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
-                <div className="flex lg:justify-end">
-                    <Link
-                        href="/guestBook/list"
-                        className="mb-4 mt-2 rounded-md bg-blue-500 px-2 py-3 text-sm text-white"
-                    >
-                        Histori Buku Tamu
-                    </Link>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                    <InputFields
-                        title="Nama Tamu"
-                        onValueChange={(value) =>
-                            handleStoreInput("nama_tamu", value)
-                        }
-                    />
-                    <InputFields
-                        title="Alamat"
-                        onValueChange={(value) =>
-                            handleStoreInput("alamat", value)
-                        }
-                    />
-                    <InputFields
-                        title="No Telepon"
-                        onValueChange={(value) =>
-                            handleStoreInput("no_telpon", value)
-                        }
-                    />
-                    <InputFields
-                        title="Keperluan"
-                        onValueChange={(value) =>
-                            handleStoreInput("keperluan", value)
-                        }
-                    />
+                <form
+                    onSubmit={handlePostData}
+                    className="grid grid-cols-2 gap-4"
+                >
+                    <InputFields title="Nama Tamu" name="nama_tamu" />
+                    <InputFields title="Alamat" name="alamat" />
+                    <InputFields title="No Telepon" name="no_telpon" />
+                    <InputFields title="Keperluan" name="keperluan" />
                     <InputFields
                         title="Instansi Asal"
-                        autoCompleteData={institutionsData.map(
+                        name="institusi_id"
+                        autoCompleteData={servicesState.institutions.map(
                             (field) => field.nama,
                         )}
-                        onValueChange={(value) =>
-                            handleStoreInput("institusi_tamu_id", value)
+                        onSelectedAutoComplete={(value: string) =>
+                            setSelectedInstitution(value)
                         }
-                        onSelectAutoComplete={handleInstitutionChange}
                         addItemPath="/institution/addData"
                     />
-                    <InputFields
+                    <SelectFields
                         title="Divisi Tujuan"
-                        autoCompleteData={divisionData.map(
-                            (field) => field.nama,
-                        )}
-                        onValueChange={(value) =>
-                            handleStoreInput("divisi_id", value)
-                        }
+                        name="divisi_id"
+                        options={servicesState.divisions.map((division) => {
+                            return { name: division.nama, value: division.id };
+                        })}
                     />
                     <InputFields
                         title="Alamat Instansi"
-                        autoCompleteData={divisionData.map(
-                            (field) => field.nama,
+                        name="alamat_institusi"
+                        defaultValue={getInstitutionData(
+                            selectedInstitution,
+                            "alamat",
                         )}
-                        onValueChange={(value) =>
-                            handleAutoCompleteField(value, "alamat")
-                        }
-                        defaultValue={selectedInstitutionData.alamat}
                     />
                     <InputFields
                         title="Kontak Instansi"
-                        autoCompleteData={divisionData.map(
-                            (field) => field.nama,
+                        name="kontak_institusi"
+                        defaultValue={getInstitutionData(
+                            selectedInstitution,
+                            "kontak",
                         )}
-                        onValueChange={(value) =>
-                            handleAutoCompleteField(value, "kontak")
-                        }
-                        defaultValue={selectedInstitutionData.kontak}
                     />
-                </div>
-
-                <button
-                    onClick={handlePostData}
-                    className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-                >
-                    Tambahkan tamu
-                </button>
+                    <button
+                        type="submit"
+                        className="col-span-2 flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    >
+                        Tambahkan tamu
+                    </button>
+                </form>
             </div>
 
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-6 pb-12 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <h1 className="font-semibold text-black-2">Data terakhir</h1>
-                <div className="flex justify-between items-center px-4">
-                  <p>{tableData["nama_tamu"]}</p>
-                  <p>{trimText(tableData["keperluan"], 20)}</p>
-                  <p>{trimText(tableData["institusi_tamu"].nama)}</p>
-                  <p>{tableData["divisi"].nama}</p>
-                  <p>{getDateTime(tableData["created_at"])}</p>
+                <div className="flex items-center justify-between px-4">
+                    {lastGuest ? (
+                        <>
+                            <p>{trimText(lastGuest["nama_tamu"], 20)}</p>
+                            <p>{trimText(lastGuest["keperluan"], 20)}</p>
+                            <p>
+                                {trimText(
+                                    lastGuest["institusi"]["nama"],
+                                    20,
+                                )}
+                            </p>
+                            <p>{lastGuest["divisi"]["nama"]}</p>
+                            <p>{getDateTime(lastGuest["created_at"])}</p>
+                        </>
+                    ) : (
+                        <p>Tidak ada pengunjung</p>
+                    )}
                 </div>
             </div>
         </DefaultLayout>

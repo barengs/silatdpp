@@ -2,6 +2,7 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import React from "react";
 import Table from "@/components/Table";
+import Link from "next/link";
 
 // For development purpose
 
@@ -128,6 +129,9 @@ const UserPage: React.FC = () => {
     return (
         <>
             <Breadcrumb pageName="Managemen Pengguna" />
+            <div className="flex justify-end">
+                <Link href="/users/addData" className="bg-primary py-3 px-4 rounded-md text-white text-sm">Tambah Pengguna</Link>
+            </div>
             <Table addButtonLink="/users/addData" addButtonName="Tambah Pengguna" name="Daftar Pengguna" column={columns} data={DUMMY_DATA} detailLink={{name: "Pengaturan", to: "/users"}}/>
         </>
     );

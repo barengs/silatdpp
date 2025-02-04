@@ -13,38 +13,34 @@ interface pageProps {
     };
 }
 
-
 async function getData(id: string) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu/${id}`)
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu/${id}`,
+    );
 
-    if (!res.ok) return GUEST_BOOK_DEFAULT_DATA
+    if (!res.ok) return GUEST_BOOK_DEFAULT_DATA;
 
-    const data = await res.json()
+    const data = await res.json();
 
-    return data
+    return data;
 }
 
 const GuestBookDetail = ({ params }: pageProps) => {
-    const [data, setData] = useState<typeof GUEST_BOOK_DEFAULT_DATA>(GUEST_BOOK_DEFAULT_DATA);
-
-    const onValueChange = (value: string, name: string) => {
-        setData(state => {
-            state[name] = value;
-            return state;
-        });
-    };
-
+    const [data, setData] = useState<typeof GUEST_BOOK_DEFAULT_DATA>(
+        GUEST_BOOK_DEFAULT_DATA,
+    );
 
     useEffect(() => {
+        const caller = async () => {
+            const detailData = await getData(params.id);
+            setData(detailData.data);
+        };
 
-        const caller = async () =>{
-            const detailData = await getData(params.id)
-            setData(detailData.data)
-            console.log(data)
-        }
+        caller();
+    }, []);
 
-        caller()
-    }, [])
+
+    useEffect(() => console.log(data), [data])
 
     return (
         <DefaultLayout>
@@ -71,39 +67,30 @@ const GuestBookDetail = ({ params }: pageProps) => {
                     <InputFields
                         title="Nama Tamu"
                         defaultValue={data.nama_tamu}
-                        onValueChange={(value) =>
-                            onValueChange(value, "nama_tamu")
-                        }
+                        name="nama_tamu"
                     />
                     <InputFields
                         title="Alamat"
                         defaultValue={data.alamat}
-                        onValueChange={(value) =>
-                            onValueChange(value, "alamat")
-                        }
+                        name="alamat"
                     />
                     <InputFields
                         title="Nomor Telepon"
                         defaultValue={data.no_telpon}
-                        onValueChange={(value) =>
-                            onValueChange(value, "no_telpon")
-                        }
+                        name="no_telepon"
                     />
                     <InputFields
                         title="Keperluan"
                         defaultValue={data.keperluan}
-                        onValueChange={(value) => onValueChange(value, "keperluan")}
+                        name="keperluan"
                     />
                     <InputFields
                         title="Divisi Tujuan"
                         defaultValue={data.divisi_id}
-                        onValueChange={(value) =>
-                            onValueChange(value, "divisi_id")
-                        }
+                        name="divisi_id"
                     />
-            
                 </div>
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 mt-4">
+                <button className="mt-4 flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     Perbarui Data
                 </button>
             </div>

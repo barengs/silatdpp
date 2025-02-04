@@ -7,6 +7,7 @@ import Loader from "@/components/Loader";
 import { Provider } from "react-redux";
 import { persistor, store } from "@/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { ToastContainer } from "react-toastify";
 
 
 export default function RootLayout({
@@ -15,7 +16,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [loading, setLoading] = useState<boolean>(true);
-
 
   useEffect(() => {
     const timeout = setTimeout(() => setLoading(false), 1000);
@@ -27,6 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
+          <ToastContainer />
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               {loading ? <Loader /> : children}

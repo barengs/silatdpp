@@ -27,7 +27,7 @@ const InstutionsPage: React.FC<InstituionProps> = ({data}) => {
       sortable: true,
     },
     {
-      name: "No Telepon Institusi",
+      name: "Kontak Institusi",
       selector: (row: Record<string, string>) => row.kontak,
       sortable: true,
     },
