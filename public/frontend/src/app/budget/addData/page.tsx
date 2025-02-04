@@ -1,63 +1,62 @@
-"use client"
+"use client";
 
-import Breadcrumb from "@/components/Breadcrumb"
+import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import useFetch from "@/hooks/useFetch";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useStore } from "react-redux";
+import { toast } from "react-toastify";
 
 const BudgetAddDataPage: React.FC = () => {
+    const [isPending, fetchCaller] = useFetch();
+    const storeState = useStore().getState();
+    const router = useRouter();
 
-    const [formData, setFormData] = useState({})
-    const storeState = useStore().getState()
-    const router = useRouter()
+    const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
 
-    const handleChange = (name: string, value: string) => {
-        setFormData(state => {
-            state[name] = value
-            return state
-        })
-    }
+        event.preventDefault()
 
+        const form = new FormData(event.currentTarget);
 
-    const handlePostData = async () => {
-        const form = new FormData()
-        Object.keys(formData).map(keyName => form.append(keyName, formData[keyName]))
-
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/biaya`, {
+        await fetchCaller("biaya", {
             method: "post",
             headers: {
-                Authorization: `Bearer ${storeState.token}`
+                Authorization: `Bearer ${storeState.token}`,
             },
-            body: form
-        })
-            .then(res => {
-                if (res.ok) {
-                    alert("Sukses menambahkan data baru")
-                    router.push("/budget")
-                    return
-                }
+            body: form,
+        }).then((res) => {
+            if (res.ok) {
+                toast.success("Data biaya telah ditambahkan", {
+                    position: "top-right",
+                });
+                router.push("/budget");
+                return;
+            }
 
-                alert("Gagal menambahkan data baru")
-            })
-    }
+            toast.error("Gagal menambahkan data!", {
+                position: "top-right",
+            });
+        });
+    };
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Tambah Data Biaya" />
-            <div className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
-                <InputFields onValueChange={(value: string) => handleChange("biaya", value)} title="Tingkat Biaya" />
+            <form onSubmit={handlePostData} className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
+                <InputFields
+                    title="Tingkat Biaya"
+                    name="biaya"
+                />
                 <button
-                    onClick={handlePostData}
-                    className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"
+                    className="col-span-2 flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                 >
                     Tambahkan Biaya
                 </button>
-            </div>
+            </form>
         </DefaultLayout>
-    )
-}
-
+    );
+};
 
 export default BudgetAddDataPage;

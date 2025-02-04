@@ -2,12 +2,14 @@
 
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import useFetch from "@/hooks/useFetch";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { useStore } from "react-redux";
+import { toast } from "react-toastify";
 
 const PartnerAddPage = () => {
-
+    const [isPending, fetchCaller] = useFetch();
     const store = useStore()
     const authState = store.getState().auth
     const router = useRouter()
@@ -16,22 +18,29 @@ const PartnerAddPage = () => {
         event.preventDefault()
 
         const formData = new FormData(event.currentTarget)
-
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/rekanan`, {
+        
+        await fetchCaller('rekanan', {
             method: "post",
             body: formData,
             headers: {
                 Authorization: authState.token
             }
         })
+            .then((res) => {
+                if (res.ok) {
+                    toast.success("Berhasil menambahkan data", {
+                        position: "top-right"
+                    })
+                    router.push("/partners")
+                    return
+                }
+                
+                toast.error("Galat saat menambah data", {
+                    position: "top-right"
+                })
+            })
         
-        if (res.ok) {
-            alert("Berhasil menambahkan data")
-            router.push("/partners")
-            return
-        }
-
-        alert("Galat saat menambah data")
+        
     }
 
     return (

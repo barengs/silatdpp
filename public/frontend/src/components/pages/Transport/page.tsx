@@ -34,7 +34,7 @@ const TransportPage: React.FC<TransportPropsType> = ({ data }) => {
 
     return (
         <>
-            <Table data={data} column={columns} name="Data Trasportasi" addButtonLink="/transport/add" addButtonName="Tambah Transportasi" />
+            <Table data={data} column={columns} name="Data Trasportasi" addButtonLink="/transport/addData" addButtonName="Tambah Transportasi" />
         </>
     )
 }

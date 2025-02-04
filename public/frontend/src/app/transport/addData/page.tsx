@@ -3,12 +3,14 @@
 import Breadcrumb from "@/components/Breadcrumb"
 import InputFields from "@/components/Fields/InputFields"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import useFetch from "@/hooks/useFetch"
 import { useRouter } from "next/navigation"
-import React, { FormEvent, useState } from "react"
+import React, { FormEvent } from "react"
 import { useStore } from "react-redux"
+import { toast } from "react-toastify"
 
 const TransportAddPage: React.FC = () => {
-
+    const [isPending, fetchCaller] = useFetch();
     const state = useStore().getState()
     const router = useRouter()
 
@@ -18,7 +20,7 @@ const TransportAddPage: React.FC = () => {
 
         const form = new FormData(event.currentTarget)
 
-        await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/transportasi`, {
+        await fetchCaller('transportasi', {
             method: 'post',
             headers: {
                 Authorization: `Bearer ${state.token}`
@@ -26,16 +28,20 @@ const TransportAddPage: React.FC = () => {
             body: form,
         })
             .then(res => {
-                if (!res.ok) return null
 
-                return res.json()
-            })
-            .then(data => {
-                if (!data) return alert("Gagal menambahkan data")
+                if (!res.ok) {
+                    toast.error("Gagal Saaat menambahkan data!", {
+                        position: "top-right",
+                    })
+                    return   
+                };
 
-                alert("Berhasil menambahkan data")
+                toast.success("Data transportas berhasil ditambahkan!", {
+                    position: "top-right",
+                });
                 router.push("/transport")
             })
+           
     }
 
     return (
@@ -48,7 +54,7 @@ const TransportAddPage: React.FC = () => {
                     type="submite"
                     className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"
                 >
-                    Tambahkan tamu
+                    Tambahkan transportasi
                 </button>
             </form>
         </DefaultLayout>
