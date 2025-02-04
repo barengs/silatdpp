@@ -10,7 +10,7 @@
 /coverage
 
 # next.js
-/.next/
+.next
 
 # production
 /build
@@ -38,3 +38,4 @@ package-lock.json
 yarn.lock
 
 .env
+build
