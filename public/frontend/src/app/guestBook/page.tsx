@@ -11,6 +11,7 @@ import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 import { toast } from "react-toastify";
 import useFetch from "@/hooks/useFetch";
 import { fetchGuestBook } from "@/services/common";
+import { setGuestBook } from "@/store/servicesSlice";
 
 export default function GuestBookDetail() {
     const dispatch = useDispatch()
@@ -22,6 +23,10 @@ export default function GuestBookDetail() {
     const [lastGuest, _] = useState(servicesState.guestBook[0] || GUEST_BOOK_DEFAULT_DATA)
 
     const [selectedInstitution, setSelectedInstitution] = useState("");
+
+    const syncGuestBookData = async() => {
+        dispatch(setGuestBook(await fetchGuestBook()))
+    }
 
     const getInstitutionData = (name: string, type: string) => {
         if (!name) return;
@@ -41,18 +46,18 @@ export default function GuestBookDetail() {
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const data = new FormData(event.currentTarget);
-
+    
+        const form = event.currentTarget;
+        const data = new FormData(form);
         const currentInstitution = data.get("institusi_id");
-
-        servicesState.institutions.map((institution) => {
-            if (institution.nama == currentInstitution) {
+    
+        servicesState.institutions.forEach((institution) => {
+            if (institution.nama === currentInstitution) {
                 data.delete("institusi_id");
                 data.append("institusi_id", institution.id);
             }
         });
-
+    
         await fetchCaller(`buku-tamu`, {
             method: "POST",
             headers: {
@@ -64,7 +69,14 @@ export default function GuestBookDetail() {
                 toast.success("Terima Kasih, telah mengisi!", {
                     position: "top-right",
                 });
-                window.location.reload();
+    
+                syncGuestBookData();
+    
+                // ✅ Delay before reloading
+                setTimeout(() => {
+                    setSelectedInstitution(""); 
+                    window.location.reload();
+                }, 1000); // 1-second delay before reloading
             })
             .catch(() => {
                 toast.error("Galat saat menambahkan data!", {
@@ -72,16 +84,14 @@ export default function GuestBookDetail() {
                 });
             });
     };
+    
 
     useEffect(() => {
-        const syncGuestBookData = async() => {
-            dispatch(await fetchGuestBook())
-        }
+        
 
         syncGuestBookData()
     }, [])
 
-    // useEffect(() => console.log(selectedInstitution), [selectedInstitution])
 
     return (
         <DefaultLayout>
@@ -131,7 +141,7 @@ export default function GuestBookDetail() {
                         )}
                     />
                     <button
-                        className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
+                        className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75 col-span-2"
                         type="submit"
                         disabled={isPending}
                     >
