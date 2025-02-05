@@ -3,7 +3,7 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useStore } from "react-redux";
 import { getDateTime, trimText } from "@/utils/data";
 import SelectFields from "@/components/Fields/SelectFields";
@@ -21,9 +21,14 @@ export default function GuestBookDetail() {
     const getInstitutionData = (name: string, type: string) => {
         if (!name) return;
 
-        const res = servicesState.institutions;
+        const institutions = servicesState.institutions;
 
-        if (res.length == 0) return "";
+
+        if (institutions.length == 0) return "";
+
+        const res = institutions.filter(institution => institution.nama == name)
+
+        if (res.length == 0) return ""
 
         return res[0][type];
     };
@@ -36,11 +41,14 @@ export default function GuestBookDetail() {
         const currentInstitution = data.get("institusi_id");
 
         servicesState.institutions.map((institution) => {
+
             if (institution.nama == currentInstitution) {
                 data.delete("institusi_id");
                 data.append("institusi_id", institution.id);
             }
         });
+
+        return
 
 
         await fetch(
@@ -67,6 +75,8 @@ export default function GuestBookDetail() {
 
 
     };
+
+    // useEffect(() => console.log(selectedInstitution), [selectedInstitution])
 
     return (
         <DefaultLayout>
