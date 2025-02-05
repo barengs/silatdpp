@@ -1,19 +1,49 @@
+"use client"
+
 import Breadcrumb from "@/components/Breadcrumb"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import PermissionPage from "@/components/pages/Permission/page"
-import React from "react"
+import Table from "@/components/Table"
+import { fetchInsitution } from "@/services/common"
+import Link from "next/link"
+import React, { useEffect } from "react"
+import { useDispatch, useStore } from "react-redux"
 
-const Page: React.FC = async () => {
+const Page: React.FC = () => {
+    const dispatch = useDispatch()
+    const store = useStore()
+    const serviceState = store.getState().services
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/hak-akses`, { cache: 'no-store' });
-    if (!res) return <>Data Tidak Tersedia</>;
+    const columns = [
+        {
+            name: "Nama Role",
+            selector: (row: Record<string, string>) => row.name,
+            sortable: true,
+          },
+          {
+            name: "Aksi",
+            cell: (row: Record<string, string>) => (
+                <Link
+                    className="text-blue-500 hover:underline"
+                    href={`/guestBook/${row.id}`}
+                >
+                    Edit
+                </Link>
+            ),
+        },
+    ]
 
-    const data = await res.json();
+    useEffect(() => {
+              const syncInstitutionData = async () => {
+                  dispatch(await fetchInsitution());
+              };
+      
+              syncInstitutionData();
+          }, []);
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Hak Akses" />
-            <PermissionPage data={data.data}  />
+            <Table name="Data Hak Akses" data={serviceState.permissions} column={columns} addButtonLink="/permissions/addData" addButtonName="Tambah Hak Akses"/>
         </DefaultLayout>
     )
 }

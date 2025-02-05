@@ -1,31 +1,51 @@
-import Breadcrumb from "@/components/Breadcrumb"
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import BudgetPage from "@/components/pages/Budget/page"
-import React from "react"
-import { BUDGET_DEFAULT_DATA } from "@/utils/constans"
-import { Metadata } from "next"
+"use client";
 
-export const metadata: Metadata = {
-    title:
-      "SILATDPP - List Data Biaya",
-  };
-  
+import Breadcrumb from "@/components/Breadcrumb";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import React, { useEffect, useState } from "react";
+import { DEFAULT_BUDGET_DATA } from "@/utils/constans";
+import Table from "@/components/Table";
+import { useDispatch, useStore } from "react-redux";
+import { fetchBudget } from "@/services/common";
 
-const Page: React.FC = async () => {
 
-    let data = [BUDGET_DEFAULT_DATA]
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/biaya`, { cache: 'no-store'})
+const Page: React.FC = () => {
+
+    const dispatch = useDispatch()
+    const store = useStore()
+    const serviceState = store.getState().services
+
+    const column = [
+        {
+            name: "Biaya",
+            selector: (row: Record<string, string>) => row.biaya,
+            sortable: true,
+        }
+    ]
+
+    useEffect(() => {
+            const syncBudgetData = async() => {
+                dispatch(await fetchBudget())
+            }
     
-    if (res.ok) {
-        data = await res.json()
-    }
+            syncBudgetData()
+            
+        }, [])
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data tingkat biaya" />
-            <BudgetPage data={data.data}/>
+            <>
+                <Table
+                    data={serviceState.budgets}
+                    column={column}
+                    name="Budget"
+                    addButtonLink="/budget/addData"
+                    addButtonName="Tambah Biaya"
+                />
+            </>
         </DefaultLayout>
-    )
-}
+    );
+};
 
-export default Page
+export default Page;

@@ -3,24 +3,18 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { FormEvent, useEffect, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import React, { FormEvent, useState } from "react";
+import { useStore } from "react-redux";
 import { getDateTime, trimText } from "@/utils/data";
 import SelectFields from "@/components/Fields/SelectFields";
 import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
-import { fetchGuestBook } from "@/services/common";
-import { setGuestBook } from "@/store/servicesSlice";
 import { toast } from "react-toastify";
 
 export default function GuestBookDetail() {
-    const router = useRouter();
     const state = useStore().getState();
     const authState = state.auth;
     const servicesState = state.services;
     const lastGuest = servicesState.guestBook[0] || GUEST_BOOK_DEFAULT_DATA;
-    const dispatch = useDispatch()
 
     const [selectedInstitution, setSelectedInstitution] = useState("");
 

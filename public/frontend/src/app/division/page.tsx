@@ -1,28 +1,45 @@
-import Breadcrumb from "@/components/Breadcrumb"
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
-import DivisonPage from "@/components/pages/Division/page";
+"use client";
 
+import Breadcrumb from "@/components/Breadcrumb";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Table from "@/components/Table";
+import { fetchDivision } from "@/services/common";
+import { useEffect } from "react";
+import { useDispatch, useStore } from "react-redux";
 
-export const metadata: Metadata = {
-    title:
-      "SILATDPP - List data divisi",
-    description: "This is Next.js Home for TailAdmin Dashboard Template",
-  };
-  
+const Division: React.FC = () => {
+    const dispatch = useDispatch();
+    const store = useStore();
+    const serviceState = store.getState().services;
 
+    const columns = [
+        {
+            name: "Nama Bidang",
+            selector: (row: Record<string, string>) => row.nama,
+            sortable: true,
+        },
+    ];
 
-const Division: React.FC = async () => {
+    useEffect(() => {
+        const syncDivisionData = async () => {
+            dispatch(await fetchDivision());
+        };
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/divisi`, { cache: 'no-store' })
-    const data = await res.json()
+        syncDivisionData();
+    }, []);
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Divisi" />
-            <DivisonPage data={data.data} />
+            <Table
+                data={serviceState.divisions}
+                column={columns}
+                name="Data Divisi"
+                addButtonLink="/division/addData"
+                addButtonName="Tambah Divisi"
+            />
         </DefaultLayout>
-    )
-}
-
+    );
+};
 
 export default Division;
