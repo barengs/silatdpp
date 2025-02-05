@@ -4,17 +4,22 @@ import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import React, { FormEvent, useEffect, useState } from "react";
-import { useStore } from "react-redux";
+import { useDispatch, useStore } from "react-redux";
 import { getDateTime, trimText } from "@/utils/data";
 import SelectFields from "@/components/Fields/SelectFields";
 import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 import { toast } from "react-toastify";
+import useFetch from "@/hooks/useFetch";
+import { fetchGuestBook } from "@/services/common";
 
 export default function GuestBookDetail() {
+    const dispatch = useDispatch()
+    const [isPending, fetchCaller] = useFetch();
     const state = useStore().getState();
     const authState = state.auth;
     const servicesState = state.services;
-    const lastGuest = servicesState.guestBook[0] || GUEST_BOOK_DEFAULT_DATA;
+
+    const [lastGuest, _] = useState(servicesState.guestBook[0] || GUEST_BOOK_DEFAULT_DATA)
 
     const [selectedInstitution, setSelectedInstitution] = useState("");
 
@@ -23,12 +28,13 @@ export default function GuestBookDetail() {
 
         const institutions = servicesState.institutions;
 
-
         if (institutions.length == 0) return "";
 
-        const res = institutions.filter(institution => institution.nama == name)
+        const res = institutions.filter(
+            (institution) => institution.nama == name,
+        );
 
-        if (res.length == 0) return ""
+        if (res.length == 0) return "";
 
         return res[0][type];
     };
@@ -41,40 +47,39 @@ export default function GuestBookDetail() {
         const currentInstitution = data.get("institusi_id");
 
         servicesState.institutions.map((institution) => {
-
             if (institution.nama == currentInstitution) {
                 data.delete("institusi_id");
                 data.append("institusi_id", institution.id);
             }
         });
 
-        return
-
-
-        await fetch(
-            `${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`,
-            {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${authState.token}`,
-                },
-                body: data,
+        await fetchCaller(`buku-tamu`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${authState.token}`,
             },
-        )
+            body: data,
+        })
             .then(() => {
                 toast.success("Terima Kasih, telah mengisi!", {
-                    position: 'top-right'
-                })
-                window.location.reload()
+                    position: "top-right",
+                });
+                window.location.reload();
             })
             .catch(() => {
                 toast.error("Galat saat menambahkan data!", {
-                    position: "top-right"
-                })
-            })
-
-
+                    position: "top-right",
+                });
+            });
     };
+
+    useEffect(() => {
+        const syncGuestBookData = async() => {
+            dispatch(await fetchGuestBook())
+        }
+
+        syncGuestBookData()
+    }, [])
 
     // useEffect(() => console.log(selectedInstitution), [selectedInstitution])
 
@@ -126,10 +131,18 @@ export default function GuestBookDetail() {
                         )}
                     />
                     <button
+                        className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
                         type="submit"
-                        className="col-span-2 flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                        disabled={isPending}
                     >
-                        Tambahkan tamu
+                        {isPending ? (
+                            <>
+                                <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                Menambahkan Data
+                            </>
+                        ) : (
+                            <>Kumpulkan Formulir</>
+                        )}
                     </button>
                 </form>
             </div>
@@ -142,10 +155,7 @@ export default function GuestBookDetail() {
                             <p>{trimText(lastGuest["nama_tamu"], 20)}</p>
                             <p>{trimText(lastGuest["keperluan"], 20)}</p>
                             <p>
-                                {trimText(
-                                    lastGuest["institusi"]["nama"],
-                                    20,
-                                )}
+                                {trimText(lastGuest["institusi"]["nama"], 20)}
                             </p>
                             <p>{lastGuest["divisi"]["nama"]}</p>
                             <p>{getDateTime(lastGuest["created_at"])}</p>
