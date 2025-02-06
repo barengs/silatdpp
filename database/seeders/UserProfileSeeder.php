@@ -31,6 +31,6 @@ class UserProfileSeeder extends Seeder
             'gender' => 'L',
         ]);
 
-        $user->asignRole('superadmin');
+        $user->assignRole('superadmin');
     }
 }
