@@ -17,7 +17,8 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        $users = User::with('profile')->with('role')->get();
+        $users = User::with('profile')->get();
+        $users->getRoleName();
         return new KaryawanResource(true, 'semua data karyawan', $users);
     }
 
