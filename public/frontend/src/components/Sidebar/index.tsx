@@ -157,7 +157,7 @@ const menuGroups = [
                 route: "#",
                 children: [
                     { label: "Tambah Karyawan", route: "/register" },
-                    { label: "Tugas", route: "/users/list" },
+                    { label: "List Karyawan", route: "/users/list" },
                     { label: "Hak Akses", route: "/permissions" },
                 ],
             },
