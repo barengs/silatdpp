@@ -3,7 +3,7 @@ import Link from "next/link";
 import SidebarDropdown from "@/components/Sidebar/SidebarDropdown";
 import { usePathname } from "next/navigation";
 
-const SidebarItem = ({ item, pageName, setPageName }: any) => {
+const SidebarItem = ({ item, pageName, setPageName, sidebarOpened }: any) => {
   const handleClick = () => {
     const updatedPageName =
       pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
@@ -13,7 +13,8 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
   const pathname = usePathname();
 
   const isActive = (item: any) => {
-    if (item.route === pathname) return true;
+
+    if (item.route === pathname.slice(0, -1)) return true;
     if (item.children) {
       return item.children.some((child: any) => isActive(child));
     }
@@ -23,16 +24,16 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
   const isItemActive = isActive(item);
 
   return (
-    
-      <li className="shrink-0 ">
+    <>
+      <li>
         <Link
           href={item.route}
           onClick={handleClick}
-          className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} whitespace-nowrap group flex items-center gap-2.5 rounded-sm pl-1 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 flex-1 shrink-0 overflow-hidden`}
+          className={`${isItemActive ? "bg-graydark dark:bg-meta-4" : ""} group relative flex whitespace-nowrap items-center gap-2.5 rounded-sm py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4`}
         >
           {item.icon}
-          {item.label}
-          {/* {item.children && (
+            {sidebarOpened ? item.label : ''}
+          {(item.children && sidebarOpened) && (
             <svg
               className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                 pageName === item.label.toLowerCase() && "rotate-180"
@@ -50,20 +51,20 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
                 fill=""
               />
             </svg>
-          )} */}
+          )}
         </Link>
 
-        {/* {item.children && (
+        {item.children && (
           <div
-            className={`translate transform overflow-hidden ${
+            className={`overflow-hidden shrink-0 ${
               pageName !== item.label.toLowerCase() && "hidden"
             }`}
           >
             <SidebarDropdown item={item.children} />
           </div>
-        )} */}
+        )}
       </li>
-  
+    </>
   );
 };
 
