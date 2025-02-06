@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             DivisiSeeder::class,
             HistorySeeder::class,
             RekananSeeder::class,
+            RoleSeeder::class,
             PermissionSeeder::class,
         ]);
     }

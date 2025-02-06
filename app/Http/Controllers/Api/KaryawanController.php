@@ -32,6 +32,7 @@ class KaryawanController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'gender' => 'required',
+            'otoritas' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -45,7 +46,7 @@ class KaryawanController extends Controller
         ]);
 
         if ($user) {
-            $user->asignRole($request->tugas);
+            $user->asignRole($request->otoritas);
             $profile = UserProfile::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
