@@ -24,6 +24,7 @@ class KaryawanController extends Controller
                 'role' => $user->getRoleNames(),
             ];
         });
+        // $users->getRoleNames();
         return new KaryawanResource(true, 'semua data karyawan', $userRole);
     }
 
