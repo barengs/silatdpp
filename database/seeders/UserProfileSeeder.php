@@ -30,5 +30,7 @@ class UserProfileSeeder extends Seeder
             'address' => 'sistem admin',
             'gender' => 'L',
         ]);
+
+        $user->asignRole('superadmin');
     }
 }
