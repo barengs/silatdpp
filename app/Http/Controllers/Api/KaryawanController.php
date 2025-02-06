@@ -18,8 +18,13 @@ class KaryawanController extends Controller
     public function index()
     {
         $users = User::with('profile')->get();
-        $users->getRoleNames();
-        return new KaryawanResource(true, 'semua data karyawan', $users);
+        $userRole = $users->map(function ($user) {
+            return [
+                'user' => $user,
+                'role' => $user->getRoleNames(),
+            ];
+        });
+        return new KaryawanResource(true, 'semua data karyawan', $userRole);
     }
 
     /**
