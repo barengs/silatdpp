@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_TRANSPORTATION, DEFAULT_USER_DATA, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from '@/utils/constans';
+import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_TRANSPORTATION, DEFAULT_USER_DATA, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from '@/utils/constans';
 
 const servicesSlice = createSlice({
     name: 'services',
@@ -11,6 +11,8 @@ const servicesSlice = createSlice({
       partners: [DEFAULT_PARTNERS_DATA],
       budgets: [DEFAULT_BUDGET_DATA],
       users: [DEFAULT_USER_DATA],
+      permissions: [DEFAULT_PERMISSION_DATA],
+      roles: [DEFAULT_ROLE_DATA],
     },
     reducers: {
       setInstitution: (state, action) => {
@@ -34,10 +36,16 @@ const servicesSlice = createSlice({
       setUsers: (state, action) => {
         state.users = action.payload
       },
+      setPermissions: (state, action) => {
+        state.permissions = action.payload
+      },
+      setRoles: (state, action) => {
+        state.roles = action.payload
+      },
     },
   });
 
 
-export const { setInstitution, setGuestBook, setTransportation, setDivision, setPartners, setBudget, setUsers } = servicesSlice.actions
+export const { setInstitution, setGuestBook, setTransportation, setDivision, setPartners, setBudget, setUsers, setPermissions, setRoles } = servicesSlice.actions
 export default servicesSlice.reducer
 

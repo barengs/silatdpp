@@ -83,3 +83,21 @@ export const DEFAULT_BUDGET_DATA =  {
   created_at: "",
   updated_at: ""
 }
+
+
+export const DEFAULT_PERMISSION_DATA = {
+  id: "",
+  name: "",
+  guard_name: "",
+  created_at: "",
+  updated_at: ""
+}
+
+
+export const DEFAULT_ROLE_DATA = {
+  id: "",
+  name: "",
+  guard_name: "",
+  created_at: "",
+  updated_at: ""
+}

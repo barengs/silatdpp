@@ -17,12 +17,17 @@ const Page: React.FC = () => {
     const columns = [
         {
             name: "Nama Karyawan",
-            selector: (row) => row.name,
+            selector: (row) => row.user.name,
+            sortable: true,
+        },
+        {
+            name: "Role Karyawan",
+            selector: (row) => row.role[0],
             sortable: true,
         },
         {
             name: "Email Karyawan",
-            selector: (row) => row.email,
+            selector: (row) => row.user.email,
             sortable: true,
         },
         {
@@ -39,6 +44,9 @@ const Page: React.FC = () => {
     ];
 
     useEffect(() => {
+
+        console.log(serviceState.users)
+
         const syncUserData = async () => {
             dispatch(setUsers(await fetchUsers()));
         };

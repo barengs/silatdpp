@@ -30,7 +30,7 @@ const Page: React.FC = () => {
             .then((res) => {
 
                 if (res.ok) {
-                    toast.success("Data hak-akses berhasil ditambahkan!", {
+                    toast.success("Data otoritas berhasil ditambahkan!", {
                         position: "top-right",
                     });
                     router.push("/permissions");
@@ -51,12 +51,12 @@ const Page: React.FC = () => {
                 onSubmit={handlePost}
                 className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark"
             >
-                <InputFields title="Nama Akses" name="name" />
+                <InputFields title="Nama Otoritas" name="name" />
                 <button
                     type="submit"
-                    className="col-span-2 flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    className="flex w-[300px] col-span-2 justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                 >
-                    Tambah Hak Akses
+                    Tambah Otoritas
                 </button>
             </form>
         </DefaultLayout>
