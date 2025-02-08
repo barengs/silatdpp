@@ -44,8 +44,6 @@ const Page: React.FC = () => {
     ];
 
     useEffect(() => {
-        console.log(serviceState.users)
-
         const syncUserData = async () => {
             dispatch(setUsers(await fetchUsers()));
         };
