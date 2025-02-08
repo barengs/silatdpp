@@ -55,6 +55,7 @@ class KaryawanController extends Controller
         if ($user) {
             $user->assignRole($request->otoritas);
             $profile = UserProfile::create([
+                'user_id' => $user->id,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'nick_name' => $request->nick_name,
