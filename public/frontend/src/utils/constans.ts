@@ -41,7 +41,7 @@ export const DEFAULT_USER_DATA = {
     updated_at: ""
   },
 
-  roles: [""]
+  role: [""]
 }
 
 export const DEFAULT_TRANSPORTATION = {
