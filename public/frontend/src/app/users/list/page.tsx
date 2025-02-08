@@ -35,7 +35,7 @@ const Page: React.FC = () => {
             cell: (row: Record<string, string>) => (
                 <Link
                     className="text-blue-500 hover:underline"
-                    href={`/users/${row.id}`}
+                    href={`/users/${row.user.id}`}
                 >
                     Edit
                 </Link>
@@ -44,7 +44,6 @@ const Page: React.FC = () => {
     ];
 
     useEffect(() => {
-
         console.log(serviceState.users)
 
         const syncUserData = async () => {
@@ -58,6 +57,7 @@ const Page: React.FC = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Daftar Karyawan" />
             <Table
+                name="List karyawan"
                 column={columns}
                 data={serviceState.users}
                 addButtonName="Tambah Karyawan"

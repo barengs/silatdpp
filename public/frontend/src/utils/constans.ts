@@ -1,7 +1,3 @@
-// FOR DEVELOPMENT PURPOSE
-
-
-
 export const INSTITUTION_DEFAULT_DATA = {
   id: "",
   nama: "",
@@ -11,15 +7,6 @@ export const INSTITUTION_DEFAULT_DATA = {
   updated_at: ""
 }
 
-
-export const DEFAULT_USER_DATA = {
-  id: "",
-  name: "",
-  email: "",
-  email_verified_at: null,
-  created_at: "",
-  updated_at: ""
-}
 
 
 export const GUEST_BOOK_DEFAULT_DATA = {
@@ -44,13 +31,17 @@ export const BUDGET_DEFAULT_DATA = {
   updated_at: ""
 }
 
-export const DEDFAULT_USER_CREDENTIAL = {
-  id: "",
-  name: "",
-  email: "",
-  email_verified_at: null,
-  created_at: "",
-  updated_at: ""
+export const DEFAULT_USER_DATA = {
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    email_verified_at: null,
+    created_at: "",
+    updated_at: ""
+  },
+
+  roles: []
 }
 
 export const DEFAULT_TRANSPORTATION = {
