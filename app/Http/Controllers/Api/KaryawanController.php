@@ -53,7 +53,7 @@ class KaryawanController extends Controller
         ]);
 
         if ($user) {
-            $user->asignRole($request->otoritas);
+            $user->assignRole($request->otoritas);
             $profile = UserProfile::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
