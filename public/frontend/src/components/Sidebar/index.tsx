@@ -156,9 +156,9 @@ const menuGroups = [
                 label: "Pengaturan Pengguna",
                 route: "#",
                 children: [
-                    { label: "Tambah Karyawan", route: "/register" },
                     { label: "List Karyawan", route: "/users/list" },
                     { label: "Hak Akses", route: "/permissions" },
+                    { label: "List Role", route: "/roles" },
                 ],
             },
         ],

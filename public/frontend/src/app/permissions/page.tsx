@@ -3,7 +3,8 @@
 import Breadcrumb from "@/components/Breadcrumb"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import Table from "@/components/Table"
-import { fetchInsitution } from "@/services/common"
+import { fetchInsitution, fetchPermissions } from "@/services/common"
+import { setPermissions } from "@/store/servicesSlice"
 import Link from "next/link"
 import React, { useEffect } from "react"
 import { useDispatch, useStore } from "react-redux"
@@ -15,7 +16,7 @@ const Page: React.FC = () => {
 
     const columns = [
         {
-            name: "Nama Role",
+            name: "Otoritas",
             selector: (row: Record<string, string>) => row.name,
             sortable: true,
           },
@@ -33,17 +34,17 @@ const Page: React.FC = () => {
     ]
 
     useEffect(() => {
-              const syncInstitutionData = async () => {
-                  dispatch(await fetchInsitution());
+              const syncPermissionData = async () => {
+                  dispatch(setPermissions(await fetchPermissions()));
               };
       
-              syncInstitutionData();
+              syncPermissionData();
           }, []);
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Hak Akses" />
-            <Table name="Data Hak Akses" data={serviceState.permissions} column={columns} addButtonLink="/permissions/addData" addButtonName="Tambah Hak Akses"/>
+            <Table name="Data Otoritas" data={serviceState.permissions} column={columns} addButtonLink="/permissions/addData" addButtonName="Tambah Otoritas"/>
         </DefaultLayout>
     )
 }

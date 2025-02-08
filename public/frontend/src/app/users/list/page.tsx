@@ -17,12 +17,17 @@ const Page: React.FC = () => {
     const columns = [
         {
             name: "Nama Karyawan",
-            selector: (row) => row.name,
+            selector: (row) => row.user.name,
+            sortable: true,
+        },
+        {
+            name: "Role Karyawan",
+            selector: (row) => row.role[0],
             sortable: true,
         },
         {
             name: "Email Karyawan",
-            selector: (row) => row.email,
+            selector: (row) => row.user.email,
             sortable: true,
         },
         {
@@ -30,7 +35,7 @@ const Page: React.FC = () => {
             cell: (row: Record<string, string>) => (
                 <Link
                     className="text-blue-500 hover:underline"
-                    href={`/users/${row.id}`}
+                    href={`/users/${row.user.id}`}
                 >
                     Edit
                 </Link>
@@ -39,6 +44,7 @@ const Page: React.FC = () => {
     ];
 
     useEffect(() => {
+
         const syncUserData = async () => {
             dispatch(setUsers(await fetchUsers()));
         };
@@ -50,6 +56,7 @@ const Page: React.FC = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Daftar Karyawan" />
             <Table
+                name="List karyawan"
                 column={columns}
                 data={serviceState.users}
                 addButtonName="Tambah Karyawan"

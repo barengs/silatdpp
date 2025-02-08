@@ -50,7 +50,7 @@ const SppdPage: React.FC<SppdPropsType> = ({ data }) => {
 
     return (
         <>
-            <Table addButtonName='Tambah SPPD' addButtonLink='/sppd/addData' name='Daftar Pengajuan SPPD' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/sppd"}}   />
+            <Table addButtonName='Tambah SPPD' addButtonLink='/sppd' name='Daftar Pengajuan SPPD' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/sppd"}}   />
         </>
     )
 }

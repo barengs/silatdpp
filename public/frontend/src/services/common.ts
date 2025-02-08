@@ -1,4 +1,4 @@
-import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_TRANSPORTATION, DEFAULT_USER_DATA, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
+import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_TRANSPORTATION, DEFAULT_USER_DATA, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
 
 
 export async function fetchInsitution() {
@@ -69,6 +69,28 @@ export async function fetchUsers() {
 
     
     if (!res.ok) return [DEFAULT_USER_DATA]
+    
+    const data = await res.json()
+
+    return data.data
+}
+
+export async function fetchPermissions() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/hak-akses`)
+
+    
+    if (!res.ok) return [DEFAULT_PERMISSION_DATA]
+    
+    const data = await res.json()
+
+    return data.data
+}
+
+export async function fetchRoles() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/tugas`)
+
+    
+    if (!res.ok) return [DEFAULT_ROLE_DATA]
     
     const data = await res.json()
 

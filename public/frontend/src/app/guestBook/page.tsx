@@ -72,11 +72,10 @@ export default function GuestBookDetail() {
     
                 syncGuestBookData();
     
-                // ✅ Delay before reloading
                 setTimeout(() => {
                     setSelectedInstitution(""); 
                     window.location.reload();
-                }, 1000); // 1-second delay before reloading
+                }, 1000);
             })
             .catch(() => {
                 toast.error("Galat saat menambahkan data!", {

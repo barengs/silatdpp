@@ -1,11 +1,11 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import React from "react"
+import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { setToken } from "@/store/authSlice"
-import { fetchBudget, fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners, fetchTransportation } from "@/services/common"
-import { setBudget, setDivision, setGuestBook, setInstitution, setPartners, setTransportation } from "@/store/servicesSlice"
+import { fetchBudget, fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners, fetchRoles, fetchTransportation } from "@/services/common"
+import { setBudget, setDivision, setGuestBook, setInstitution, setPartners, setTransportation, setRoles } from "@/store/servicesSlice"
 import { toast } from "react-toastify"
 import useFetch from "@/hooks/useFetch"
 
@@ -41,12 +41,18 @@ export default function Page() {
       dispatch(setPartners(await fetchPartners()))
       dispatch(setTransportation(await fetchTransportation()))
       dispatch(setBudget(await fetchBudget()))
+      dispatch(setRoles(await fetchRoles()))
       toast.success("Berhasil Masuk!", {
             position: "top-right"
       });
       
       router.push("/")
   }
+
+
+  useEffect(() => {
+    document.title = "SILATDPP - Login dulu yuk :)"
+  }, [])
   
   return (
       <div className="mx-auto min-h-screen flex justify-center items-center bg-gray-200">
