@@ -5,8 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 import { useStore } from "react-redux";
-import { DEFAULT_PROFILE_DATA, DEFAULT_STAFF_DATA } from "@/utils/constans";
-import { UserCredentialType } from "@/types/common/user";
+import {  DEFAULT_PROFILE_DATA } from "@/utils/constans";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -17,7 +16,7 @@ const DropdownUser = () => {
     const serviceState = state.services
     const router = useRouter();
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [userData, setUserData] = useState(DEFAULT_STAFF_DATA);
+    const [userData, setUserData] = useState(DEFAULT_PROFILE_DATA);
 
     const handleLogout = async () => {
         const res = await fetch(
