@@ -46,8 +46,8 @@ const Page: React.FC = () => {
 
     return(
         <DefaultLayout>
-            <Breadcrumb  pageName="Manajemen Role"/>
-            <Table name="Data Role" addButtonLink="/roles/addData" addButtonName="Tambah Role" column={columns} data={serviceState.roles} />
+            <Breadcrumb  pageName="Manajemen Tugas"/>
+            <Table name="Data Tugas" addButtonLink="/roles/addData" addButtonName="Tambah Tugas" column={columns} data={serviceState.roles} />
         </DefaultLayout>
     )
 }
