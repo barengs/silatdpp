@@ -58,7 +58,7 @@ const DropdownUser = () => {
                     <span className="block text-sm font-medium text-black dark:text-white">
                         {userData.name}
                     </span>
-                    <span className="block text-xs">{userData.roles[0].name}</span>
+                    <span className="block text-xs">{userData.roles ? userData.roles[0].name : DEFAULT_STAFF_DATA.role[0]}</span>
                 </span>
 
                 <span className="h-12 w-12 rounded-full">
