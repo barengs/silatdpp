@@ -15,7 +15,7 @@ const Page: React.FC = () => {
     const store = useStore();
     
 
-    const [data, setData] = useState(store.getState().services)
+    const [data, setData] = useState(store.getState().services.roles)
 
     const columns = [
         {
@@ -40,7 +40,7 @@ const Page: React.FC = () => {
     useEffect(() => {
         const syncRoleData = async () => {
             dispatch(setRoles(await fetchRoles()));
-            setData(store.getState().services);
+            setData(store.getState().services.roles);
         };
 
         syncRoleData();
