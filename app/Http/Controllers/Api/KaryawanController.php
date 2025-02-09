@@ -17,15 +17,15 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        $users = User::with('profile')->get();
-        $userRole = $users->map(function ($user) {
-            return [
-                'user' => $user,
-                'role' => $user->getRoleNames(),
-            ];
-        });
+        $users = User::with('profile')->with('roles')->get();
+        // $userRole = $users->map(function ($user) {
+        //     return [
+        //         'user' => $user,
+        //         'role' => $user->getRoleNames(),
+        //     ];
+        // });
         // $users->getRoleNames();
-        return new KaryawanResource(true, 'semua data karyawan', $userRole);
+        return new KaryawanResource(true, 'semua data karyawan', $users);
     }
 
     /**
