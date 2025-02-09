@@ -17,17 +17,17 @@ const Page: React.FC = () => {
     const columns = [
         {
             name: "Nama Karyawan",
-            selector: (row) => row.user.name,
+            selector: (row) => row.name,
             sortable: true,
         },
         {
             name: "Role Karyawan",
-            selector: (row) => row.role[0],
+            selector: (row) => row.roles[0] ? row.roles[0].name : "Belum ditugaskan",
             sortable: true,
         },
         {
             name: "Email Karyawan",
-            selector: (row) => row.user.email,
+            selector: (row) => row.email,
             sortable: true,
         },
         {
@@ -35,7 +35,7 @@ const Page: React.FC = () => {
             cell: (row: Record<string, string>) => (
                 <Link
                     className="text-blue-500 hover:underline"
-                    href={`/users/${row.user.id}`}
+                    href={`/users/`}
                 >
                     Edit
                 </Link>
