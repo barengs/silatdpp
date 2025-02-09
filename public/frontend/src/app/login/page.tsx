@@ -4,8 +4,8 @@ import { useRouter } from "next/navigation"
 import React, { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { setToken } from "@/store/authSlice"
-import { fetchBudget, fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners, fetchRoles, fetchTransportation } from "@/services/common"
-import { setBudget, setDivision, setGuestBook, setInstitution, setPartners, setTransportation, setRoles } from "@/store/servicesSlice"
+import { fetchBudget, fetchDivision, fetchGuestBook, fetchInsitution, fetchPartners, fetchRoles, fetchTransportation, fetchUsers } from "@/services/common"
+import { setBudget, setDivision, setGuestBook, setInstitution, setPartners, setTransportation, setRoles, setUsers } from "@/store/servicesSlice"
 import { toast } from "react-toastify"
 import useFetch from "@/hooks/useFetch"
 
@@ -42,6 +42,9 @@ export default function Page() {
       dispatch(setTransportation(await fetchTransportation()))
       dispatch(setBudget(await fetchBudget()))
       dispatch(setRoles(await fetchRoles()))
+      dispatch(setUsers(await fetchUsers()))
+
+
       toast.success("Berhasil Masuk!", {
             position: "top-right"
       });
