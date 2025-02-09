@@ -3,6 +3,7 @@
 import DefaultLayout from '@/components/Layouts/DefaultLayout'
 import Table from '@/components/Table';
 import { fetchInsitution } from '@/services/common';
+import { setInstitution } from '@/store/servicesSlice';
 import Link from 'next/link';
 import React, { useEffect } from 'react'
 import { useDispatch, useStore } from 'react-redux';
@@ -39,7 +40,7 @@ const Institution: React.FC = () => {
 
    useEffect(() => {
           const syncInstitutionData = async () => {
-              dispatch(await fetchInsitution());
+              dispatch(setInstitution(await fetchInsitution()));
           };
   
           syncInstitutionData();

@@ -7,6 +7,7 @@ import { DEFAULT_BUDGET_DATA } from "@/utils/constans";
 import Table from "@/components/Table";
 import { useDispatch, useStore } from "react-redux";
 import { fetchBudget } from "@/services/common";
+import { setBudget } from "@/store/servicesSlice";
 
 
 const Page: React.FC = () => {
@@ -25,7 +26,7 @@ const Page: React.FC = () => {
 
     useEffect(() => {
             const syncBudgetData = async() => {
-                dispatch(await fetchBudget())
+                dispatch(setBudget(await fetchBudget()))
             }
     
             syncBudgetData()

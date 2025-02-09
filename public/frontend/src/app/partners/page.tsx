@@ -4,16 +4,15 @@ import Breadcrumb from "@/components/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Table from "@/components/Table";
 import { fetchPartners } from "@/services/common";
+import { setPartners } from "@/store/servicesSlice";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch, useStore } from "react-redux";
 
 const Partner = () => {
-
-    const store = useStore()
-    const serviceState = store.getState().services
-    const dispatch = useDispatch()
-
+  const store = useStore()
+  const serviceState = store.getState().services
+  const dispatch = useDispatch()
 
     const columns = [
         {
@@ -40,8 +39,9 @@ const Partner = () => {
       ];
 
     useEffect(() => {
+
         const syncPartnerData = async() => {
-            dispatch(await fetchPartners())
+            dispatch(setPartners(await fetchPartners()))
         }
 
         syncPartnerData()
