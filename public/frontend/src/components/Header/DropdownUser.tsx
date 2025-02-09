@@ -5,18 +5,19 @@ import Link from "next/link";
 import Image from "next/image";
 import ClickOutside from "@/components/ClickOutside";
 import { useStore } from "react-redux";
-import { DEFAULT_USER_DATA } from "@/utils/constans";
+import { DEFAULT_PROFILE_DATA, DEFAULT_STAFF_DATA } from "@/utils/constans";
 import { UserCredentialType } from "@/types/common/user";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const DropdownUser = () => {
     const store = useStore();
     const state = store.getState();
     const authState = state.auth;
+    const serviceState = state.services
     const router = useRouter();
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [userData, setUserData] =
-        useState<UserCredentialType>(DEFAULT_USER_DATA);
+    const [userData, setUserData] = useState(DEFAULT_STAFF_DATA);
 
     const handleLogout = async () => {
         const res = await fetch(
@@ -25,16 +26,21 @@ const DropdownUser = () => {
         );  
 
         if (res.ok) {
-            alert("Berhasil Logout");
+            toast.success("Berhasil Logout", {
+                position: 'top-right'
+            })
             router.push("/login");
             return;
         }
 
-        alert("Gagal Logout");
+        toast.error("Gagal Logout", {
+            position: 'top-right'
+        })
     };
 
     useEffect(() => {
-        setUserData(authState.user ? authState.user : DEFAULT_USER_DATA);
+        const user_data = serviceState.users.filter(user => user.name == authState.user.name)
+        setUserData(user_data[0]);
     }, []);
 
     return (
@@ -51,7 +57,7 @@ const DropdownUser = () => {
                     <span className="block text-sm font-medium text-black dark:text-white">
                         {userData.name}
                     </span>
-                    <span className="block text-xs">Admin</span>
+                    <span className="block text-xs">{userData.roles[0].name}</span>
                 </span>
 
                 <span className="h-12 w-12 rounded-full">
