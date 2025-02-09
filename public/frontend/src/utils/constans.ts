@@ -20,7 +20,7 @@ export const GUEST_BOOK_DEFAULT_DATA = {
   user_id: "",
   institusi: INSTITUTION_DEFAULT_DATA,
   divisi: {}
-  
+
 }
 
 
@@ -31,18 +31,41 @@ export const BUDGET_DEFAULT_DATA = {
   updated_at: ""
 }
 
-export const DEFAULT_USER_DATA = {
-  user: {
-    id: "",
-    name: "",
-    email: "",
-    email_verified_at: null,
-    created_at: "",
-    updated_at: ""
-  },
-
+export const DEFAULT_STAFF_DATA = {
+  id: "",
+  name: "",
+  email: "",
+  email_verified_at: null,
+  created_at: "",
+  updated_at: "",
   role: [""]
 }
+
+
+export const DEFAULT_PROFILE_DATA = {
+  id: "",
+  name: "",
+  email: "",
+  email_verified_at: "",
+  created_at: "",
+  updated_at: "",
+  profile: "",
+  roles: [
+    {
+      id: "",
+      name: "",
+      guard_name: "",
+      created_at: "",
+      updated_at: "",
+      pivot: {
+        model_type: "",
+        model_id: "",
+        role_id: ""
+      }
+    }
+  ]
+}
+
 
 export const DEFAULT_TRANSPORTATION = {
   id: "",
@@ -59,7 +82,7 @@ export const DEFAULT_DIVISION_DATA = {
   updated_at: ""
 }
 
-export const DEFAULT_PARTNERS_DATA =  {
+export const DEFAULT_PARTNERS_DATA = {
   id: "",
   nama: "",
   alamat: "",
@@ -68,7 +91,7 @@ export const DEFAULT_PARTNERS_DATA =  {
   updated_at: ""
 }
 
-export const DEFAULT_BUDGET_DATA =  {
+export const DEFAULT_BUDGET_DATA = {
   id: "",
   biaya: "",
   created_at: "",
