@@ -20,7 +20,7 @@ export default function GuestBookDetail() {
     const authState = state.auth;
     const servicesState = state.services;
 
-    const [lastGuest, _] = useState(servicesState.guestBook[0] || GUEST_BOOK_DEFAULT_DATA)
+    const [lastGuest, _] = useState(servicesState.guestBook[0] || null)
 
     const [selectedInstitution, setSelectedInstitution] = useState("");
 
@@ -65,7 +65,7 @@ export default function GuestBookDetail() {
             },
             body: data,
         })
-            .then(() => {
+            .then((res) => {
                 toast.success("Terima Kasih, telah mengisi!", {
                     position: "top-right",
                 });
@@ -86,8 +86,6 @@ export default function GuestBookDetail() {
     
 
     useEffect(() => {
-        
-
         syncGuestBookData()
     }, [])
 

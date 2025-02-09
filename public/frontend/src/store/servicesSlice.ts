@@ -30,7 +30,7 @@ const servicesSlice = createSlice({
       setPartners: (state, action) => {
         state.partners = action.payload
       },
-      setBudget: (state, action) => {
+      setBudget: (state, action) => { 
         state.budgets = action.payload
       },
       setUsers: (state, action) => {

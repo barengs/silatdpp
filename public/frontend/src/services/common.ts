@@ -1,4 +1,4 @@
-import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_TRANSPORTATION, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
+import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_STAFF_DATA, DEFAULT_TRANSPORTATION, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
 
 
 export async function fetchInsitution() {
@@ -54,6 +54,7 @@ export async function fetchTransportation() {
 }
 
 export async function fetchBudget() {
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/biaya`, { cache: 'no-store'})
 
     
@@ -65,10 +66,12 @@ export async function fetchBudget() {
 }
 
 export async function fetchUsers() {
+    
+
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/karyawan`, { cache: 'no-store'})
 
     
-    if (!res.ok) return [DEFAULT_USER_DATA]
+    if (!res.ok) return [DEFAULT_STAFF_DATA]
     
     const data = await res.json()
 
