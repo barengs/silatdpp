@@ -5,7 +5,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Table from "@/components/Table";
 import { fetchTransportation } from "@/services/common";
 import { setTransportation } from "@/store/servicesSlice";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 
 
@@ -14,8 +14,9 @@ import { useDispatch, useStore } from "react-redux";
 const Page: React.FC = () => {
 
     const store = useStore()
-    const serviceState = store.getState().services
     const dispatch = useDispatch()
+
+    const [data, setData] = useState(store.getState().services.transportation)
 
     const columns = [
             {
@@ -32,7 +33,8 @@ const Page: React.FC = () => {
     
         useEffect(() => {
             const setTransportData = async () => {
-                dispatch(setTransportation(await fetchTransportation()))
+                dispatch(setTransportation(await fetchTransportation()));
+                setData(store.getState().services.transportation);
             }
     
             setTransportData()
@@ -41,7 +43,7 @@ const Page: React.FC = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Transportasi" />
-            <Table data={serviceState.transportation} column={columns} name="Data Trasportasi" addButtonLink="/transport/addData" addButtonName="Tambah Transportasi" />
+            <Table data={data} column={columns} name="Data Trasportasi" addButtonLink="/transport/addData" addButtonName="Tambah Transportasi" />
         </DefaultLayout>
     )
 }

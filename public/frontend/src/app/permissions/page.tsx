@@ -6,13 +6,13 @@ import Table from "@/components/Table"
 import { fetchInsitution, fetchPermissions } from "@/services/common"
 import { setPermissions } from "@/store/servicesSlice"
 import Link from "next/link"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useStore } from "react-redux"
 
 const Page: React.FC = () => {
     const dispatch = useDispatch()
     const store = useStore()
-    const serviceState = store.getState().services
+    const [data, setData] = useState(store.getState().services.permissions)
 
     const columns = [
         {
@@ -36,6 +36,7 @@ const Page: React.FC = () => {
     useEffect(() => {
               const syncPermissionData = async () => {
                   dispatch(setPermissions(await fetchPermissions()));
+                  setData(store.getState().services.permissions);
               };
       
               syncPermissionData();
@@ -44,7 +45,7 @@ const Page: React.FC = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Hak Akses" />
-            <Table name="Data Otoritas" data={serviceState.permissions} column={columns} addButtonLink="/permissions/addData" addButtonName="Tambah Otoritas"/>
+            <Table name="Data Otoritas" data={data} column={columns} addButtonLink="/permissions/addData" addButtonName="Tambah Otoritas"/>
         </DefaultLayout>
     )
 }

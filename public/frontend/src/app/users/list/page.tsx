@@ -6,13 +6,13 @@ import Table from "@/components/Table";
 import { fetchUsers } from "@/services/common";
 import { setUsers } from "@/store/servicesSlice";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 
 const Page: React.FC = () => {
     const dispatch = useDispatch();
     const store = useStore();
-    const serviceState = store.getState().services;
+    const [data, setData] = useState(store.getState().services.users)
 
     const columns = [
         {
@@ -47,6 +47,7 @@ const Page: React.FC = () => {
 
         const syncUserData = async () => {
             dispatch(setUsers(await fetchUsers()));
+            setData(store.getState().services.users)
         };
 
         syncUserData();
@@ -58,7 +59,7 @@ const Page: React.FC = () => {
             <Table
                 name="List karyawan"
                 column={columns}
-                data={serviceState.users}
+                data={data}
                 addButtonName="Tambah Karyawan"
                 addButtonLink="/register"
             />

@@ -17,7 +17,9 @@ const Division: React.FC = () => {
     
     const dispatch = useDispatch();
     const store = useStore();
-    const serviceState = store.getState().services;
+    
+
+    const [data, setData] = useState(store.getState().services.divisions)
 
 
     const handleSelectedData = (data) => {
@@ -48,6 +50,7 @@ const Division: React.FC = () => {
     useEffect(() => {
         const syncDivisionData = async () => {
             dispatch(setDivision(await fetchDivision()));
+            setData(store.getState().services.divisions)
         };
 
         syncDivisionData();
@@ -57,7 +60,7 @@ const Division: React.FC = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Data Divisi" />
             <Table
-                data={serviceState.divisions}
+                data={data}
                 column={columns}
                 name="Data Divisi"
                 addButtonLink="/division/addData"

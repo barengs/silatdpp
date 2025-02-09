@@ -6,14 +6,16 @@ import Table from "@/components/Table";
 import { fetchRoles } from "@/services/common";
 import { setRoles } from "@/store/servicesSlice";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 
 const Page: React.FC = () => {
 
     const dispatch = useDispatch();
     const store = useStore();
-    const serviceState = store.getState().services;
+    
+
+    const [data, setData] = useState(store.getState().services)
 
     const columns = [
         {
@@ -38,6 +40,7 @@ const Page: React.FC = () => {
     useEffect(() => {
         const syncRoleData = async () => {
             dispatch(setRoles(await fetchRoles()));
+            setData(store.getState().services);
         };
 
         syncRoleData();
@@ -47,7 +50,7 @@ const Page: React.FC = () => {
     return(
         <DefaultLayout>
             <Breadcrumb  pageName="Manajemen Tugas"/>
-            <Table name="Data Tugas" addButtonLink="/roles/addData" addButtonName="Tambah Tugas" column={columns} data={serviceState.roles} />
+            <Table name="Data Tugas" addButtonLink="/roles/addData" addButtonName="Tambah Tugas" column={columns} data={data} />
         </DefaultLayout>
     )
 }

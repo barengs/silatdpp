@@ -6,13 +6,15 @@ import Table from "@/components/Table";
 import { fetchPartners } from "@/services/common";
 import { setPartners } from "@/store/servicesSlice";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 
 const Partner = () => {
+
+  
   const store = useStore()
-  const serviceState = store.getState().services
   const dispatch = useDispatch()
+  const [data, setData] = useState(store.getState().services.partners)
 
     const columns = [
         {
@@ -42,18 +44,18 @@ const Partner = () => {
 
         const syncPartnerData = async() => {
             dispatch(setPartners(await fetchPartners()))
+            setData(store.getState().services.partners)
         }
 
         syncPartnerData()
         
     }, [])
-
     
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Rekan" />
-            <Table name="Data Rekanan"  column={columns} data={serviceState.partners} addButtonName="Tambah Rekan" addButtonLink="/partners/addData" />
+            <Table name="Data Rekanan"  column={columns} data={data} addButtonName="Tambah Rekan" addButtonLink="/partners/addData" />
         </DefaultLayout>
     );
 };
