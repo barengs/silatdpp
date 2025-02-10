@@ -14,7 +14,7 @@ const Page: React.FC = () => {
 
     const dispatch = useDispatch()
     const store = useStore()
-    const serviceState = store.getState().services
+    const [data, setData] = useState(store.getState().services.budgets)
 
     const column = [
         {
@@ -27,6 +27,7 @@ const Page: React.FC = () => {
     useEffect(() => {
             const syncBudgetData = async() => {
                 dispatch(setBudget(await fetchBudget()))
+                setData(store.getState().services.budgets)
             }
     
             syncBudgetData()
@@ -38,7 +39,7 @@ const Page: React.FC = () => {
             <Breadcrumb pageName="Data tingkat biaya" />
             <>
                 <Table
-                    data={serviceState.budgets}
+                    data={data}
                     column={column}
                     name="Budget"
                     addButtonLink="/budget/addData"
