@@ -115,3 +115,42 @@ export const DEFAULT_ROLE_DATA = {
   created_at: "",
   updated_at: ""
 }
+
+
+export const DEFAULT_SPPD_DATA = {
+  id: "",
+  user_id: "",
+  maksud_kegiatan: "",
+  tempat_berangkat: "",
+  tanggal_kegiatan: "",
+  alat_transportasi_id: "",
+  tempat_tujuan: "",
+  lama_perjalanan: "",
+  tanggal_berangkat: "",
+  tanggal_kembali: "",
+  tingkat_biaya_id: "",
+  created_at: "",
+  updated_at: "",
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    email_verified_at: "",
+    created_at: "",
+    updated_at: ""
+  },
+  approval: "",
+  dokumens: [],
+  history: [
+    {
+      id: "",
+      nama: "",
+      created_at: "",
+      updated_at: "",
+      pivot: {
+        sppd_pengajuan_id: "",
+        history_id: ""
+      }
+    }
+  ]
+}
