@@ -30,7 +30,7 @@ class AlatTransportasiController extends Controller
             'jenis' => 'required',
         ]);
 
-        if ($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
@@ -54,7 +54,10 @@ class AlatTransportasiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = AlatTransportasi::find($id);
+        $data->update($request->all());
+
+        return new ApiResource(true, 'berhasil update data', $data);
     }
 
     /**

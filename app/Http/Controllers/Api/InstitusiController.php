@@ -59,9 +59,16 @@ class InstitusiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Institusi $institusiTamu)
+    public function update(Request $request, string $id)
     {
-        //
+        $data = Institusi::find($id);
+        $data->nama = $request->nama;
+        $data->alamat = $request->alamat;
+        $data->kontak = $request->kontak;
+
+        $data->update();
+
+        return new InstitusiResource(true, 'berhasil update data', $data);
     }
 
     /**
