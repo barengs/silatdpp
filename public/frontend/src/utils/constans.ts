@@ -154,3 +154,22 @@ export const DEFAULT_SPPD_DATA = {
     }
   ]
 }
+
+
+export const DEFAULT_RECOMENDATION_DATA = {
+  id: "",
+  noreg: "",
+  rekanan_id: "",
+  user_id: "",
+  institusi_id: "",
+  nama_pejabat: "",
+  nip_pejabat: "",
+  nama_pejabat_pengganti: "",
+  nip_pejabat_pengganti: "",
+  alamat_pejabat_pengganti: "",
+  jabatan: "",
+  konten: "",
+  status: "",
+  created_at: "",
+  updated_at: ""
+};
