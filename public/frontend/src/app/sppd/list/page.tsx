@@ -59,7 +59,9 @@ const SppdPage: React.FC = () => {
                         return res.json()
                     }
 
-                    toast.error("Galat saat mengambil data sppd")
+                    toast.error("Galat saat mengambil data sppd", {
+                        position: 'top-right'
+                    })
                     console.log(res)
                 })
                 .then(data => data ? setData(data.data.data) : [DEFAULT_SPPD_DATA])
