@@ -88,7 +88,7 @@ const Institution: React.FC = () => {
                 />
                 <InputFields
                     title="Kontak Institusi"
-                    name="Kontak"
+                    name="kontak"
                     defaultValue={selectedData.kontak}
                 />
             </Modal>
