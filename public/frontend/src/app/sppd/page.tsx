@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
+import { toast } from "react-toastify";
 
 const SppdAddData: React.FC = () => {
     const [files, setFiles] = useState<File[]>([]);
@@ -51,12 +52,12 @@ const SppdAddData: React.FC = () => {
         );
 
         if (res.ok) {
-            alert("Berhasil mengajukan SPPD");
+            toast.success("Berhasil mengajukan SPPD", { position: "top-right" })
             window.location.reload();
             return;
         }
 
-        alert("Galat pada prosess pengajuan");
+        toast.error("Gagal mengajukan SPPD", { position: "top-right" })
     };
 
     return (

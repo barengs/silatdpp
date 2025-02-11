@@ -9,6 +9,7 @@ import { exportRecomendation } from "@/utils/documents";
 import Link from "next/link";
 import { FormEvent } from "react";
 import { useStore } from "react-redux";
+import { toast } from "react-toastify";
 
 const ExchequerPage = () => {
     const state = useStore().getState();
@@ -29,13 +30,13 @@ const ExchequerPage = () => {
         })
         
         if (res.ok) {
-            alert("Berhasil menambah data")
+            toast.success("Berhasil membuat pengajuan", {position: 'top-right'})
             exportRecomendation(formData.get("konten"))
             window.location.reload()
             return
         }
 
-        alert("Gagal menambah data")
+        toast.error("Gagal membuat pengajuan", { position: "top-right" })
     }
 
 
