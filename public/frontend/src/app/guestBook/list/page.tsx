@@ -90,26 +90,31 @@ const GuestBookPage: React.FC = () => {
                 title="Edit Divisi"
                 state={showPopup}
                 stateSetter={setShowPopup}
+                ableDelete={true}
             >
                 <InputFields
                     title="Nama Tamu"
                     name="nama"
                     defaultValue={selectedData.nama_tamu}
+                    disabled={true}
                 />
                 <InputFields
                     title="Alamat Tamu"
                     name="alamat"
                     defaultValue={selectedData.alamat}
+                    disabled={true}
                 />
                 <InputFields
                     title="No Telepon"
                     name="Kontak"
                     defaultValue={selectedData.no_telpon}
+                    disabled={true}
                 />
                 <InputFields
                     title="Keperluan"
                     name="Kontak"
                     defaultValue={selectedData.keperluan}
+                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>
