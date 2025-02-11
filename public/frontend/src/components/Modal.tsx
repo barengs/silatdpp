@@ -1,5 +1,5 @@
 import useFetch from "@/hooks/useFetch";
-import { FormEvent, PropsWithChildren } from "react";
+import { FormEvent, PropsWithChildren, useState } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -14,23 +14,27 @@ const Popup: React.FC<PopupPropsType> = ({
     title,
     state,
     stateSetter,
+    url,
     children,
 }) => {
     const store = useStore();
     const authState = store.getState().auth;
     const [isPending, fetchCaller] = useFetch();
+    const [method, setMethod] = useState("update")
+
 
     const handleDataSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const form = new FormData(event.currentTarget);
+        
+        const form = new URLSearchParams(new FormData(event.currentTarget));
 
         const res = await fetchCaller(url, {
-            method: "put",
+            method: method == "update" ? "PUT" : "DELETE",
             headers: {
                 Authorization: authState.token,
+                'Content-Type': method == "update" ? "application/x-www-form-urlencoded" : "multipart/form-data"
             },
-            body: form,
+            body: method == "update" ? form : undefined ,
         });
 
         if (!res.ok) {
@@ -44,12 +48,12 @@ const Popup: React.FC<PopupPropsType> = ({
             position: "top-right",
         });
         stateSetter(false);
+        window.location.reload()
     };
 
     return (
         <div
             className={`${state || closed ? "fixed" : "hidden"} bottom-0 left-0 z-9999 flex min-h-screen w-full items-center justify-center`}
-            onClick={() => console.log("Hello")}
         >
             {/* opacity clicker    */}
             <div
@@ -80,13 +84,14 @@ const Popup: React.FC<PopupPropsType> = ({
 
                 <form
                     onSubmit={handleDataSubmit}
-                    className="mt-8 grid grid-cols-2 gap-y-8"
+                    className="mt-8 grid grid-cols-2 gap-y-8 gap-x-4"
                 >
                     {children}
                     <div className="col-span-2 flex gap-x-4">
                         <button
                             className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 text-sm"
                             type="submit"
+                            onClick={() => setMethod("update")}
                         >
                             {isPending ? (
                                 <>
@@ -99,9 +104,10 @@ const Popup: React.FC<PopupPropsType> = ({
                         </button>
                         <button
                             className="flex w-max justify-center rounded bg-red-500 p-3 font-medium text-gray hover:bg-opacity-90 text-sm"
-                            onClick={() => stateSetter(false)}
+                            type="submit"
+                            onClick={() => setMethod("delete")}
                         >
-                           Batalkan
+                           Hapus Data
                         </button>
                     </div>
                 </form>

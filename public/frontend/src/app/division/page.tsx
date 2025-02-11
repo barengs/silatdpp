@@ -3,7 +3,7 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Popup from "@/components/Popup";
+import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import { fetchDivision } from "@/services/common";
 import { setDivision } from "@/store/servicesSlice";
@@ -18,8 +18,8 @@ const Division: React.FC = () => {
     const dispatch = useDispatch();
     const store = useStore();
     
-
     const [data, setData] = useState(store.getState().services.divisions)
+
 
 
     const handleSelectedData = (data) => {
@@ -66,9 +66,9 @@ const Division: React.FC = () => {
                 addButtonLink="/division/addData"
                 addButtonName="Tambah Divisi"
             />
-            <Popup url="divisi" title="Edit Divisi" state={showPopup} stateSetter={setShowPopup}>
+            <Modal url={`divisi/${selectedData.id}`} title="Edit Divisi" state={showPopup} stateSetter={setShowPopup}>
                 <InputFields title="Nama Divisi" name="nama" defaultValue={selectedData.nama}/>
-            </Popup>
+            </Modal>
         </DefaultLayout>
     );
 };
