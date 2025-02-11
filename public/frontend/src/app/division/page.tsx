@@ -67,7 +67,7 @@ const Division: React.FC = () => {
                 addButtonName="Tambah Divisi"
             />
             <Modal url={`divisi/${selectedData.id}`} title="Edit Divisi" state={showPopup} stateSetter={setShowPopup}>
-                <InputFields title="Nama Divisi" name="nama" defaultValue={selectedData.nama}/>
+                <InputFields title="Nama Divisi" name="nama" defaultValue={selectedData.nama} disabled={true}/>
             </Modal>
         </DefaultLayout>
     );

@@ -17,8 +17,8 @@ const Page: React.FC = () => {
     const dispatch = useDispatch()
     const store = useStore()
     const [data, setData] = useState(store.getState().services.budgets)
-     const [showPopup, setShowPopup] = useState(false);
-        const [selectedData, setSelectedData] = useState(DEFAULT_BUDGET_DATA);
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedData, setSelectedData] = useState(DEFAULT_BUDGET_DATA);
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -77,6 +77,7 @@ const Page: React.FC = () => {
                     title="Jenis Biaya"
                     name="biaya"
                     defaultValue={selectedData.biaya}
+                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>

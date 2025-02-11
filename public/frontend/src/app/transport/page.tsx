@@ -77,23 +77,13 @@ const Page: React.FC = () => {
                     title="Nama Transportasi"
                     name="nama"
                     defaultValue={selectedData.nama}
-                />
-            </Modal>
-            <Modal
-                url={`transportasi/${selectedData.id}`}
-                title="Edit Divisi"
-                state={showPopup}
-                stateSetter={setShowPopup}
-            >
-                <InputFields
-                    title="Nama Transportasi"
-                    name="nama"
-                    defaultValue={selectedData.nama}
+                    disabled={true}
                 />
                 <InputFields
                     title="Jenis Transportasi"
                     name="jenis"
                     defaultValue={selectedData.jenis}
+                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>

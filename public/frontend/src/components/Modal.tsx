@@ -8,6 +8,8 @@ interface PopupPropsType extends PropsWithChildren {
     url: string;
     state: boolean;
     stateSetter: (state: boolean) => void;
+    ableUpdate?: boolean;
+    ableDelete?: boolean;
 }
 
 const Popup: React.FC<PopupPropsType> = ({
@@ -16,25 +18,29 @@ const Popup: React.FC<PopupPropsType> = ({
     stateSetter,
     url,
     children,
+    ableUpdate = false,
+    ableDelete = false,
 }) => {
     const store = useStore();
     const authState = store.getState().auth;
     const [isPending, fetchCaller] = useFetch();
-    const [method, setMethod] = useState("update")
-
+    const [method, setMethod] = useState("update");
 
     const handleDataSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        
+
         const form = new URLSearchParams(new FormData(event.currentTarget));
 
         const res = await fetchCaller(url, {
             method: method == "update" ? "PUT" : "DELETE",
             headers: {
                 Authorization: authState.token,
-                'Content-Type': method == "update" ? "application/x-www-form-urlencoded" : "multipart/form-data"
+                "Content-Type":
+                    method == "update"
+                        ? "application/x-www-form-urlencoded"
+                        : "multipart/form-data",
             },
-            body: method == "update" ? form : undefined ,
+            body: method == "update" ? form : undefined,
         });
 
         if (!res.ok) {
@@ -48,7 +54,7 @@ const Popup: React.FC<PopupPropsType> = ({
             position: "top-right",
         });
         stateSetter(false);
-        window.location.reload()
+        window.location.reload();
     };
 
     return (
@@ -84,31 +90,35 @@ const Popup: React.FC<PopupPropsType> = ({
 
                 <form
                     onSubmit={handleDataSubmit}
-                    className="mt-8 grid grid-cols-2 gap-y-8 gap-x-4"
+                    className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8"
                 >
                     {children}
                     <div className="col-span-2 flex gap-x-4">
-                        <button
-                            className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 text-sm"
-                            type="submit"
-                            onClick={() => setMethod("update")}
-                        >
-                            {isPending ? (
-                                <>
-                                    <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                                    Memperbarui Data
-                                </>
-                            ) : (
-                                <>Perbarui </>
-                            )}
-                        </button>
-                        <button
-                            className="flex w-max justify-center rounded bg-red-500 p-3 font-medium text-gray hover:bg-opacity-90 text-sm"
-                            type="submit"
-                            onClick={() => setMethod("delete")}
-                        >
-                           Hapus Data
-                        </button>
+                        {ableUpdate && (
+                            <button
+                                className="flex w-max justify-center rounded bg-primary p-3 text-sm font-medium text-gray hover:bg-opacity-90"
+                                type="submit"
+                                onClick={() => setMethod("update")}
+                            >
+                                {isPending ? (
+                                    <>
+                                        <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                        Memperbarui Data
+                                    </>
+                                ) : (
+                                    <>Perbarui </>
+                                )}
+                            </button>
+                        )}
+                        {ableDelete && (
+                            <button
+                                className="flex w-max justify-center rounded bg-red-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
+                                type="submit"
+                                onClick={() => setMethod("delete")}
+                            >
+                                Hapus Data
+                            </button>
+                        )}
                     </div>
                 </form>
             </div>

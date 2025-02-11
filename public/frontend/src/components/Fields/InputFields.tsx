@@ -8,6 +8,7 @@ interface InputFieldsProps {
     name?: string;
     defaultValue?: string;
     multiple?: boolean;
+    disabled?: boolean;
     type?: React.HTMLInputTypeAttribute;
     autoCompleteData?: string[];
     onSelectedAutoComplete?: (value: string) => void;
@@ -22,6 +23,7 @@ const InputFields: React.FC<InputFieldsProps> = ({
     defaultValue = "",
     type = "text",
     multiple = false,
+    disabled = false,
     name = "",
 }) => {
     const router = useRouter();
@@ -71,6 +73,7 @@ const InputFields: React.FC<InputFieldsProps> = ({
                 multiple={multiple}
                 autoComplete={autoCompleteData ? "off" : ""}
                 required={true}
+                disabled={disabled}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             />
             <div

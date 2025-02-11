@@ -80,16 +80,19 @@ const Institution: React.FC = () => {
                     title="Nama Institusi"
                     name="nama"
                     defaultValue={selectedData.nama}
+                    disabled={true}
                 />
                 <InputFields
                     title="Alamat Institusi"
                     name="alamat"
                     defaultValue={selectedData.alamat}
+                    disabled={true}
                 />
                 <InputFields
                     title="Kontak Institusi"
                     name="kontak"
                     defaultValue={selectedData.kontak}
+                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>
