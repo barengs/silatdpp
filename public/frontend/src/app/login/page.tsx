@@ -64,11 +64,11 @@ export default function Page() {
               <form onSubmit={onSubmit} className="space-y-12 mt-16">
               <div>
                   <h3 className="mb-2 font-medium text-black">Email</h3>
-                  <input name="email" type="email" className="w-[400px] py-2 px-2 rounded-md border-[1.5px] border-gray-200"/>
+                  <input name="email" type="email" className="w-[300px] md:w-[400px] py-2 px-2 rounded-md border-[1.5px] border-gray-200"/>
               </div>
               <div>
                   <h3 className="mb-2 font-medium text-black">Password</h3>
-                  <input name="password" type="password" className="w-[400px] py-2 px-2 rounded-md border-[1.5px] border-gray-200"/>
+                  <input name="password" type="password" className="w-[300px] md:w-[400px] py-2 px-2 rounded-md border-[1.5px] border-gray-200"/>
               </div>
               <button
                     className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:bg-opacity-75 disabled:cursor-not-allowed"
