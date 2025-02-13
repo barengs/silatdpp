@@ -1,4 +1,4 @@
-import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_STAFF_DATA, DEFAULT_TRANSPORTATION, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
+import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_SPPD_DATA, DEFAULT_STAFF_DATA, DEFAULT_TRANSPORTATION, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
 
 
 export async function fetchInsitution() {
@@ -94,6 +94,17 @@ export async function fetchRoles() {
 
     
     if (!res.ok) return [DEFAULT_ROLE_DATA]
+    
+    const data = await res.json()
+
+    return data.data
+}
+
+export async function fetchSppd() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`, { cache: 'no-store'})
+
+    
+    if (!res.ok) return [DEFAULT_SPPD_DATA]
     
     const data = await res.json()
 
