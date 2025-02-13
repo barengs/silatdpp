@@ -8,8 +8,6 @@ import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { fetchBudget, fetchTransportation } from "@/services/common";
 import { setBudget, setTransportation } from "@/store/servicesSlice";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { FormEvent, useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 import { toast } from "react-toastify";
@@ -17,8 +15,6 @@ import { toast } from "react-toastify";
 const SppdAddData: React.FC = () => {
     const [files, setFiles] = useState<File[]>([]);
     const dispatch = useDispatch();
-
-    const router = useRouter();
 
     const store = useStore();
     const state = store.getState();
@@ -63,15 +59,6 @@ const SppdAddData: React.FC = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Pengajuan SPPD" />
-
-            <div className="flex lg:justify-end">
-                <Link
-                    href="/sppd/list"
-                    className="mt-1 mb-2 rounded-md bg-blue-500 px-2 py-3 text-sm text-white"
-                >
-                    Histori SPPD
-                </Link>
-            </div>
             <form
                 onSubmit={handlePostData}
                 className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark"

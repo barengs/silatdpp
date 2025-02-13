@@ -106,7 +106,10 @@ const menuGroups = [
                 ),
                 label: "Sppd",
                 route: "#",
-                children: [{ label: "Pengajuan Sppd", route: "/sppd" }],
+                children: [
+                    { label: "Pengajuan Sppd", route: "/sppd" },
+                    { label: "Daftar Sppd", route: "/sppd/list" }
+                ],
             },
             {
                 icon: (
