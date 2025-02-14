@@ -108,6 +108,6 @@ export async function fetchSppd() {
     
     const data = await res.json()
 
-    return data.data
+    return data.data.data
 }
 
