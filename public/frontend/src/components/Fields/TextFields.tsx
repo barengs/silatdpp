@@ -10,10 +10,6 @@ interface InputFieldsProps {
 
 const TextFields = ({ title, defaultValue="", name="" }: InputFieldsProps) => {
 
-    const [inputValue, setInputValue] = useState(defaultValue)
-
-    useEffect(() => setInputValue(defaultValue), [defaultValue])
-
     return (
         <div className="flex-1">
 
@@ -23,7 +19,7 @@ const TextFields = ({ title, defaultValue="", name="" }: InputFieldsProps) => {
             <textarea
                 placeholder={title}
                 name={name}
-                onChange={(event: ChangeEvent<HTMLTextAreaElement>) => setInputValue(event.target.value)}
+                defaultValue={defaultValue}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             ></textarea>
         </div>
