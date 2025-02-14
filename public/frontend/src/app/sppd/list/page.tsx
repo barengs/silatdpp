@@ -12,8 +12,6 @@ import Breadcrumb from "@/components/Breadcrumb"
 import { fetchSppd } from "@/services/common"
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields"
-import SelectFields from "@/components/Fields/SelectFields"
-import TextFields from "@/components/Fields/TextFields"
 
 const SppdPage: React.FC = () => {
     const store = useStore();
