@@ -131,7 +131,8 @@ const menuGroups = [
                 label: "Rekomendasi",
                 route: "#",
                 children: [
-                    { label: "Penggantian Bendahara", route: "/recomendation" }
+                    { label: "Penggantian Bendahara", route: "/recomendation" },
+                    { label: "List Bendahara", route: "/recomendation/list" },
                 ],
             },
             {

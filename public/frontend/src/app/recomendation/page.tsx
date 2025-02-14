@@ -6,7 +6,6 @@ import SelectFields from "@/components/Fields/SelectFields";
 import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { exportRecomendation } from "@/utils/documents";
-import Link from "next/link";
 import { FormEvent } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
@@ -43,9 +42,6 @@ const ExchequerPage = () => {
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Pengajuan Rekomendasi" />
-            <div className="flex justify-end">
-                <Link href="/recomendation/list" className="text-sm bg-primary text-white rounded-md p-3">Histori Pengajuan</Link>
-            </div>
             <form onSubmit={handlePost} className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <InputFields title="Nama Pejabat" name="nama_pejabat"/>
                 <InputFields title="NIP Pejabat" name="nip_pejabat"/>
