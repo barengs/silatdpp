@@ -16,7 +16,9 @@ const nextConfig = {
     //       },
     //     ];
     //   },
-    
+    eslint: {
+        dirs: ['pages', 'components']
+    },  
     output: 'export',
     trailingSlash: true,
     images: {
