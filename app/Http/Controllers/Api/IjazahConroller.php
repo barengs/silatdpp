@@ -28,6 +28,7 @@ class IjazahConroller extends Controller
     {
         $validasi = Validator::make($request->all(), [
             'institusi_id' => 'required',
+            'nomor_ijazah' => 'required',
             'nama_siswa' => 'required',
             'nis' => 'required',
             'perubahan' => 'required',
@@ -49,6 +50,7 @@ class IjazahConroller extends Controller
 
         $save = Ijazah::create([
             'institusi_id' => $request->institusi_id,
+            'nomor_ijazah' => $request->nomor_ijazah,
             'nama_siswa' => $request->nama_siswa,
             'nis' => $request->nis,
             'keperluan' => $request->keperluan,
@@ -81,6 +83,7 @@ class IjazahConroller extends Controller
     {
         $ajuan = Ijazah::findOrFail($id);
         $ajuan->institusi_id = $request->institusi_id;
+        $ajuan->nomor_ijazah = $request->nomor_ijazah;
         $ajuan->nama_siswa = $request->nama_siswa;
         $ajuan->nis = $request->nis;
         $ajuan->keperluan = $request->keperluan;
