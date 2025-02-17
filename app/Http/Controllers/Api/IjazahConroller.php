@@ -53,7 +53,7 @@ class IjazahConroller extends Controller
             'nomor_ijazah' => $request->nomor_ijazah,
             'nama_siswa' => $request->nama_siswa,
             'nis' => $request->nis,
-            'keperluan' => $request->keperluan,
+            'perubahan' => $request->perubahan,
             'alasan' => $request->alasan,
             'file' => $fileName,
             'user_id' => $user->id,
@@ -86,7 +86,7 @@ class IjazahConroller extends Controller
         $ajuan->nomor_ijazah = $request->nomor_ijazah;
         $ajuan->nama_siswa = $request->nama_siswa;
         $ajuan->nis = $request->nis;
-        $ajuan->keperluan = $request->keperluan;
+        $ajuan->perubahan = $request->perubahan;
         $ajuan->alasan = $request->alasan;
         $ajuan->status = $request->status;
 
