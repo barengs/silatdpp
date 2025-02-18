@@ -48,23 +48,25 @@ class IjazahConroller extends Controller
             $file = $request->file('file');
             $fileName = time() . '-' . $file->getClientOriginalName();
             $filePath = $file->move('documents/ijazah', $fileName);
-        }
 
-        $save = Ijazah::create([
-            'institusi_id' => $request->institusi_id,
-            'nomor_ijazah' => $request->nomor_ijazah,
-            'nama_siswa' => $request->nama_siswa,
-            'nis' => $request->nis,
-            'perubahan' => $request->perubahan,
-            'alasan' => $request->alasan,
-            'file' => $fileName,
-            'user_id' => $user->id,
-        ]);
+            $save = Ijazah::create([
+                'institusi_id' => $request->institusi_id,
+                'nomor_ijazah' => $request->nomor_ijazah,
+                'nama_siswa' => $request->nama_siswa,
+                'nis' => $request->nis,
+                'perubahan' => $request->perubahan,
+                'alasan' => $request->alasan,
+                'file' => $fileName,
+                'user_id' => $user->id,
+            ]);
 
-        if ($save) {
-            return new ApiResource(true, 'pengajuan berhasil disimpan', $save);
+            if ($save) {
+                return new ApiResource(true, 'pengajuan berhasil disimpan', $save);
+            } else {
+                return new ApiResource(false, 'gagal membuat pengajuan', '');
+            }
         } else {
-            return new ApiResource(false, 'gagal membuat pengajuan', '');
+            return response()->json('harus mengisi file', 422);
         }
 
     }
