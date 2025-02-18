@@ -12,7 +12,7 @@ interface PopupPropsType extends PropsWithChildren {
     ableDelete?: boolean;
 }
 
-const Popup: React.FC<PopupPropsType> = ({
+const Modal: React.FC<PopupPropsType> = ({
     title,
     state,
     stateSetter,
@@ -126,4 +126,4 @@ const Popup: React.FC<PopupPropsType> = ({
     );
 };
 
-export default Popup;
+export default Modal;

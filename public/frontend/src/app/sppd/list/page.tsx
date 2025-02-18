@@ -93,7 +93,12 @@ const SppdPage: React.FC = () => {
                     title="Transportasi Perjalanan"
                     name="alat_transportasi_id"
                     disabled={true}
-                    defaultValue={selectedData.alat_transportasi_id}
+                    defaultValue={store.getState().services.sppd.map(sppd => {
+                        if (sppd.id == selectedData.alat_transportasi_id) {
+                            return sppd.maksud_kegiatan
+                        }
+                        return ""
+                    })[0]}
                 />
                 <div className="flex gap-x-4">
                     <InputFields
@@ -120,7 +125,14 @@ const SppdPage: React.FC = () => {
                     title="Biaya Perjalanan"
                     name="tingkat_biaya_id"
                     disabled={true}
-                    defaultValue={selectedData.tingkat_biaya_id}
+                    defaultValue={store.getState().services.budgets.map(budget => {
+                        if (budget.id == selectedData.tingkat_biaya_id) {
+                            console.log(budget.biaya)
+                            return budget.biaya
+                        }
+
+                        return ""
+                    })[0]}
                 />
                 <InputFields
                     title="Status Diterima"

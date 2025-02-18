@@ -173,3 +173,8 @@ export const DEFAULT_RECOMENDATION_DATA = {
   created_at: "",
   updated_at: ""
 };
+
+
+export const DEFAULT_CERTIFICATE_DATA = {
+
+}
