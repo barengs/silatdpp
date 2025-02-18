@@ -42,6 +42,8 @@ class IjazahConroller extends Controller
 
         $user = JWTAuth::parseToken()->authenticate();
 
+        $fileName = null;
+
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = time() . '-' . $file->getClientOriginalName();
