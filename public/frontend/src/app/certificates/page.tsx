@@ -30,7 +30,6 @@ const Page: React.FC = () => {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${authState.token}`,
-                'Content-Type' : 'multipart/form-data'
             },
             body: formData
         })

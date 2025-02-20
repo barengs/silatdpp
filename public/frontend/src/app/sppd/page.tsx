@@ -43,7 +43,6 @@ const SppdAddData: React.FC = () => {
                 body: formData,
                 headers: {
                     Authorization: `Bearer ${authState.token}`,
-                    'Content-Type' : 'multipart/form-data'
                 },
             },
         );
