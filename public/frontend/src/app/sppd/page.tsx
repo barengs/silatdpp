@@ -47,13 +47,15 @@ const SppdAddData: React.FC = () => {
             },
         );
 
-        if (res.ok) {
-            toast.success("Berhasil mengajukan SPPD", { position: "top-right" })
-            window.location.reload();
-            return;
+        if (!res.ok) {
+            console.log(res)
+            toast.error("Gagal mengajukan SPPD", { position: "top-right" })
+            setTimeout(() => window.location.reload(), 3000);
+            return
         }
 
-        toast.error("Gagal mengajukan SPPD", { position: "top-right" })
+        toast.success("Berhasil mengajukan SPPD", { position: "top-right" })
+
     };
 
     return (
