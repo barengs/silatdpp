@@ -30,6 +30,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
     const handleSelected = (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files
 
+        
         if (selectedFiles?.length <= 0) return 
 
         setFiles(Array.from(selectedFiles));
@@ -38,10 +39,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
 
     const handleFileDropped = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
-
-
         setFiles(Array.from(event.dataTransfer.files));
-        
         setFieldActive(false);
     };
 
@@ -59,15 +57,15 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
     };
 
     useEffect(() => {
-        const convertedData = files.map((file: File) => {
-            return {
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                lastModified: file.lastModified,
-              }
-        })
-        setter(convertedData)
+        // const convertedData = files.map((file: File) => {
+        //     return {
+        //         name: file.name,
+        //         size: file.size,
+        //         type: file.type,
+        //         lastModified: file.lastModified,
+        //       }
+        // })
+        setter(files)
         setFieldActive(false)
     }, [files])
 
