@@ -34,7 +34,7 @@ const SppdAddData: React.FC = () => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        formData.append("files", JSON.stringify(files));
+        formData.append("files", files);
 
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`,
@@ -43,6 +43,7 @@ const SppdAddData: React.FC = () => {
                 body: formData,
                 headers: {
                     Authorization: `Bearer ${authState.token}`,
+                    'Content-Type' : 'multipart/form-data'
                 },
             },
         );

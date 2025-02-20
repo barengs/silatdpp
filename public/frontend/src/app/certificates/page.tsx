@@ -23,16 +23,16 @@ const Page: React.FC = () => {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
-        const data = new FormData(event.currentTarget)
-        data.append("file", files);
+        const formData = new FormData(event.currentTarget)
+        formData.append("file", files[0]);
 
         const res = await fetchCaller('ijazah', {
-            method: 'post',
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${authState.token}`,
-                Accept: "application/json"
+                'Content-Type' : 'multipart/form-data'
             },
-            body: data
+            body: formData
         })
         
         if (!res.ok) {
