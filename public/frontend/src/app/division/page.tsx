@@ -3,17 +3,30 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import Popup from "@/components/Popup";
+import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import { fetchDivision } from "@/services/common";
+import { setDivision } from "@/store/servicesSlice";
+import { DEFAULT_DIVISION_DATA } from "@/utils/constans";
 import { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 
 const Division: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false)
+    const [selectedData, setSelectedData] = useState(DEFAULT_DIVISION_DATA)
+    
     const dispatch = useDispatch();
     const store = useStore();
-    const serviceState = store.getState().services;
+    
+    const [data, setData] = useState(store.getState().services.divisions)
+
+
+
+    const handleSelectedData = (data) => {
+        setShowPopup(true)
+        setSelectedData(data)
+    }
+
 
     const columns = [
         {
@@ -26,7 +39,7 @@ const Division: React.FC = () => {
             cell: (row: Record<string, string>) => (
                 <button
                     className="text-blue-500 hover:underline"
-                    onClick={() => setShowPopup(true)}
+                    onClick={() => handleSelectedData(row)}
                 >
                     Edit
                 </button>
@@ -36,7 +49,8 @@ const Division: React.FC = () => {
 
     useEffect(() => {
         const syncDivisionData = async () => {
-            dispatch(await fetchDivision());
+            dispatch(setDivision(await fetchDivision()));
+            setData(store.getState().services.divisions)
         };
 
         syncDivisionData();
@@ -46,15 +60,15 @@ const Division: React.FC = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Data Divisi" />
             <Table
-                data={serviceState.divisions}
+                data={data}
                 column={columns}
                 name="Data Divisi"
                 addButtonLink="/division/addData"
                 addButtonName="Tambah Divisi"
             />
-            <Popup state={showPopup}>
-                <InputFields title="Nama Divisi" name="nama" />
-            </Popup>
+            <Modal url={`divisi/${selectedData.id}`} title="Edit Divisi" state={showPopup} stateSetter={setShowPopup}>
+                <InputFields title="Nama Divisi" name="nama" defaultValue={selectedData.nama} disabled={true}/>
+            </Modal>
         </DefaultLayout>
     );
 };

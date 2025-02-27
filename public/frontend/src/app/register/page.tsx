@@ -31,6 +31,7 @@ const Page: React.FC = () => {
         })
 
         if (!res.ok) {
+            console.log(res)
             toast.error("Galat saat menambahkan karyawan!", {
                 position: "top-right",
             });

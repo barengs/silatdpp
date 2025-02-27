@@ -8,10 +8,12 @@ interface InputFieldsProps {
     name?: string;
     defaultValue?: string;
     multiple?: boolean;
+    disabled?: boolean;
     type?: React.HTMLInputTypeAttribute;
     autoCompleteData?: string[];
     onSelectedAutoComplete?: (value: string) => void;
     addItemPath?: string;
+    error?: string;
 }
 
 const InputFields: React.FC<InputFieldsProps> = ({
@@ -22,13 +24,16 @@ const InputFields: React.FC<InputFieldsProps> = ({
     defaultValue = "",
     type = "text",
     multiple = false,
+    disabled = false,
     name = "",
+    error=""
 }) => {
     const router = useRouter();
 
     const [inputValue, setInputValue] = useState<string>(defaultValue);
     const [data, setData] = useState<string[]>([]);
     const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
+    const [isError, setIsError] = useState(error ? error : "")
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -53,13 +58,15 @@ const InputFields: React.FC<InputFieldsProps> = ({
         setInputValue(defaultValue);
     }, [defaultValue]);
 
+    useEffect(() => setIsError(error), [error])
+
     useEffect(() => {
         setData(autoCompleteData || []);
     }, []);
 
     return (
         <div className="flex-1" onBlur={onBlurHandler}>
-            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+            <label className={`mb-3 block text-sm font-medium dark:text-white ${isError ? 'text-red-500' : 'text-black'}`}>
                 {title}
             </label>
             <input
@@ -70,8 +77,13 @@ const InputFields: React.FC<InputFieldsProps> = ({
                 name={name}
                 multiple={multiple}
                 autoComplete={autoCompleteData ? "off" : ""}
-                className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                disabled={disabled}
+                onFocus={() => setIsError(false)}
+                className={`w-full rounded-lg border-[1.5px] bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary ${isError ? 'border-red-500' : 'border-stroke '}`}
             />
+            {isError && 
+            <span className="text-red-500 text-sm mt-2 block">{error}</span>
+            }
             <div
                 className={`mt-2 flex w-full flex-col gap-y-4 overflow-hidden rounded-md bg-gray-100 px-4 py-2 text-left ${
                     autoCompleteState && data.length ? "" : "hidden"

@@ -5,6 +5,7 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useRouter } from "next/navigation";
 import React, { FormEvent } from "react";
+import { toast } from "react-toastify";
 
 
 const UserDetail: React.FC = () => {
@@ -22,12 +23,12 @@ const UserDetail: React.FC = () => {
         })
 
         if (!res.ok) {
-            alert("Galat saat menambahkan data")
+            toast.success("Berhasil menambahkan pengguna", { position: "top-right" })
             return
         }
 
 
-        alert("Berhasil menambahkan data")
+        toast.error("Gagal menambahkan pengguna", { position: "top-right" })
         router.replace("/users")
     }
 

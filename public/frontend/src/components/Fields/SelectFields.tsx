@@ -16,10 +16,8 @@ interface selectFieldsProps {
 }
 
 const SelectFields: React.FC<selectFieldsProps> = ({ title, options, name, defaultValue }) => {
-
     return (
         <div>
-            
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 {title}
             </label>

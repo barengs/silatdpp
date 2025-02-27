@@ -1,19 +1,28 @@
-"use client"
+"use client";
 
-import Breadcrumb from "@/components/Breadcrumb"
-import DefaultLayout from "@/components/Layouts/DefaultLayout"
+import Breadcrumb from "@/components/Breadcrumb";
+import InputFields from "@/components/Fields/InputFields";
+import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Table from "@/components/Table";
 import { fetchRoles } from "@/services/common";
 import { setRoles } from "@/store/servicesSlice";
-import Link from "next/link";
-import { useEffect } from "react";
+import { DEFAULT_ROLE_DATA } from "@/utils/constans";
+import Modal from "@/components/Modal";
+import { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 
 const Page: React.FC = () => {
-
     const dispatch = useDispatch();
     const store = useStore();
-    const serviceState = store.getState().services;
+
+    const [data, setData] = useState(store.getState().services.roles);
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedData, setSelectedData] = useState(DEFAULT_ROLE_DATA);
+
+    const handleSelectedData = (data) => {
+        setShowPopup(true);
+        setSelectedData(data);
+    };
 
     const columns = [
         {
@@ -24,33 +33,50 @@ const Page: React.FC = () => {
         {
             name: "Aksi",
             cell: (row: Record<string, string>) => (
-                <Link
+                <button
                     className="text-blue-500 hover:underline"
-                    href={`/users/${row.id}`}
+                    onClick={() => handleSelectedData(row)}
                 >
                     Edit
-                </Link>
+                </button>
             ),
         },
-    ]
-
+    ];
 
     useEffect(() => {
         const syncRoleData = async () => {
             dispatch(setRoles(await fetchRoles()));
+            setData(store.getState().services.roles);
         };
 
         syncRoleData();
-    }, [])
+    }, []);
 
-
-    return(
+    return (
         <DefaultLayout>
-            <Breadcrumb  pageName="Manajemen Role"/>
-            <Table name="Data Role" addButtonLink="/roles/addData" addButtonName="Tambah Role" column={columns} data={serviceState.roles} />
+            <Breadcrumb pageName="Manajemen Tugas" />
+            <Table
+                name="Data Tugas"
+                addButtonLink="/roles/addData"
+                addButtonName="Tambah Tugas"
+                column={columns}
+                data={data}
+            />
+            <Modal
+                url={`buku-tamu/${selectedData.id}`}
+                title="Detail SPPD"
+                state={showPopup}
+                stateSetter={setShowPopup}
+            >
+                <InputFields
+                    title="Nama Role"
+                    name="name"
+                    disabled={true}
+                    defaultValue={selectedData.name}
+                />
+            </Modal>
         </DefaultLayout>
-    )
-}
-
+    );
+};
 
 export default Page;

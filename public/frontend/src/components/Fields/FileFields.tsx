@@ -5,22 +5,16 @@ type FILE_PROTOTYPE_TYPE = {
     name: string,
     size: number,
     type: string,
-    lastModified: number
+    lastModified: number,
 }
 
 interface ComponentProps {
     title: string;
     setter: (value: FILE_PROTOTYPE_TYPE[]) => void
+    multiple?: boolean
 }
 
-const FILE_PROTOTYPE = {
-    name: "",
-    size: 0,
-    type: "",
-    lastModified: 0,
-  }
-
-const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
+const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true }) => {
     const [fieldActive, setFieldActive] = useState<boolean>(false);
     const [files, setFiles] = useState<File[]>([]);
     const fileRef = useRef<HTMLInputElement>(null);
@@ -36,6 +30,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
     const handleSelected = (event: ChangeEvent<HTMLInputElement>) => {
         const selectedFiles = event.target.files
 
+        
         if (selectedFiles?.length <= 0) return 
 
         setFiles(Array.from(selectedFiles));
@@ -44,10 +39,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
 
     const handleFileDropped = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
-
-
         setFiles(Array.from(event.dataTransfer.files));
-        
         setFieldActive(false);
     };
 
@@ -65,15 +57,15 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
     };
 
     useEffect(() => {
-        const convertedData = files.map((file: File) => {
-            return {
-                name: file.name,
-                size: file.size,
-                type: file.type,
-                lastModified: file.lastModified,
-              }
-        })
-        setter(convertedData)
+        // const convertedData = files.map((file: File) => {
+        //     return {
+        //         name: file.name,
+        //         size: file.size,
+        //         type: file.type,
+        //         lastModified: file.lastModified,
+        //       }
+        // })
+        setter(files)
         setFieldActive(false)
     }, [files])
 
@@ -142,7 +134,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter }) => {
                         onChange={handleSelected}
                         ref={fileRef}
                         type="file"
-                        multiple
+                        multiple={multiple}
                         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                 ) : (

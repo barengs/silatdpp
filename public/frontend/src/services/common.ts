@@ -1,8 +1,8 @@
-import { DEFAULT_BUDGET_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_TRANSPORTATION, DEFAULT_USER_DATA, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
+import { DEFAULT_BUDGET_DATA, DEFAULT_CERTIFICATE_DATA, DEFAULT_DIVISION_DATA, DEFAULT_PARTNERS_DATA, DEFAULT_PERMISSION_DATA, DEFAULT_ROLE_DATA, DEFAULT_SPPD_DATA, DEFAULT_STAFF_DATA, DEFAULT_TRANSPORTATION, GUEST_BOOK_DEFAULT_DATA, INSTITUTION_DEFAULT_DATA } from "@/utils/constans"
 
 
 export async function fetchInsitution() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/institusi`, { cache: 'no-store'})
 
     if (!res.ok) return [INSTITUTION_DEFAULT_DATA]
 
@@ -13,7 +13,7 @@ export async function fetchInsitution() {
 
 
 export async function fetchGuestBook() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/buku-tamu`, { cache: 'no-store'})
 
     if (!res.ok) return [GUEST_BOOK_DEFAULT_DATA]
 
@@ -24,7 +24,7 @@ export async function fetchGuestBook() {
 
 
 export async function fetchDivision() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/divisi`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/divisi`, { cache: 'no-store'})
 
     if (!res.ok) return [DEFAULT_DIVISION_DATA]
 
@@ -34,7 +34,7 @@ export async function fetchDivision() {
 }
 
 export async function fetchPartners() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/rekanan`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/rekanan`, { cache: 'no-store'})
 
     if (!res.ok) return [DEFAULT_PARTNERS_DATA]
 
@@ -44,7 +44,7 @@ export async function fetchPartners() {
 }
 
 export async function fetchTransportation() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/transportasi`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/transportasi`, { cache: 'no-store'})
 
     if (!res.ok) return [DEFAULT_TRANSPORTATION]
 
@@ -54,7 +54,8 @@ export async function fetchTransportation() {
 }
 
 export async function fetchBudget() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/biaya`)
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/biaya`, { cache: 'no-store'})
 
     
     if (!res.ok) return [DEFAULT_BUDGET_DATA]
@@ -65,10 +66,12 @@ export async function fetchBudget() {
 }
 
 export async function fetchUsers() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/karyawan`)
+    
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/karyawan`, { cache: 'no-store'})
 
     
-    if (!res.ok) return [DEFAULT_USER_DATA]
+    if (!res.ok) return [DEFAULT_STAFF_DATA]
     
     const data = await res.json()
 
@@ -76,7 +79,7 @@ export async function fetchUsers() {
 }
 
 export async function fetchPermissions() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/hak-akses`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/hak-akses`, { cache: 'no-store'})
 
     
     if (!res.ok) return [DEFAULT_PERMISSION_DATA]
@@ -87,10 +90,32 @@ export async function fetchPermissions() {
 }
 
 export async function fetchRoles() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/tugas`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/tugas`, { cache: 'no-store'})
 
     
     if (!res.ok) return [DEFAULT_ROLE_DATA]
+    
+    const data = await res.json()
+
+    return data.data
+}
+
+export async function fetchSppd() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`, { cache: 'no-store'})
+
+    
+    if (!res.ok) return [DEFAULT_SPPD_DATA]
+    
+    const data = await res.json()
+
+    return data.data.data
+}
+
+export async function fetchCertificates() {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/ijazah`, { cache: 'no-store'})
+
+    
+    if (!res.ok) return [DEFAULT_CERTIFICATE_DATA]
     
     const data = await res.json()
 
