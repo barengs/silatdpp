@@ -58,7 +58,13 @@ export default function Page() {
   }, [])
   
   return (
-      <div className="mx-auto min-h-screen flex justify-center items-center bg-gray-200">
+      <div className="mx-auto min-h-screen flex flex-col lg:flex-row justify-center items-center bg-gray-200 gap-16">
+
+          <div className="text-center lg:text-right">
+            <h1 className="lg:text-lg text-black-2 text-semibold">"The only way to do great work is to love what you do."</h1>
+            <span>Steve Jobs</span>
+          </div>
+
           <div className="bg-white py-12 px-8">
               <h1 className="text-3xl font-semibold text-black text-center">Login</h1>
               <form onSubmit={onSubmit} className="space-y-12 mt-16">
