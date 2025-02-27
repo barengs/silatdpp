@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { persistor, store } from "@/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { ToastContainer } from "react-toastify";
+import "@/utils/errorMaps"
 
 
 export default function RootLayout({
