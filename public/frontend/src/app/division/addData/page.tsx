@@ -11,32 +11,31 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 
 const Page: React.FC = () => {
+    const [isPending, fetchCaller] = useFetch();
+    const [errors, setErrors] = useState({});
+    const router = useRouter();
+    const store = useStore();
+    const authState = store.getState().auth;
 
-     const [isPending, fetchCaller] = useFetch();
-     const [errors, setErrors] = useState({})
-     const router = useRouter()
-     const store = useStore();
-     const authState = store.getState().auth;
-
-     const schema = z.object({
-        nama: z.string().min(1, "Nama divisi tidak boleh kosong!")
-     })
+    const schema = z.object({
+        nama: z.string().min(1, "Nama divisi tidak boleh kosong!"),
+    });
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
-
-        
-        
         event.preventDefault();
-        
+
         const formData = event.currentTarget;
-        const data = new FormData(formData);        
+        const data = new FormData(formData);
 
-        const res = schema.safeParse({ nama: data.get("nama") }).error?.flatten().fieldErrors
+        const res = schema
+            .safeParse({ nama: data.get("nama") })
+            .error?.flatten().fieldErrors;
 
-        setErrors(Object.keys(res).length >= 1 ? res : {})
+        if (Object.keys(res).length >= 1) {
+            setErrors(res);
+            return;
+        }
 
-        return
-        
         await fetchCaller("divisi", {
             method: "POST",
             headers: {
@@ -46,12 +45,11 @@ const Page: React.FC = () => {
         })
             .then(() => {
                 toast.success("Data divisi berhasil ditambahkan!", {
-                    position: "top-right"
+                    position: "top-right",
                 });
                 router.push("/division");
             })
             .catch(() => console.log("Error saat menambah data"));
-        
     };
 
     return (
@@ -61,9 +59,13 @@ const Page: React.FC = () => {
                 onSubmit={handlePostData}
                 className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark"
             >
-                <InputFields title="Nama Divisi" name="nama" error={errors.nama ? errors.nama[0] : ""}/>
+                <InputFields
+                    title="Nama Divisi"
+                    name="nama"
+                    error={errors.nama ? errors.nama[0] : ""}
+                />
                 <button
-                    className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 text-sm col-span-2"
+                    className="col-span-2 flex w-max justify-center rounded bg-primary p-3 text-sm font-medium text-gray hover:bg-opacity-90"
                     type="submit"
                 >
                     {isPending ? (
