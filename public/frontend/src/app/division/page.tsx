@@ -5,20 +5,20 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Modal from "@/components/Modal";
 import Table from "@/components/Table";
-import { fetchDivision } from "@/services/common";
-import { setDivision } from "@/store/servicesSlice";
+import { useGetDivisionsQuery } from "@/services/division";
 import { DEFAULT_DIVISION_DATA } from "@/utils/constans";
 import { useEffect, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
 
 const Division: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false)
     const [selectedData, setSelectedData] = useState(DEFAULT_DIVISION_DATA)
     
-    const dispatch = useDispatch();
-    const store = useStore();
+    const {data, isLoading, error} = useGetDivisionsQuery()
     
-    const [data, setData] = useState(store.getState().services.divisions)
+    // const dispatch = useDispatch();
+    // const store = useStore();
+    
+    // const [data, setData] = useState(store.getState().services.divisions)
 
 
 
@@ -47,22 +47,15 @@ const Division: React.FC = () => {
         },
     ];
 
-    useEffect(() => {
-        const syncDivisionData = async () => {
-            dispatch(setDivision(await fetchDivision()));
-            setData(store.getState().services.divisions)
-        };
-
-        syncDivisionData();
-    }, []);
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Divisi" />
             <Table
-                data={data}
+                data={data ? data.data : []}
                 column={columns}
                 name="Data Divisi"
+                isLoading={isLoading}
                 addButtonLink="/division/addData"
                 addButtonName="Tambah Divisi"
             />
