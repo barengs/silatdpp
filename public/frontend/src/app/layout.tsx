@@ -35,7 +35,8 @@ export default function RootLayout({
           <ToastContainer />
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              {loading ? <Loader /> : children}
+              {children}
+              {/* {loading ? <Loader /> : children} */}
             </PersistGate>
           </Provider>
         </div>
