@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BeritaConroller;
 use App\Http\Controllers\Api\IjazahConroller;
 use App\Http\Controllers\Api\KaryawanController;
 use App\Http\Controllers\Api\PermissionController;
@@ -49,3 +50,4 @@ Route::post('hak-akses-tugas', [RoleController::class, 'permissionRole'])->name(
 
 Route::apiResource('ijazah', IjazahConroller::class);
 Route::apiResource('pindahan/siswa', SiswaPindahConroller::class);
+Route::apiResource('berita', BeritaConroller::class);
