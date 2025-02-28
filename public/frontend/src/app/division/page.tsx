@@ -13,14 +13,7 @@ const Division: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false)
     const [selectedData, setSelectedData] = useState(DEFAULT_DIVISION_DATA)
     
-    const {data, isLoading, error} = useGetDivisionsQuery()
-    
-    // const dispatch = useDispatch();
-    // const store = useStore();
-    
-    // const [data, setData] = useState(store.getState().services.divisions)
-
-
+    const {data, isLoading } = useGetDivisionsQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true)
