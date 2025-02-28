@@ -38,6 +38,8 @@ const DropdownUser = () => {
     };
 
     useEffect(() => {
+        if (!serviceState) return
+
         const user_data = serviceState.users.filter(user => user.name == authState.user.name)
 
         if (user_data) {
