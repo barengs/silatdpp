@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RekananController;
 use App\Http\Controllers\Api\RekomController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\SiswaPindahConroller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
@@ -47,3 +48,4 @@ Route::apiResource('hak-akses', PermissionController::class);
 Route::post('hak-akses-tugas', [RoleController::class, 'permissionRole'])->name('role-permission');
 
 Route::apiResource('ijazah', IjazahConroller::class);
+Route::apiResource('pindahan/siswa', SiswaPindahConroller::class);
