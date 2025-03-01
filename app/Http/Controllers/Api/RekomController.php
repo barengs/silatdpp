@@ -72,7 +72,8 @@ class RekomController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Rekom::find($id);
+        return new RekomResource(true, 'data rekom', $data);
     }
 
     /**
@@ -80,7 +81,9 @@ class RekomController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $update = Rekom::find($id);
+        $update->update($request->all());
+        return new RekomResource(true, 'data berhasil di update', $update);
     }
 
     /**
@@ -88,6 +91,8 @@ class RekomController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Rekom::find($id);
+        $data->delete();
+        return new RekomResource(true, 'data berhasil di hapus', $data);
     }
 }
