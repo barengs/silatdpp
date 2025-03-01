@@ -1,40 +1,28 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { useDispatch, useStore } from "react-redux"
 import Table from "@/components/Table"
-import { setSppd } from "@/store/servicesSlice"
 import { SppdDataType } from "@/types/pages/sppd"
 import { getDateTime } from "@/utils/data"
 import { DEFAULT_SPPD_DATA } from "@/utils/constans"
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import Breadcrumb from "@/components/Breadcrumb"
-import { fetchSppd } from "@/services/common"
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields"
+import { useGetSppdsQuery } from "@/services/sppd"
+import { useGetTransportationsQuery } from "@/services/transporation"
 
 const SppdPage: React.FC = () => {
-    const store = useStore();
-    const dispatch = useDispatch()
-    const [data, setData] = useState(store.getState().services.sppd)
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_SPPD_DATA);
+
+    const { data: sppdData, isLoading } = useGetSppdsQuery()
+    const { data: transporationData } = useGetTransportationsQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
         setSelectedData(data);
     };
-
-     useEffect(() => {
-            const syncState = async () => {
-                dispatch(setSppd(await fetchSppd()));
-                setData(store.getState().services.sppd);
-            };
-    
-            syncState();
-
-        }, []);
-    
 
 
     const columns = [
@@ -74,11 +62,10 @@ const SppdPage: React.FC = () => {
         },
     ]
 
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Histori SPPD" />
-            <Table addButtonName='Tambah SPPD' addButtonLink='/sppd' name='Daftar Pengajuan SPPD' column={columns} data={data} detailLink={{name: "Pengaturan", to: "/sppd"}}   />
+            <Table addButtonName='Tambah SPPD' addButtonLink='/sppd' name='Daftar Pengajuan SPPD' column={columns} data={sppdData ? sppdData.data.data : []} detailLink={{name: "Pengaturan", to: "/sppd"}} isLoading={isLoading} />
             <Modal 
                 url={`buku-tamu/${selectedData.id}`}
                 title="Detail SPPD"
@@ -93,12 +80,7 @@ const SppdPage: React.FC = () => {
                     title="Transportasi Perjalanan"
                     name="alat_transportasi_id"
                     disabled={true}
-                    defaultValue={store.getState().services.sppd.map(sppd => {
-                        if (sppd.id == selectedData.alat_transportasi_id) {
-                            return sppd.maksud_kegiatan
-                        }
-                        return ""
-                    })[0]}
+                    defaultValue={transporationData}
                 />
                 <div className="flex gap-x-4">
                     <InputFields
@@ -121,7 +103,7 @@ const SppdPage: React.FC = () => {
                     defaultValue={selectedData.tanggal_kegiatan}
                 />
                
-                <InputFields
+                {/* <InputFields
                     title="Biaya Perjalanan"
                     name="tingkat_biaya_id"
                     disabled={true}
@@ -133,7 +115,7 @@ const SppdPage: React.FC = () => {
 
                         return ""
                     })[0]}
-                />
+                /> */}
                 <InputFields
                     title="Status Diterima"
                     name="tingkat_biaya_id"

@@ -6,29 +6,23 @@ import InputFields from "@/components/Fields/InputFields";
 import SelectFields from "@/components/Fields/SelectFields";
 import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { fetchBudget, fetchTransportation } from "@/services/common";
-import { setBudget, setTransportation } from "@/store/servicesSlice";
-import React, { FormEvent, useEffect, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import { useGetBudgetsQuery } from "@/services/budget";
+import { useGetTransportationsQuery } from "@/services/transporation";
+import React, { FormEvent, useState } from "react";
+import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 
 const SppdAddData: React.FC = () => {
     const [files, setFiles] = useState<File[]>([]);
-    const dispatch = useDispatch();
 
     const store = useStore();
     const state = store.getState();
     const authState = state.auth;
-    const servicesState = state.services;
 
-    useEffect(() => {
-        const syncState = async () => {
-            dispatch(setBudget(await fetchBudget()));
-            dispatch(setTransportation(await fetchTransportation()));
-        };
-
-        syncState();
-    }, []);
+    const { data: budgetsData, isLoading: budgetLoading } =
+        useGetBudgetsQuery();
+    const { data: transporationData, isLoading: transportationLoading } =
+        useGetTransportationsQuery();
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -48,14 +42,13 @@ const SppdAddData: React.FC = () => {
         );
 
         if (!res.ok) {
-            console.log(res)
-            toast.error("Gagal mengajukan SPPD", { position: "top-right" })
+            console.log(res);
+            toast.error("Gagal mengajukan SPPD", { position: "top-right" });
             setTimeout(() => window.location.reload(), 3000);
-            return
+            return;
         }
 
-        toast.success("Berhasil mengajukan SPPD", { position: "top-right" })
-
+        toast.success("Berhasil mengajukan SPPD", { position: "top-right" });
     };
 
     return (
@@ -73,14 +66,12 @@ const SppdAddData: React.FC = () => {
                 <SelectFields
                     title="Transportasi Perjalanan"
                     name="alat_transportasi_id"
-                    options={servicesState.transportation.map(
-                        (transportation) => {
-                            return {
-                                name: transportation.nama,
-                                value: transportation.id,
-                            };
-                        },
-                    )}
+                    options={transporationData ? transporationData.data.map((transportation) => {
+                        return {
+                            name: transportation.nama,
+                            value: transportation.id,
+                        };
+                    }) : []}
                 />
                 <div className="flex gap-x-4">
                     <InputFields
@@ -99,16 +90,16 @@ const SppdAddData: React.FC = () => {
                     name="tanggal_kegiatan"
                     type="date"
                 />
-               
+
                 <SelectFields
                     title="Biaya Perjalanan"
                     name="tingkat_biaya_id"
-                    options={servicesState.budgets.map((budget) => {
+                    options={budgetsData ? budgetsData.data.map((budget) => {
                         return {
                             name: budget.biaya,
                             value: budget.id,
                         };
-                    })}
+                    }) : []}
                 />
                 <FilesFields
                     setter={(files: File[]) => setFiles(files)}
