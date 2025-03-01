@@ -2,23 +2,20 @@
 
 import Breadcrumb from "@/components/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { DEFAULT_BUDGET_DATA } from "@/utils/constans";
 import Table from "@/components/Table";
-import { useDispatch, useStore } from "react-redux";
-import { fetchBudget } from "@/services/common";
-import { setBudget } from "@/store/servicesSlice";
 import InputFields from "@/components/Fields/InputFields";
 import Modal from "@/components/Modal";
+import { useGetBudgetsQuery } from "@/services/budget";
 
 
 const Page: React.FC = () => {
 
-    const dispatch = useDispatch()
-    const store = useStore()
-    const [data, setData] = useState(store.getState().services.budgets)
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_BUDGET_DATA);
+
+    const { data, isLoading } = useGetBudgetsQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -45,26 +42,17 @@ const Page: React.FC = () => {
         },
     ]
 
-    useEffect(() => {
-            const syncBudgetData = async() => {
-                dispatch(setBudget(await fetchBudget()))
-                setData(store.getState().services.budgets)
-            }
-    
-            syncBudgetData()
-            
-        }, [])
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data tingkat biaya" />
             <>
                 <Table
-                    data={data}
+                    data={data ? data.data : []}
                     column={column}
                     name="Budget"
                     addButtonLink="/budget/addData"
                     addButtonName="Tambah Biaya"
+                    isLoading={isLoading}
                 />
             </>
             <Modal

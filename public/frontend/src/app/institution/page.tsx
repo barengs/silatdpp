@@ -2,20 +2,16 @@
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Table from "@/components/Table";
-import { fetchInsitution } from "@/services/common";
-import { setInstitution } from "@/store/servicesSlice";
 import { INSTITUTION_DEFAULT_DATA } from "@/utils/constans";
 import Modal from "@/components/Modal";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import React, { useState } from "react";
 import InputFields from "@/components/Fields/InputFields";
+import { useGetInstitutionsQuery } from "@/services/institution";
 
 const Institution: React.FC = () => {
-    const dispatch = useDispatch();
-    const store = useStore();
-    const [data, setData] = useState(store.getState().services.institutions);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(INSTITUTION_DEFAULT_DATA);
+    const {data, isLoading } = useGetInstitutionsQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -51,15 +47,6 @@ const Institution: React.FC = () => {
         },
     ];
 
-    useEffect(() => {
-        const syncInstitutionData = async () => {
-            dispatch(setInstitution(await fetchInsitution()));
-            setData(store.getState().services.institutions);
-        };
-
-        syncInstitutionData();
-    }, []);
-
     return (
         <DefaultLayout>
             <Table
@@ -67,8 +54,9 @@ const Institution: React.FC = () => {
                 addButtonLink="/institution/addData"
                 name="Daftar Institusi"
                 column={columns}
-                data={data}
+                data={data ? data.data : []}
                 detailLink={{ name: "Pengaturan", to: "/institution" }}
+                isLoading={isLoading}
             />
             <Modal
                 url={`institusi/${selectedData.id}`}

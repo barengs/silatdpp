@@ -7,7 +7,7 @@ import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import { useGetDivisionsQuery } from "@/services/division";
 import { DEFAULT_DIVISION_DATA } from "@/utils/constans";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Division: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false)

@@ -3,21 +3,17 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Table from "@/components/Table";
-import { fetchPartners } from "@/services/common";
-import { setPartners } from "@/store/servicesSlice";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import { useState } from "react";
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields";
 import { DEFAULT_PARTNERS_DATA } from "@/utils/constans";
+import { useGetBiayaQuery } from "@/services/partners";
 
 const Partner = () => {
-    const store = useStore();
-    const dispatch = useDispatch();
-    const [data, setData] = useState(store.getState().services.partners);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_PARTNERS_DATA);
+
+    const { data, isLoading } = useGetBiayaQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -53,24 +49,16 @@ const Partner = () => {
         },
     ];
 
-    useEffect(() => {
-        const syncPartnerData = async () => {
-            dispatch(setPartners(await fetchPartners()));
-            setData(store.getState().services.partners);
-        };
-
-        syncPartnerData();
-    }, []);
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Rekan" />
             <Table
                 name="Data Rekanan"
                 column={columns}
-                data={data}
+                data={data ? data.data : []}
                 addButtonName="Tambah Rekan"
                 addButtonLink="/partners/addData"
+                isLoading={isLoading}
             />
             <Modal
                 url={`biaya/${selectedData.id}`}

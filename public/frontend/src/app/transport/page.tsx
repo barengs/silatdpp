@@ -3,21 +3,17 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Table from "@/components/Table";
-import { fetchTransportation } from "@/services/common";
-import { setTransportation } from "@/store/servicesSlice";
 import { DEFAULT_TRANSPORTATION } from "@/utils/constans";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import React, { useState } from "react";
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields";
+import { useGetTransportationsQuery } from "@/services/transporation";
 
 const Page: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_TRANSPORTATION);
-    const store = useStore();
-    const dispatch = useDispatch();
 
-    const [data, setData] = useState(store.getState().services.transportation);
+    const {data, isLoading } = useGetTransportationsQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -48,24 +44,17 @@ const Page: React.FC = () => {
         },
     ];
 
-    useEffect(() => {
-        const setTransportData = async () => {
-            dispatch(setTransportation(await fetchTransportation()));
-            setData(store.getState().services.transportation);
-        };
-
-        setTransportData();
-    }, []);
 
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Data Transportasi" />
             <Table
-                data={data}
+                data={data ? data.data : []}
                 column={columns}
                 name="Data Trasportasi"
                 addButtonLink="/transport/addData"
                 addButtonName="Tambah Transportasi"
+                isLoading={isLoading}
             />
             <Modal
                 url={`transportasi/${selectedData.id}`}
