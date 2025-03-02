@@ -31,7 +31,7 @@ const InputFields: React.FC<InputFieldsProps> = ({
     const router = useRouter();
 
     const [inputValue, setInputValue] = useState<string>(defaultValue);
-    const [data, setData] = useState<string[]>([]);
+    const [data, setData] = useState<string[]>(autoCompleteData);
     const [autoCompleteState, setAutoCompleteState] = useState<boolean>(false);
     const [isError, setIsError] = useState(error ? error : "")
 
@@ -61,8 +61,13 @@ const InputFields: React.FC<InputFieldsProps> = ({
     useEffect(() => setIsError(error), [error])
 
     useEffect(() => {
-        setData(autoCompleteData || []);
-    }, []);
+        if (JSON.stringify(data) !== JSON.stringify(autoCompleteData)) {
+            setData(autoCompleteData);
+        }
+    }, [autoCompleteData]);
+
+    // useEffect(() => setForceUpdate(state => !state), [])
+
 
     return (
         <div className="flex-1" onBlur={onBlurHandler}>
