@@ -5,6 +5,7 @@ import InputFields from "@/components/Fields/InputFields";
 import SelectFields from "@/components/Fields/SelectFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import useFetch from "@/hooks/useFetch";
+import { useGeRolesQuery } from "@/services/role";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { useStore } from "react-redux";
@@ -14,8 +15,9 @@ const Page: React.FC = () => {
     const router = useRouter()
     const store = useStore();
     const authState = store.getState().auth;
-    const serviceState = store.getState().services;
     const [isPending, fetchCaller] = useFetch();
+
+    const { data: rolesData } = useGeRolesQuery()
 
     const handlePost = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -65,7 +67,7 @@ const Page: React.FC = () => {
                     type="password"
                 />
                 <InputFields title="Email" name="email" />
-                <SelectFields title="Sebagai" name="otoritas" options={serviceState.roles} />
+                <SelectFields title="Sebagai" name="otoritas" options={rolesData ? rolesData.data : []} />
                 <SelectFields title="Jenis Kelamin" name="gender" options={[{name: "Laki-Laki", value: "L"}, {name: "Perempuan", value: "P"}]} />
                 <div className="col-span-2">
                     <button

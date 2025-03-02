@@ -2,21 +2,17 @@
 
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Table from "@/components/Table";
-import { fetchGuestBook } from "@/services/common";
 import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 import Modal from "@/components/Modal";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
 import InputFields from "@/components/Fields/InputFields";
-import { setGuestBook } from "@/store/servicesSlice";
+import { useGetGuestBooksQuery } from "@/services/guestBook";
 
 const GuestBookPage: React.FC = () => {
-    const dispatch = useDispatch();
-    const store = useStore();
-
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(GUEST_BOOK_DEFAULT_DATA);
-    const [data, setData] = useState(store.getState().services.guestBook)
+
+    const { data, isLoading } = useGetGuestBooksQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -57,14 +53,6 @@ const GuestBookPage: React.FC = () => {
         },
     ];
 
-    useEffect(() => {
-        const syncGuestBookData = async () => {
-            dispatch(setGuestBook(await fetchGuestBook()));
-            setData(store.getState().services.guestBook);
-        };
-
-        syncGuestBookData();
-    }, []);
 
     return (
         <DefaultLayout>
@@ -73,7 +61,7 @@ const GuestBookPage: React.FC = () => {
                 addButtonLink="/guestBook"
                 name="Daftar Tamu"
                 column={columns}
-                data={data}
+                data={data.data.data}
                 detailLink={{ name: "Pengaturan", to: "/guestBook" }}
                 excludes={[
                     "id",

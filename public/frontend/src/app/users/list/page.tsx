@@ -11,13 +11,14 @@ import { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields";
+import { useGetAllUserQuery } from "@/services/users";
 
 const Page: React.FC = () => {
-    const dispatch = useDispatch();
-    const store = useStore();
-    const [data, setData] = useState(store.getState().services.users)
+
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_PROFILE_DATA);
+    
+    const { data, isLoading } = useGetAllUserQuery() 
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -53,23 +54,13 @@ const Page: React.FC = () => {
         },
     ];
 
-    useEffect(() => {
-
-        const syncUserData = async () => {
-            dispatch(setUsers(await fetchUsers()));
-            setData(store.getState().services.users)
-        };
-
-        syncUserData();
-    }, []);
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Daftar Karyawan" />
             <Table
                 name="List karyawan"
                 column={columns}
-                data={data}
+                data={data ? data.data : []}
                 addButtonName="Tambah Karyawan"
                 addButtonLink="/register"
             />
