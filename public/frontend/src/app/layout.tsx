@@ -7,7 +7,7 @@ import Loader from "@/components/Loader";
 import { Provider } from "react-redux";
 import { persistor, store } from "@/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer, Zoom } from "react-toastify";
 import "@/utils/errorMaps"
 
 
@@ -32,7 +32,7 @@ export default function RootLayout({
 
       <body suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
-          <ToastContainer />
+          <ToastContainer limit={3} transition={Zoom}/>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               {children}
