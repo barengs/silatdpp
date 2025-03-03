@@ -6,13 +6,14 @@ import { GUEST_BOOK_DEFAULT_DATA } from "@/utils/constans";
 import Modal from "@/components/Modal";
 import React, { useEffect, useState } from "react";
 import InputFields from "@/components/Fields/InputFields";
-import { useGetGuestBooksQuery } from "@/services/guestBook";
+import { useDeleteGuestBookMutation, useGetGuestBooksQuery } from "@/services/guestBook";
 
 const GuestBookPage: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(GUEST_BOOK_DEFAULT_DATA);
 
-    const { data, isLoading } = useGetGuestBooksQuery()
+    const { data } = useGetGuestBooksQuery()
+    const [deleteGuestBook] = useDeleteGuestBookMutation()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -61,7 +62,7 @@ const GuestBookPage: React.FC = () => {
                 addButtonLink="/guestBook"
                 name="Daftar Tamu"
                 column={columns}
-                data={data.data.data}
+                data={data ? data.data.data : []}
                 detailLink={{ name: "Pengaturan", to: "/guestBook" }}
                 excludes={[
                     "id",
@@ -74,8 +75,9 @@ const GuestBookPage: React.FC = () => {
                 ]}
             />
             <Modal
-                url={`buku-tamu/${selectedData.id}`}
-                title="Edit Divisi"
+                idItem={selectedData.id}
+                mutation={deleteGuestBook}
+                title="Detail Buku Tamu"
                 state={showPopup}
                 stateSetter={setShowPopup}
                 ableDelete={true}
@@ -94,14 +96,32 @@ const GuestBookPage: React.FC = () => {
                 />
                 <InputFields
                     title="No Telepon"
-                    name="Kontak"
+                    name="no_telpon"
                     defaultValue={selectedData.no_telpon}
                     disabled={true}
                 />
                 <InputFields
                     title="Keperluan"
-                    name="Kontak"
+                    name="keperluan"
                     defaultValue={selectedData.keperluan}
+                    disabled={true}
+                />
+                <InputFields
+                    title="Asal Instansi"
+                    name="institusi"
+                    defaultValue={selectedData.institusi.nama}
+                    disabled={true}
+                />
+                <InputFields
+                    title="Alamat Instansi"
+                    name="Kontak"
+                    defaultValue={selectedData.institusi.alamat}
+                    disabled={true}
+                />
+                <InputFields
+                    title="Kontak Instansi"
+                    name="Kontak"
+                    defaultValue={selectedData.institusi.kontak}
                     disabled={true}
                 />
             </Modal>
