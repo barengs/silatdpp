@@ -7,7 +7,7 @@ import Table from "@/components/Table";
 import { DEFAULT_ROLE_DATA } from "@/utils/constans";
 import Modal from "@/components/Modal";
 import { useState } from "react";
-import { useGetRolesQuery } from "@/services/role";
+import { useGetRolesQuery, useUpdateRoleMutation } from "@/services/role";
 
 const Page: React.FC = () => {
 
@@ -15,6 +15,7 @@ const Page: React.FC = () => {
     const [selectedData, setSelectedData] = useState(DEFAULT_ROLE_DATA);
 
     const { data: roleData } = useGetRolesQuery()
+    const [updateRole] = useUpdateRoleMutation()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -53,7 +54,7 @@ const Page: React.FC = () => {
             />
             <Modal
                 idItem={selectedData.id}
-
+                mutation={updateRole}
                 title="Detail SPPD"
                 state={showPopup}
                 stateSetter={setShowPopup}
@@ -61,7 +62,6 @@ const Page: React.FC = () => {
                 <InputFields
                     title="Nama Role"
                     name="name"
-                    disabled={true}
                     defaultValue={selectedData.name}
                 />
             </Modal>
