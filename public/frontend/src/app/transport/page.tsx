@@ -7,13 +7,14 @@ import { DEFAULT_TRANSPORTATION } from "@/utils/constans";
 import React, { useState } from "react";
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields";
-import { useGetTransportationsQuery } from "@/services/transporation";
+import { useGetTransportationsQuery, useUpdateTransportationMutation } from "@/services/transporation";
 
 const Page: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_TRANSPORTATION);
 
     const {data, isLoading } = useGetTransportationsQuery()
+    const [updateTransport] = useUpdateTransportationMutation()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -57,22 +58,22 @@ const Page: React.FC = () => {
                 isLoading={isLoading}
             />
             <Modal
-                url={`transportasi/${selectedData.id}`}
-                title="Edit Divisi"
+                idItem={selectedData.id}
+                mutation={updateTransport}
+                title="Edit Transportasi"
                 state={showPopup}
                 stateSetter={setShowPopup}
+                ableUpdate={true}
             >
                 <InputFields
                     title="Nama Transportasi"
                     name="nama"
                     defaultValue={selectedData.nama}
-                    disabled={true}
                 />
                 <InputFields
                     title="Jenis Transportasi"
                     name="jenis"
                     defaultValue={selectedData.jenis}
-                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>
