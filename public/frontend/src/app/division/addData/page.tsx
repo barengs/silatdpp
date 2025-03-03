@@ -5,7 +5,7 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import useFetch from "@/hooks/useFetch";
 import { useRouter } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -27,12 +27,12 @@ const Page: React.FC = () => {
         const formData = event.currentTarget;
         const data = new FormData(formData);
 
+
         const res = schema
             .safeParse({ nama: data.get("nama") })
-            .error?.flatten().fieldErrors;
 
-        if (Object.keys(res).length >= 1) {
-            setErrors(res);
+        if (!res.success) {
+            setErrors(res.error.flatten().fieldErrors);
             return;
         }
 
