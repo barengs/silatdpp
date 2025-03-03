@@ -6,12 +6,13 @@ import { INSTITUTION_DEFAULT_DATA } from "@/utils/constans";
 import Modal from "@/components/Modal";
 import React, { useState } from "react";
 import InputFields from "@/components/Fields/InputFields";
-import { useGetInstitutionsQuery } from "@/services/institution";
+import { useGetInstitutionsQuery, useUpdateInstitutionMutation } from "@/services/institution";
 
 const Institution: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(INSTITUTION_DEFAULT_DATA);
     const {data, isLoading } = useGetInstitutionsQuery()
+    const [updateInstitution] = useUpdateInstitutionMutation()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -59,28 +60,27 @@ const Institution: React.FC = () => {
                 isLoading={isLoading}
             />
             <Modal
-                url={`institusi/${selectedData.id}`}
-                title="Edit Divisi"
+                idItem={selectedData.id}
+                mutation={updateInstitution}
+                title="Edit Institusi"
                 state={showPopup}
                 stateSetter={setShowPopup}
+                ableUpdate={true}
             >
                 <InputFields
                     title="Nama Institusi"
                     name="nama"
                     defaultValue={selectedData.nama}
-                    disabled={true}
                 />
                 <InputFields
                     title="Alamat Institusi"
                     name="alamat"
                     defaultValue={selectedData.alamat}
-                    disabled={true}
                 />
                 <InputFields
                     title="Kontak Institusi"
                     name="kontak"
                     defaultValue={selectedData.kontak}
-                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>
