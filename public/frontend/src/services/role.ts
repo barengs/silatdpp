@@ -4,10 +4,10 @@ import { baseApiSlice } from "./base";
 
 export const roleApi = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    geRoles: builder.query({
+    getRoles: builder.query({
       query: () => "/tugas"
     })
   })
 })
 
-export const { useGeRolesQuery } = roleApi;
+export const { useGetRolesQuery } = roleApi;
