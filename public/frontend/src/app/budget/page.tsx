@@ -7,7 +7,7 @@ import { DEFAULT_BUDGET_DATA } from "@/utils/constans";
 import Table from "@/components/Table";
 import InputFields from "@/components/Fields/InputFields";
 import Modal from "@/components/Modal";
-import { useGetBudgetsQuery } from "@/services/budget";
+import { useGetBudgetsQuery, useUpdateBudgetMutation } from "@/services/budget";
 
 
 const Page: React.FC = () => {
@@ -16,6 +16,7 @@ const Page: React.FC = () => {
     const [selectedData, setSelectedData] = useState(DEFAULT_BUDGET_DATA);
 
     const { data, isLoading } = useGetBudgetsQuery()
+    const [updateBudget] = useUpdateBudgetMutation()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -56,7 +57,9 @@ const Page: React.FC = () => {
                 />
             </>
             <Modal
-                url={`biaya/${selectedData.id}`}
+                idItem={selectedData.id}
+                mutation={updateBudget}
+                ableUpdate={true}
                 title="Edit Biaya"
                 state={showPopup}
                 stateSetter={setShowPopup}
@@ -65,7 +68,6 @@ const Page: React.FC = () => {
                     title="Jenis Biaya"
                     name="biaya"
                     defaultValue={selectedData.biaya}
-                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>
