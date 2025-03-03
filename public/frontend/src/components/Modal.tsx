@@ -50,11 +50,14 @@ const Modal: React.FC<PopupPropsType> = ({
             return;
         }
 
-        toast.success("Berhasil memperbarui data", {
+        toast.success(`Berhasil ${method == "update" ? "Memperbarui" : "Menghapus"} data`, {
             position: "top-right",
         });
         stateSetter(false);
-        window.location.reload();
+        
+        setTimeout(() => {
+            window.location.reload();
+        }, 3000)
     };
 
     return (
@@ -100,7 +103,7 @@ const Modal: React.FC<PopupPropsType> = ({
                                 type="submit"
                                 onClick={() => setMethod("update")}
                             >
-                                {isPending ? (
+                                {isPending && method == "update" ? (
                                     <>
                                         <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                                         Memperbarui Data
@@ -116,7 +119,14 @@ const Modal: React.FC<PopupPropsType> = ({
                                 type="submit"
                                 onClick={() => setMethod("delete")}
                             >
-                                Hapus Data
+                                {isPending && method == "delete" ? (
+                                    <>
+                                        <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                        Menghapus Data
+                                    </>
+                                ) : (
+                                    <>Hapus </>
+                                )}
                             </button>
                         )}
                     </div>
