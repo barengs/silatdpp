@@ -11,14 +11,14 @@ export const divisionApi = baseApiSlice.injectEndpoints({
       query: (id) => `/divisi/${id}`
     }),
     updateDivision: builder.mutation({
-      query: ({ id, ...updatedData}) => ({
-        url: `/divisi/${id}`,
+      query: ({ idItem, form }) => ({
+        url: `/divisi/${idItem}`,
         method: "PUT",
-        body: updatedData,
+        body: form,
       }),
-      invalidatesTags: ['Divisions']
+      invalidatesTags: ['Divisions'],
     })
   })
 })
 
-export const { useGetDivisionsQuery, useGetDivisionByIdQuery } = divisionApi;
+export const { useGetDivisionsQuery, useGetDivisionByIdQuery, useUpdateDivisionMutation } = divisionApi;
