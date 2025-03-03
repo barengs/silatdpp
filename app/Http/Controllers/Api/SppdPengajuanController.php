@@ -9,6 +9,7 @@ use App\Models\SppdHistory;
 use App\Models\SppdPengajuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -38,10 +39,10 @@ class SppdPengajuanController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         // Validasi inputan dari front end
         $validator = Validator::make($request->all(), [
-            
+
             'nama_kegiatan' => 'required',
             'tempat_kegiatan' => 'required',
             'tanggal_kegiatan' => 'required',
@@ -76,14 +77,14 @@ class SppdPengajuanController extends Controller
             ]);
         }
 
-        if ($request->hasFile('files')){
+        if ($request->hasFile('files')) {
             // validasi
             // $allowFileExtention = ['pdf', 'jpg', 'jpeg'];
             $files = $request->file('files');
-            
+
             foreach ($files as $file) {
                 $fileName = time() . '-' . $file->getClientOriginalName();
-                $filePath = $file->move('documents', $fileName);
+                $filePath = $file->move('documents/sppd', $fileName);
 
                 $doc = DokumenKegiatan::create([
                     'sppd_pengajuan_id' => $sppd->id,
@@ -96,31 +97,56 @@ class SppdPengajuanController extends Controller
             $data = SppdPengajuan::where('id', $sppd->id)->with('dokumens')->first();
 
             return new SppdPengajuanResource(true, 'Berhasil input Pengajuan SPPD!', $data);
-            
+
         } else {
             return response()->json(['status' => false]);
         }
-        
-    //     if ($sppd) {
-
-    //     } else {
-    //     }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SppdPengajuan $sppdPengajuan)
+    public function show($id)
     {
-        //
+        $data = SppdPengajuan::where('id', $id)->with('user')->with('approval')->with('dokumens')->with('history')->first();
+        return new SppdPengajuanResource(true, 'Detail Pengajuan SPPD', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SppdPengajuan $sppdPengajuan)
+    public function update(Request $request, $id)
     {
-        //
+        $data = SppdPengajuan::find($id);
+        $sppd = $data->update($request->all());
+        $check_file = DokumenKegiatan::where('sppd_pengajuan_id', $data->id)->get();
+
+        if ($check_file) {
+            $path = public_path('documents/sppd/');
+            foreach ($check_file as $file) {
+                if (File::exists("{$path}" . "{$file->alamat_dokumen}")) {
+                    File::delete("{$path}" . "{$file->alamat_dokumen}");
+                }
+            }
+        }
+
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+
+            foreach ($files as $file) {
+                $fileName = time() . '-' . $file->getClientOriginalName();
+                $filePath = $file->move('documents/sppd', $fileName);
+
+                $doc = DokumenKegiatan::create([
+                    'sppd_pengajuan_id' => $sppd->id,
+                    'nama_dokumen' => $fileName,
+                    'alamat_dokumen' => $filePath,
+                    'tipe_dokumen' => $file->clientExtension(),
+                ]);
+            }
+        }
+
+        return new SppdPengajuanResource(true, 'Data berhasil di update', $sppd);
     }
 
     /**

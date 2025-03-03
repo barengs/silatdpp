@@ -45,7 +45,8 @@ class RekananController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Rekanan::find($id);
+        return new RekananResource(true, 'data rekanan', $data);
     }
 
     /**
@@ -53,7 +54,9 @@ class RekananController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Rekanan::find($id);
+        $data->update($request->all());
+        return new RekananResource(true, 'data berhasil di update', $data);
     }
 
     /**
@@ -61,6 +64,8 @@ class RekananController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Rekanan::find($id);
+        $data->delete();
+        return new RekananResource(true, 'data berhasil di hapus', $data);
     }
 }
