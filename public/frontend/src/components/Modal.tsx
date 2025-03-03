@@ -1,29 +1,28 @@
-import useFetch from "@/hooks/useFetch";
 import { FormEvent, PropsWithChildren, useState } from "react";
-import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 
 interface PopupPropsType extends PropsWithChildren {
     title: string;
-    url: string;
+    idItem: string;
     state: boolean;
     stateSetter: (state: boolean) => void;
     ableUpdate?: boolean;
     ableDelete?: boolean;
+    mutation?: unknown;
+    isLoading?: boolean
 }
 
 const Modal: React.FC<PopupPropsType> = ({
     title,
     state,
     stateSetter,
-    url,
+    idItem,
     children,
     ableUpdate = false,
     ableDelete = false,
+    mutation = null,
+    isLoading = false
 }) => {
-    const store = useStore();
-    const authState = store.getState().auth;
-    const [isPending, fetchCaller] = useFetch();
     const [method, setMethod] = useState("update");
 
     const handleDataSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -31,19 +30,9 @@ const Modal: React.FC<PopupPropsType> = ({
 
         const form = new URLSearchParams(new FormData(event.currentTarget));
 
-        const res = await fetchCaller(url, {
-            method: method == "update" ? "PUT" : "DELETE",
-            headers: {
-                Authorization: authState.token,
-                "Content-Type":
-                    method == "update"
-                        ? "application/x-www-form-urlencoded"
-                        : "multipart/form-data",
-            },
-            body: method == "update" ? form : undefined,
-        });
+        const res = await mutation({idItem, form})
 
-        if (!res.ok) {
+        if (!res.data.success) {
             toast.error("Galat saat memperbarui data", {
                 position: "top-right",
             });
@@ -64,12 +53,10 @@ const Modal: React.FC<PopupPropsType> = ({
         <div
             className={`${state || closed ? "fixed" : "hidden"} bottom-0 left-0 z-9999 flex min-h-screen w-full items-center justify-center`}
         >
-            {/* opacity clicker    */}
             <div
                 className="absolute bottom-0 left-0 -z-10 min-h-screen w-full bg-black-2 bg-opacity-75"
                 onClick={() => stateSetter(false)}
             ></div>
-            {/* endopacity clicker */}
 
             <div className="w-max rounded-md bg-white p-4">
                 <div className="flex w-full justify-between">
@@ -103,7 +90,7 @@ const Modal: React.FC<PopupPropsType> = ({
                                 type="submit"
                                 onClick={() => setMethod("update")}
                             >
-                                {isPending && method == "update" ? (
+                                {isLoading && method == "update" ? (
                                     <>
                                         <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                                         Memperbarui Data
@@ -119,7 +106,7 @@ const Modal: React.FC<PopupPropsType> = ({
                                 type="submit"
                                 onClick={() => setMethod("delete")}
                             >
-                                {isPending && method == "delete" ? (
+                                {isLoading && method == "delete" ? (
                                     <>
                                         <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                                         Menghapus Data
