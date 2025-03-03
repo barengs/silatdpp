@@ -20,32 +20,23 @@ export default function GuestBookDetail() {
     const state = useStore().getState();
     const authState = state.auth;
 
-    const { data: guestBooksData } =
+    const { data: guestBooksData, isLoading } =
         useGetGuestBooksQuery();
     const { data: institutionsData } =
         useGetInstitutionsQuery();
     const { data: divisionsData } =
         useGetDivisionsQuery();
 
-    const [lastGuest, _] = useState("" || null);
+    const [lastGuest, setLastGuest] = useState(guestBooksData ? guestBooksData.data.data[0] : "");
+
+    useEffect(() => setLastGuest(guestBooksData ? guestBooksData.data.data[0] : ""), [isLoading])
 
     const [selectedInstitution, setSelectedInstitution] = useState("");
 
     const schema = z.object({
         nama_tamu: z.string().min(1, "Nama tidak boleh kosong!"),
         alamat: z.string().min(1, "Alamat tidak boleh kosong!"),
-        no_telepon: z.preprocess(
-            (val) => {
-              if (typeof val === "number") return val.toString(); // Convert number to string
-              if (typeof val === "string") return val.trim(); // Trim spaces
-              return val; // Pass other values unchanged
-            },
-            z.string({ invalid_type_error: "Harap masukkan nomor telepon yang valid!"})
-              .min(1, "No Telepon tidak boleh kosong!")
-              .refine((val) => /^(\+62|0)\d{9,13}$/.test(val), {
-                message: "Nomor telepon tidak valid",
-              })
-          ),
+        no_telpon: z.string().min(1, "Harap masukkan nomor telepon"),
         keperluan: z.string().min(1, "Keperluan tidak boleh kosong!"),
         institusi_id: z.string().min(1, "Institusi tidak boleh kosong!"),
         alamat_institusi: z
@@ -81,7 +72,7 @@ export default function GuestBookDetail() {
         .safeParse({
             nama_tamu: data.get("nama_tamu"),
             alamat: data.get("alamat"),
-            no_telepon: data.get("no_telepon"),
+            no_telpon: data.get("no_telpon"),
             keperluan: data.get("keperluan"),
             institusi_id: data.get("institusi_id"),
             alamat_institusi: data.get("alamat_institusi"),
@@ -89,6 +80,7 @@ export default function GuestBookDetail() {
         })
         
         if (!validation_res.success) {
+            console.log(validation_res.error.flatten().fieldErrors)
             toast.error("Data tidak valid!", { position: "top-right" })
             setErrors(validation_res.error.flatten().fieldErrors);
             return;
@@ -230,17 +222,18 @@ export default function GuestBookDetail() {
             </div>
 
             <div className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-6 pb-12 shadow-default dark:border-strokedark dark:bg-boxdark">
-                <h1 className="font-semibold text-black-2">Data terakhir</h1>
-                <div className="flex items-center justify-between px-4">
-                    {lastGuest ? (
+                <h1 className="font-semibold text-black-2">📌 Tamu Terakhir</h1>
+                <div className="items-center justify-between px-4">
+                {lastGuest ? (
                         <>
-                            <p>{trimText(lastGuest["nama_tamu"], 20)}</p>
-                            <p>{trimText(lastGuest["keperluan"], 20)}</p>
+                            <p>👤 {lastGuest["nama_tamu"]}</p>
+                            <p>📅 {lastGuest["keperluan"]}</p>
                             <p>
-                                {trimText(lastGuest["institusi"]["nama"], 20)}
+                                🏫
+                                {lastGuest["institusi"]["nama"]}
                             </p>
-                            <p>{lastGuest["divisi"]["nama"]}</p>
-                            <p>{getDateTime(lastGuest["created_at"])}</p>
+                            <p>📚 {lastGuest["divisi"]["nama"]}</p>
+                            <p>📆 {getDateTime(lastGuest["created_at"])}</p>
                         </>
                     ) : (
                         <p>Tidak ada pengunjung</p>
