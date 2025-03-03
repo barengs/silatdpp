@@ -6,7 +6,7 @@ export const baseApiSlice = createApi({
         baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL,
         prepareHeaders: (headers, {getState, endpoint}) => {
             const token = (getState() as RootState).auth.token
-            const needsAuth = ['updateDivision']
+            const needsAuth = ['updateDivision', 'updateInstitution', 'updateBudget']
 
             if (token && needsAuth.includes(endpoint)) {
                 headers.set('Authorization', `Bearer ${token}`)
@@ -15,6 +15,6 @@ export const baseApiSlice = createApi({
             return headers
         }
     }),
-    tagTypes: ["Divisions", "Institutions"],
+    tagTypes: ["Divisions", "Institutions", "Transportations", "Budgets", "Partners", "GuestBooks"],
     endpoints: () => ({})
 })
