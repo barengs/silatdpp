@@ -29,14 +29,14 @@ class TingkatBiayaController extends Controller
             'biaya' => 'required',
         ]);
 
-        if ($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
         $biaya = TingkatBiaya::create($request->all());
 
         if ($biaya) {
-            return new ApiResource(true,'berhasil simpan data biaya', $biaya);
+            return new ApiResource(true, 'berhasil simpan data biaya', $biaya);
         }
     }
 
@@ -53,7 +53,9 @@ class TingkatBiayaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = TingkatBiaya::find($id);
+        $data->update($request->all());
+        return new ApiResource(true, 'data berhasil di update', $data);
     }
 
     /**

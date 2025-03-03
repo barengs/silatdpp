@@ -60,7 +60,8 @@ class BeritaConroller extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Berita::find($id);
+        return new ApiResource(true, 'data berita', $data);
     }
 
     /**
@@ -68,7 +69,9 @@ class BeritaConroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = Berita::find($id);
+        $data->update($request->all());
+        return new ApiResource(true, 'data berhasil di update', $data);
     }
 
     /**
