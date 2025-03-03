@@ -7,13 +7,14 @@ import { useState } from "react";
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields";
 import { DEFAULT_PARTNERS_DATA } from "@/utils/constans";
-import { useGetBiayaQuery } from "@/services/partners";
+import { useGetPartnersQuery, useUpdatePartnerMutation } from "@/services/partners";
 
 const Partner = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_PARTNERS_DATA);
 
-    const { data, isLoading } = useGetBiayaQuery()
+    const { data, isLoading } = useGetPartnersQuery()
+    const [updatePartner] = useUpdatePartnerMutation()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -61,28 +62,27 @@ const Partner = () => {
                 isLoading={isLoading}
             />
             <Modal
-                url={`biaya/${selectedData.id}`}
+                idItem={selectedData.id}
+                mutation={updatePartner}
                 title="Edit Biaya"
                 state={showPopup}
                 stateSetter={setShowPopup}
+                ableUpdate={true}
             >
                 <InputFields
                     title="Nama Instansi Rekanan"
                     name="biaya"
                     defaultValue={selectedData.nama}
-                    disabled={true}
                 />
                 <InputFields
                     title="Alamat Instansi Rekanan"
                     name="biaya"
                     defaultValue={selectedData.alamat}
-                    disabled={true}
                 />
                 <InputFields
                     title="Kota Instansi Rekanan"
                     name="biaya"
                     defaultValue={selectedData.kota}
-                    disabled={true}
                 />
             </Modal>
         </DefaultLayout>

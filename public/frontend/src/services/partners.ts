@@ -1,12 +1,21 @@
 import { baseApiSlice } from "./base";
 
 
-export const biayaApi = baseApiSlice.injectEndpoints({
+export const partnerApi = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getBiaya: builder.query({
-      query: () => "/rekanan"
+    getPartners: builder.query({
+      query: () => "/rekanan",
+      providesTags: ["Partners"]
+    }),
+    updatePartner: builder.mutation({
+      query: ({ idItem, form }) => ({
+        url: `/rekanan/${idItem}`,
+        method: 'PUT',
+        body: form
+      }),
+      invalidatesTags: ["Partners"]
     })
   })
 })
 
-export const { useGetBiayaQuery } = biayaApi;
+export const { useGetPartnersQuery, useUpdatePartnerMutation } = partnerApi;
