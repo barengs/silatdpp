@@ -5,12 +5,12 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import useFetch from "@/hooks/useFetch";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 
 const BudgetAddDataPage: React.FC = () => {
-    const [isPending, fetchCaller] = useFetch();
+    const [, fetchCaller] = useFetch();
     const storeState = useStore().getState();
     const router = useRouter();
 
