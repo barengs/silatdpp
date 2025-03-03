@@ -52,8 +52,8 @@ const Division: React.FC = () => {
                 addButtonLink="/division/addData"
                 addButtonName="Tambah Divisi"
             />
-            <Modal url={`divisi/${selectedData.id}`} title="Edit Divisi" state={showPopup} stateSetter={setShowPopup}>
-                <InputFields title="Nama Divisi" name="nama" defaultValue={selectedData.nama} disabled={true}/>
+            <Modal url={`divisi/${selectedData.id}`} title="Edit Divisi" state={showPopup} stateSetter={setShowPopup} ableUpdate={true}>
+                <InputFields title="Nama Divisi" name="nama" defaultValue={selectedData.nama}/>
             </Modal>
         </DefaultLayout>
     );
