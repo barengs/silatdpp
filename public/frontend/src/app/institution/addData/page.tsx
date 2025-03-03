@@ -20,7 +20,7 @@ export default function InstitutionAddData() {
     const schema = z.object({
         nama: z.string().min(1, "Nama tidak boleh kosong!"),
         alamat: z.string().min(1, "Alamat tidak boleh kosong!"),
-        kontak: z.number({ invalid_type_error: "Kontak tidak valid" }).min(1, "Kontak tidak boleh kosong!"),
+        kontak: z.string({ invalid_type_error: "Kontak tidak valid" }).min(1, "Kontak tidak boleh kosong!"),
     });
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
@@ -32,12 +32,13 @@ export default function InstitutionAddData() {
 
         const res = schema
             .safeParse({ nama: data.get("nama"), alamat: data.get("alamat"), kontak: data.get("kontak")})
-            .error?.flatten().fieldErrors;
-
-        if (Object.keys(res).length >= 1) {
-            setErrors(res);
-            return;
+            
+        if (!res.success) {
+            toast.error("Data tidak valid", { position: "top-right"})
+            setErrors(res.error?.flatten().fieldErrors)
+            return
         }
+
 
         await fetchCaller("institusi", {
             method: "POST",
