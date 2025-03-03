@@ -5,7 +5,7 @@ import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Modal from "@/components/Modal";
 import Table from "@/components/Table";
-import { useGetDivisionsQuery } from "@/services/division";
+import { useGetDivisionsQuery, useUpdateDivisionMutation } from "@/services/division";
 import { DEFAULT_DIVISION_DATA } from "@/utils/constans";
 import { useState } from "react";
 
@@ -14,6 +14,7 @@ const Division: React.FC = () => {
     const [selectedData, setSelectedData] = useState(DEFAULT_DIVISION_DATA)
     
     const {data, isLoading } = useGetDivisionsQuery()
+    const [updateDivision] = useUpdateDivisionMutation()
 
     const handleSelectedData = (data) => {
         setShowPopup(true)
@@ -52,7 +53,7 @@ const Division: React.FC = () => {
                 addButtonLink="/division/addData"
                 addButtonName="Tambah Divisi"
             />
-            <Modal url={`divisi/${selectedData.id}`} title="Edit Divisi" state={showPopup} stateSetter={setShowPopup} ableUpdate={true}>
+            <Modal idItem={selectedData.id} title="Edit Divisi" state={showPopup} stateSetter={setShowPopup} ableUpdate={true} mutation={updateDivision}>
                 <InputFields title="Nama Divisi" name="nama" defaultValue={selectedData.nama}/>
             </Modal>
         </DefaultLayout>
