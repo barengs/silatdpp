@@ -8,6 +8,7 @@ import TextFields from "@/components/Fields/TextFields";
 import Form from "@/components/Forms";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import useFetch from "@/hooks/useFetch";
+import { useGetInstitutionsQuery } from "@/services/institution";
 import { FormEvent, useState } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
@@ -18,7 +19,8 @@ const Page: React.FC = () => {
     const [files, setFiles] = useState<File[]>([])
     const store = useStore()
     const authState = store.getState().auth
-    const serviceState = store.getState().services
+
+    const { data: institutionData } = useGetInstitutionsQuery()
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -56,12 +58,12 @@ const Page: React.FC = () => {
             <Form onSubmit={handleSubmit}>
                 <InputFields title="Nama Siswa" name="nama_siswa" />
                 <InputFields title="NIS" type="number" name="nis" />
-                <SelectFields title="Institusi" name="institusi_id" options={serviceState.institutions.map(institution => {
+                <SelectFields title="Institusi" name="institusi_id" options={institutionData ? institutionData.data.map(institution => {
                     return {
                         name: institution.nama,
                         value: institution.id
                     }
-                })} />
+                }) : [{ name: "Tidak ada data", value: ""}]} />
                 <InputFields title="Perubahan" name="perubahan" />
                 <InputFields title="Nomor Ijazah" name="nomor_ijazah" type="number" />
                 <TextFields title="Alasan" name="alasan" />
