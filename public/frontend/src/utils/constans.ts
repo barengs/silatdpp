@@ -176,5 +176,16 @@ export const DEFAULT_RECOMENDATION_DATA = {
 
 
 export const DEFAULT_CERTIFICATE_DATA = {
-
-}
+  id: "",
+  institusi_id: "",
+  nomor_ijazah: "",
+  nama_siswa: "",
+  nis: "",
+  perubahan: "",
+  alasan: "",
+  file: "",
+  user_id: "",
+  status: "",
+  created_at: "",
+  updated_at: "",
+};
