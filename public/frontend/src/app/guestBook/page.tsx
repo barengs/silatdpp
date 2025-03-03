@@ -20,11 +20,11 @@ export default function GuestBookDetail() {
     const state = useStore().getState();
     const authState = state.auth;
 
-    const { data: guestBooksData, isLoading: guestBookState } =
+    const { data: guestBooksData } =
         useGetGuestBooksQuery();
-    const { data: institutionsData, isLoading: institutionState } =
+    const { data: institutionsData } =
         useGetInstitutionsQuery();
-    const { data: divisionsData, isLoading: divisionState } =
+    const { data: divisionsData } =
         useGetDivisionsQuery();
 
     const [lastGuest, _] = useState("" || null);
@@ -40,7 +40,7 @@ export default function GuestBookDetail() {
               if (typeof val === "string") return val.trim(); // Trim spaces
               return val; // Pass other values unchanged
             },
-            z.string()
+            z.string({ invalid_type_error: "Harap masukkan nomor telepon yang valid!"})
               .min(1, "No Telepon tidak boleh kosong!")
               .refine((val) => /^(\+62|0)\d{9,13}$/.test(val), {
                 message: "Nomor telepon tidak valid",
@@ -87,11 +87,10 @@ export default function GuestBookDetail() {
             alamat_institusi: data.get("alamat_institusi"),
             kontak_institusi: data.get("kontak_institusi"),
         })
-        .error?.flatten().fieldErrors;
         
-        if (Object.keys(validation_res).length >= 1) {
+        if (!validation_res.success) {
             toast.error("Data tidak valid!", { position: "top-right" })
-            setErrors(validation_res);
+            setErrors(validation_res.error.flatten().fieldErrors);
             return;
         }
 
@@ -109,6 +108,7 @@ export default function GuestBookDetail() {
             },
             body: data,
         });
+
 
 
         if (!res.ok) {
