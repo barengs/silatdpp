@@ -1,6 +1,12 @@
 import { FormEvent, PropsWithChildren, useState } from "react";
 import { toast } from "react-toastify";
 
+
+type immutableDataType = {
+    name: string;
+    value: string
+}
+
 interface PopupPropsType extends PropsWithChildren {
     title: string;
     idItem: string;
@@ -9,7 +15,8 @@ interface PopupPropsType extends PropsWithChildren {
     ableUpdate?: boolean;
     ableDelete?: boolean;
     mutation?: unknown;
-    isLoading?: boolean
+    isLoading?: boolean;
+    immutableData?: immutableDataType[];
 }
 
 const Modal: React.FC<PopupPropsType> = ({
@@ -21,16 +28,20 @@ const Modal: React.FC<PopupPropsType> = ({
     ableUpdate = false,
     ableDelete = false,
     mutation = null,
-    isLoading = false
+    isLoading = false,
+    immutableData = [{ name: "", value: ""}]
 }) => {
     const [method, setMethod] = useState("update");
 
     const handleDataSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const form = new URLSearchParams(new FormData(event.currentTarget));
+        const form = new FormData(event.currentTarget)
+
+        immutableData.map(data => form.append(data.name, data.value))
 
         const res = await mutation({idItem, form})
+
 
         if (!res.data.success) {
             toast.error("Galat saat memperbarui data", {
@@ -44,9 +55,6 @@ const Modal: React.FC<PopupPropsType> = ({
         });
         stateSetter(false);
         
-        setTimeout(() => {
-            window.location.reload();
-        }, 3000)
     };
 
     return (
@@ -80,7 +88,7 @@ const Modal: React.FC<PopupPropsType> = ({
 
                 <form
                     onSubmit={handleDataSubmit}
-                    className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8"
+                    className="mt-8 grid  gap-x-4 gap-y-8"
                 >
                     {children}
                     <div className="col-span-2 flex gap-x-4">
