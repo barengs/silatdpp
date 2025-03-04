@@ -189,3 +189,10 @@ export const DEFAULT_CERTIFICATE_DATA = {
   created_at: "",
   updated_at: "",
 };
+
+export const DEFAULT_NEWS_DATA = {
+  id: "",
+  judul: "",
+  isi:  "",
+  gambar: ""
+}
