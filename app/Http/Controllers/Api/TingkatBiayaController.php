@@ -54,7 +54,11 @@ class TingkatBiayaController extends Controller
     public function update(Request $request, string $id)
     {
         $data = TingkatBiaya::find($id);
-        $data->update($request->all());
+        $data->biaya = $request->biaya;
+        $update = $data->update();
+        if (!$update) {
+            return new ApiResource(false, 'data gagal di update', null);
+        }
         return new ApiResource(true, 'data berhasil di update', $data);
     }
 
