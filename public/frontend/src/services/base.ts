@@ -15,6 +15,6 @@ export const baseApiSlice = createApi({
             return headers
         }
     }),
-    tagTypes: ["Divisions", "Institutions", "Transportations", "Budgets", "Partners", "GuestBooks", "Permissions", "Roles", "Certificates"],
+    tagTypes: ["Divisions", "Institutions", "Transportations", "Budgets", "Partners", "GuestBooks", "Permissions", "Roles", "Certificates", "News"],
     endpoints: () => ({})
 })
