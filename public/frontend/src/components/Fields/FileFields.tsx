@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 
 type FILE_PROTOTYPE_TYPE = {
@@ -40,6 +40,7 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
     const handleFileDropped = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         setFiles(Array.from(event.dataTransfer.files));
+        
         setFieldActive(false);
     };
 
@@ -57,14 +58,6 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
     };
 
     useEffect(() => {
-        // const convertedData = files.map((file: File) => {
-        //     return {
-        //         name: file.name,
-        //         size: file.size,
-        //         type: file.type,
-        //         lastModified: file.lastModified,
-        //       }
-        // })
         setter(files)
         setFieldActive(false)
     }, [files])

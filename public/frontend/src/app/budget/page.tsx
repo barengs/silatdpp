@@ -2,7 +2,7 @@
 
 import Breadcrumb from "@/components/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DEFAULT_BUDGET_DATA } from "@/utils/constans";
 import Table from "@/components/Table";
 import InputFields from "@/components/Fields/InputFields";
@@ -22,6 +22,8 @@ const Page: React.FC = () => {
         setShowPopup(true);
         setSelectedData(data);
     };
+
+    useEffect(() => console.log(data), [data])
 
 
     const column = [
