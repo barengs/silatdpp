@@ -45,7 +45,7 @@ const Page: React.FC = () => {
         });
 
         setTimeout(() => {
-            router.push("/user/list")
+            router.push("/users/list")
         }, 1000);
     };
 
