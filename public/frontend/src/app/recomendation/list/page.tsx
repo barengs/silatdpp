@@ -1,9 +1,16 @@
 "use client"
 
 import Breadcrumb from "@/components/Breadcrumb";
+import InputFields from "@/components/Fields/InputFields";
+import SelectFields from "@/components/Fields/SelectFields";
+import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import useFetch from "@/hooks/useFetch";
+import { useGetInstitutionsQuery } from "@/services/institution";
+import { useGetPartnersQuery } from "@/services/partners";
+import { useGetRecomendationsQuery, useUpdateRecomendationMutation } from "@/services/recomendation";
 import { RecomendationType } from "@/types/pages/recomendation";
 import { DEFAULT_RECOMENDATION_DATA } from "@/utils/constans";
 import Link from "next/link";
@@ -12,8 +19,19 @@ import { toast } from "react-toastify";
 
 const Page: React.FC = () => {
 
-    const [_, fetchCaller] = useFetch()
-    const [data, setData] = useState([DEFAULT_RECOMENDATION_DATA])
+    const {data: recomendationData} = useGetRecomendationsQuery()
+        const { data: institutionData } = useGetInstitutionsQuery()
+        const { data: partnerData } = useGetPartnersQuery()
+
+    const [updateRecomendation] = useUpdateRecomendationMutation()
+
+    const [selectedData, setSelectedData] = useState(DEFAULT_RECOMENDATION_DATA)
+    const [showPopup, setShowPopup] = useState(false)
+
+    const handleSelectedData = (data) => {
+        setSelectedData(data)
+        setShowPopup(true)
+    }
 
 
     const columns = [
@@ -43,40 +61,41 @@ const Page: React.FC = () => {
           {
             name: "Aksi",
             cell: (row: RecomendationType) => (
-                <Link
+                <button
                     className="text-blue-500 hover:underline"
-                    href={`/guestBook/${row.id}`}
+                    onClick={() => handleSelectedData(row)}
                 >
                     Edit
-                </Link>
+                </button>
             ),
         },
     ]
-
-
-    useEffect(() => {
-        const getData = async() => {
-            await fetchCaller('rekom')
-                .then(res => {
-                    if (res.ok) {
-                        return res.json()
-                    }
-
-                    toast.error("Galat saat mengambil data Rekom", {
-                        position: 'top-right'
-                    })
-                    console.log(res)
-                })
-                .then(data => data ? setData(data.data.data) : [DEFAULT_RECOMENDATION_DATA])
-        }
-
-        getData()
-    }, [])
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Daftar Surat Rekom" />
-            <Table name="Data Surat Rekomendasi" data={data} column={columns} addButtonLink="/recomendation" addButtonName="Ajukan Permohonan"/>
+            <Table name="Data Surat Rekomendasi" data={recomendationData ? recomendationData.data.data : []} column={columns} addButtonLink="/recomendation" addButtonName="Ajukan Permohonan"/>
+            <Modal
+                idItem={selectedData.id}
+                mutation={updateRecomendation}
+                title="Detail Hak Akses"
+                state={showPopup}
+                stateSetter={setShowPopup}
+                ableUpdate={true}
+            >
+                <InputFields title="Nama Pejabat" name="nama_pejabat" defaultValue={selectedData.nama_pejabat}/>
+                <InputFields title="NIP Pejabat" name="nip_pejabat" defaultValue={selectedData.nip_pejabat}/>
+                <InputFields title="Nama Pejabat Pengganti" name="nama_pejabat_pengganti" defaultValue={selectedData.nama_pejabat_pengganti}/>
+                <InputFields title="NIP Pejabat Pengganti" name="nip_pejabat_pengganti" defaultValue={selectedData.nip_pejabat_pengganti}/>
+                <InputFields title="Alamat Pejabat Pengganti" name="alamat_pejabat_pengganti" defaultValue={selectedData.alamat_pejabat_pengganti}/>
+                <InputFields title="Jabatan" name="jabatan" defaultValue={selectedData.jabatan}/>
+                <SelectFields title="institusi" name="institusi_id" options={institutionData ? institutionData.data.map(institution => { 
+                    return {name: institution.nama, value: institution.id}
+                }) : []} defaultValue={selectedData.institusi_id}/>
+                <SelectFields title="Institusi Rekan" name="rekanan_id" options={partnerData ? partnerData.data.map(partner => { 
+                    return {name: partner.nama, value: partner.id}
+                }) : []} defaultValue={selectedData.rekanan_id}/>
+                <TextFields title="Konten" name="konten" defaultValue={selectedData.konten}/>
+            </Modal>
         </DefaultLayout>
     )
 }
