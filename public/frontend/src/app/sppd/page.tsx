@@ -19,9 +19,9 @@ const SppdAddData: React.FC = () => {
     const state = store.getState();
     const authState = state.auth;
 
-    const { data: budgetsData, isLoading: budgetLoading } =
+    const { data: budgetsData  } =
         useGetBudgetsQuery();
-    const { data: transporationData, isLoading: transportationLoading } =
+    const { data: transporationData } =
         useGetTransportationsQuery();
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
@@ -44,11 +44,11 @@ const SppdAddData: React.FC = () => {
         if (!res.ok) {
             console.log(res);
             toast.error("Gagal mengajukan SPPD", { position: "top-right" });
-            setTimeout(() => window.location.reload(), 3000);
             return;
         }
-
+        
         toast.success("Berhasil mengajukan SPPD", { position: "top-right" });
+        setTimeout(() => window.location.reload(), 3000);
     };
 
     return (
@@ -96,7 +96,7 @@ const SppdAddData: React.FC = () => {
                     name="tingkat_biaya_id"
                     options={budgetsData ? budgetsData.data.map((budget) => {
                         return {
-                            name: budget.biaya,
+                            name: budget.name,
                             value: budget.id,
                         };
                     }) : []}
