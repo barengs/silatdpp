@@ -29,7 +29,7 @@ const Page: React.FC = () => {
     const column = [
         {
             name: "Jenis Biaya",
-            selector: (row: Record<string, string>) => row.biaya,
+            selector: (row: Record<string, string>) => row.name,
             sortable: true,
         },
         {
