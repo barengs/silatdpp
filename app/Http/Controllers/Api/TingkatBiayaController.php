@@ -54,7 +54,7 @@ class TingkatBiayaController extends Controller
     public function update(Request $request, TingkatBiaya $tingkatBiaya)
     {
         $biaya = TingkatBiaya::find($tingkatBiaya->id);
-        dd($request->all());
+        // dd($request->all());
         $update = $biaya->update([
             'biaya' => $request->biaya
         ]);
