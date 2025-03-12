@@ -51,12 +51,13 @@ class TingkatBiayaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, TingkatBiaya $tingkatBiaya)
     {
-        dd($request->biaya);
-        $biaya = TingkatBiaya::find($id);
-        $biaya->biaya = $request->all();
-        $update = $biaya->update();
+        $biaya = TingkatBiaya::find($tingkatBiaya->id);
+        dd($request->all());
+        $update = $biaya->update([
+            'biaya' => $request->biaya
+        ]);
         if (!$update) {
             return new ApiResource(false, 'data gagal di update', null);
         }
