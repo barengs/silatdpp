@@ -19,7 +19,7 @@ class SppdPengajuan extends Model
         'lama_perjalanan',
         'tanggal_berangkat',
         'tanggal_kembali',
-        'tingkat_biaya_id',
+        'biaya_id',
     ];
 
     public function dokumens(): HasMany

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TingkatBiaya extends Model
+class Biaya extends Model
 {
-    protected $fillable = ['biaya'];
+    protected $guarded = ['id'];
 }

@@ -16,7 +16,7 @@ use App\Http\Controllers\Api\DivisiController;
 use App\Http\Controllers\Api\BukuTamuController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\InstitusiController;
-use App\Http\Controllers\Api\TingkatBiayaController;
+use App\Http\Controllers\Api\BiayaController;
 use App\Http\Controllers\Api\SppdPengajuanController;
 use App\Http\Controllers\Api\AlatTransportasiController;
 
@@ -39,7 +39,7 @@ Route::apiResource('divisi', DivisiController::class);
 Route::apiResource('institusi', InstitusiController::class);
 Route::apiResource('sppd', SppdPengajuanController::class);
 Route::apiResource('transportasi', AlatTransportasiController::class);
-Route::apiResource('biaya', TingkatBiayaController::class);
+Route::apiResource('biaya', BiayaController::class);
 Route::apiResource('rekom', RekomController::class);
 Route::apiResource('rekanan', RekananController::class);
 
