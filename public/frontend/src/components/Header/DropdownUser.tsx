@@ -43,7 +43,7 @@ const DropdownUser = () => {
     const getRole = () => {
         if (!data) return
 
-        if (!data.roles) return "Tidak Ditugaskan"
+        if (!data.roles[0]) return "Tidak Ditugaskan"
 
         return data.roles[0].name
     }
