@@ -34,6 +34,7 @@ class SiswaPindahConroller extends Controller
             'nama_wali' => 'required',
             'alamat_wali' => 'required',
             'kontak_wali' => 'required',
+            'file' => 'required',
         ]);
 
         if ($validasi->fails()) {
