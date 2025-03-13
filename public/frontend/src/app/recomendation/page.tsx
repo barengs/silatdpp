@@ -64,7 +64,7 @@ const ExchequerPage = () => {
                 <TextFields title="Konten" name="konten" />
                 <button
                     type="submit"
-                    className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"
+                    className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"
                 >
                     Ajukan Penggantian
                 </button>

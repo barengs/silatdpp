@@ -60,6 +60,12 @@ const Page: React.FC = () => {
             <Breadcrumb pageName="Manajemen Tugas / Tambah Tugas" />
             <form onSubmit={handlePost} className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <InputFields title="Nama Role" name="nama" />
+                <button
+                    type="submit"
+                    className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"
+                >
+                    Tambah Tugas
+                </button>
             </form>
         </DefaultLayout>
     )
