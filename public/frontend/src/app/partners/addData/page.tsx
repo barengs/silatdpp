@@ -50,7 +50,7 @@ const PartnerAddPage = () => {
                 <InputFields title="Alamat Rekan" name="alamat" />
                 <InputFields title="Kota Rekan" name="kota" />
                 <button
-                    className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                     type="submit"
                 >
                     Tambahkan Rekan

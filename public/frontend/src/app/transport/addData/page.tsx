@@ -52,7 +52,7 @@ const TransportAddPage: React.FC = () => {
                 <InputFields name="jenis" title="Jenis Transportasi" />
                 <button
                     type="submite"
-                    className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"
+                    className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 w-max"
                 >
                     Tambahkan transportasi
                 </button>

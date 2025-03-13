@@ -49,11 +49,13 @@ const BudgetAddDataPage: React.FC = () => {
                     title="Tingkat Biaya"
                     name="biaya"
                 />
-                <button
-                    className="col-span-2 flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-                >
-                    Tambahkan Biaya
-                </button>
+                <div className="col-span-2">
+                    <button
+                        className="w-max flex justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    >
+                        Tambahkan Biaya
+                    </button>
+                </div>
             </form>
         </DefaultLayout>
     );

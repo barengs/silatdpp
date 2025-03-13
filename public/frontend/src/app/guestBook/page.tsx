@@ -205,7 +205,7 @@ export default function GuestBookDetail() {
                         }
                     />
                     <button
-                        className="col-span-2 flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
+                        className="flex w-max items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
                         type="submit"
                         disabled={isPending}
                     >
