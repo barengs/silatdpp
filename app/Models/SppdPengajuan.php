@@ -44,7 +44,7 @@ class SppdPengajuan extends Model
 
     public function biaya(): HasMany
     {
-        return $this->hasMany(TingkatBiaya::class);
+        return $this->hasMany(Biaya::class);
     }
 
     public function alat_transportasi(): BelongsTo

@@ -67,7 +67,7 @@ class SppdPengajuanController extends Controller
             'lama_perjalanan' => $request->lama_perjalanan,
             'tanggal_berangkat' => $request->tanggal_berangkat,
             'tanggal_kembali' => $request->tanggal_kembali,
-            'tingkat_biaya_id' => $request->tingkat_biaya_id,
+            'biaya_id' => $request->biaya_id,
         ]);
 
         if ($sppd) {
