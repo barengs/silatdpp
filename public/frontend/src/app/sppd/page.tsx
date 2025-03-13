@@ -93,7 +93,7 @@ const SppdAddData: React.FC = () => {
 
                 <SelectFields
                     title="Biaya Perjalanan"
-                    name="tingkat_biaya_id"
+                    name="biaya_id"
                     options={budgetsData ? budgetsData.data.map((budget) => {
                         return {
                             name: budget.name,
