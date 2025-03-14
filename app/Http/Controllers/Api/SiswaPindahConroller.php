@@ -56,6 +56,7 @@ class SiswaPindahConroller extends Controller
                 'nama_siswa' => $request->nama_siswa,
                 'nis' => $request->nis,
                 'jenis_kelamin' => $request->jenis_kelamin,
+                'tingkat_kelas' => $request->tingkat_kelas,
                 'nama_wali' => $request->nama_wali,
                 'alamat_wali' => $request->alamat_wali,
                 'kontak_wali' => $request->kontak_wali,
@@ -86,7 +87,49 @@ class SiswaPindahConroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = SiswaPindah::findOrFail($id);
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '-' . $file->getClientOriginalName();
+            $filePath = $file->move('documents/siswa_pindah', $fileName);
+
+            $update = $data->update([
+                'sekolah_asal_id' => $request->sekolah_asal_id,
+                'sekolah_tujuan_id' => $request->sekolah_asal_id,
+                'nama_siswa' => $request->nama_siswa,
+                'nis' => $request->nis,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tingkat_kelas' => $request->tingkat_kelas,
+                'nama_wali' => $request->nama_wali,
+                'alamat_wali' => $request->alamat_wali,
+                'kontak_wali' => $request->kontak_wali,
+                'file' => $fileName,
+            ]);
+
+            if ($update) {
+                return new ApiResource(true, 'berhasil update data', $data);
+            } else {
+                return new ApiResource(false, 'gagal update data', '');
+            }
+        } else {
+            $update = $data->update([
+                'sekolah_asal_id' => $request->sekolah_asal_id,
+                'sekolah_tujuan_id' => $request->sekolah_asal_id,
+                'nama_siswa' => $request->nama_siswa,
+                'nis' => $request->nis,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tingkat_kelas' => $request->tingkat_kelas,
+                'nama_wali' => $request->nama_wali,
+                'alamat_wali' => $request->alamat_wali,
+                'kontak_wali' => $request->kontak_wali,
+            ]);
+
+            if ($update) {
+                return new ApiResource(true, 'berhasil update data', $data);
+            } else {
+                return new ApiResource(false, 'gagal update data', '');
+            }
+        }
     }
 
     /**
