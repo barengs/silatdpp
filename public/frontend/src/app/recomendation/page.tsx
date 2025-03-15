@@ -1,13 +1,14 @@
 "use client";
 
 import Breadcrumb from "@/components/Breadcrumb";
+import FilesFields from "@/components/Fields/FileFields";
 import InputFields from "@/components/Fields/InputFields";
 import SelectFields from "@/components/Fields/SelectFields";
 import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useGetInstitutionsQuery } from "@/services/institution";
 import { useGetPartnersQuery } from "@/services/partners";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -42,8 +43,6 @@ const ExchequerPage = () => {
         toast.error("Gagal membuat pengajuan", { position: "top-right" })
     }
 
-    useEffect(() => console.log(partnerData), [])
-
 
     return (
         <DefaultLayout>
@@ -62,6 +61,7 @@ const ExchequerPage = () => {
                     return {name: partner.nama, value: partner.id}
                 }) : []} />
                 <TextFields title="Konten" name="konten" />
+               
                 <button
                     type="submit"
                     className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"
