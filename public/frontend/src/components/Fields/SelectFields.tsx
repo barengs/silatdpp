@@ -42,7 +42,7 @@ const SelectFields: React.FC<selectFieldsProps> = ({
 
             <div className="relative bg-white dark:bg-form-input">
                 <select
-                    value={defaultValue}
+                    defaultValue={defaultValue}
                     name={name}
                     onFocus={() => handleError(false)}
                     className={`relative w-full appearance-none rounded border bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${errorMessege ? "border-red-500" : "border-stroke"}`}
