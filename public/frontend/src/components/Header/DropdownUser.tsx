@@ -35,9 +35,13 @@ const DropdownUser = () => {
             return;
         }
 
+       sessionStorage.clear()
+
         toast.error("Gagal Logout", {
             position: 'top-right'
         })
+
+        setTimeout(() => window.location.reload(), 3000)
     };
 
     const getRole = () => {
