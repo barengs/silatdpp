@@ -24,19 +24,20 @@ const Page: React.FC = () => {
     const { data: institutionData } = useGetInstitutionsQuery();
 
     const schema = z.object({
-        nama_siswa: z.string().min(1, "Harap Diisi"),
-        nis: z.coerce.number().min(1, "Harap Diisi"),
-        perubahan: z.string().min(1, "Harap Diisi"),
-        no_ijazah: z.coerce.number().min(1, "Harap Diisi"),
-        alasan: z.string().min(1, "Harap Diisi"),
+        nama_siswa: z.string().min(1, "Harap diisi"),
+        nis: z.string().min(1, "Harap diisi"),
+        perubahan: z.string().min(1, "Harap diisi"),
+        no_ijazah: z
+            .string()
+            .length(15, "Nomor ijazah harus berisikan 15 angka"),
+        alasan: z.string().min(1, "Harap diisi"),
+        file: z.instanceof(File).array().nonempty("Berkas diperlukan"),
     });
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-
-        formData.append("file", files[0]);
 
         const validation_res = schema
             .safeParse({
@@ -45,23 +46,22 @@ const Page: React.FC = () => {
                 perubahan: formData.get("perubahan"),
                 no_ijazah: formData.get("nomor_ijazah"),
                 alasan: formData.get("alasan"),
+                file: files,
             })
             .error?.flatten().fieldErrors;
 
-            
-            if (validation_res) {
-                toast.error("Formulir tidak valid", { position: "top-right" });
-                setErrors(validation_res);
-                
-                return;
-            }
-            
+        console.log(validation_res);
+        // console.log(formData.get("nomor_ijazah").length)
 
-            if (files.length == 0) {
-                setErrors({file: ["Bukti kegiatan harus diisi"]})
-                return
-            }
+        if (validation_res) {
+            toast.error("Formulir tidak valid", { position: "top-right" });
+            setErrors(validation_res);
 
+            return;
+        }
+
+        // Injetct to formData
+        formData.append("file", files[0]);
 
         const res = await fetchCaller("ijazah", {
             method: "POST",
@@ -126,16 +126,16 @@ const Page: React.FC = () => {
                     type="number"
                     error={errors.no_ijazah ? errors.no_ijazah[0] : ""}
                 />
+                <FilesFields
+                    title="Berkas"
+                    setter={(files: File[]) => setFiles(files)}
+                    multiple={false}
+                    error={errors.file ? errors.file[0] : ""}
+                />
                 <TextFields
                     title="Alasan"
                     name="alasan"
                     error={errors.alasan ? errors.alasan[0] : ""}
-                />
-                <FilesFields
-                    title="File"
-                    setter={(files: File[]) => setFiles(files)}
-                    multiple={false}
-                    error={errors.file ? errors.file[0] : ""}
                 />
                 <button
                     className="col-span-2 flex w-max items-center justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
