@@ -78,7 +78,7 @@ export default function Page() {
                 </div>
 
                 <div className="flex w-full flex-1 flex-col justify-center px-4">
-                    <div className="w-[450px] mx-auto">
+                    <div className="w-[350px] lg:w-[450px] mx-auto">
                         <h1 className="text-center text-3xl font-semibold text-black">
                             Login
                         </h1>
