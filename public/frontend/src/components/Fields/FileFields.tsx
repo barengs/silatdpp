@@ -143,6 +143,7 @@ const FilesFields: React.FC<ComponentProps> = ({
                         <input
                             onClick={handleClick}
                             onChange={handleSelected}
+                            onFocus={() => handleError(false)}
                             ref={fileRef}
                             type="file"
                             multiple={multiple}

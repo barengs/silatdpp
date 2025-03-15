@@ -35,6 +35,7 @@ const TextFields = ({ title, defaultValue="", name="", error="" }: InputFieldsPr
                 placeholder={title}
                 name={name}
                 defaultValue={defaultValue}
+                onFocus={() => handleError(false)}
                 className={`w-full rounded-lg border-[1.5px] bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary  ${errorMessege ? "border-red-500" : "border-stroke "}`}
             ></textarea>
             {errorMessege && (
