@@ -152,13 +152,7 @@ const SppdPage: React.FC = () => {
                 </div>
                 <div className="col-span-2 text-black-2">
 
-                    {/* <ProgressLine data={[{name: "Pengajuan", desc:}]} /> */}
-                    {/* {selectedData.history.map(history => (
-                        <div className="mt-4 px-2">
-                            <h3 className="font-semibold">{history.nama}</h3>
-                            <p className="text-sm text-gray-500">{getDateTime(history.created_at)}</p>
-                        </div>
-                    ))} */}
+                    <ProgressLine data={[{name: "Pengajuan", desc: "31 Desember 2024"}, {name: "Pengajuan", desc: "31 Desember 2024"}, {name: "Pengajuan", desc: "31 Desember 2024"}]} filledAt={2} />
                 </div>
 
             </Modal>
