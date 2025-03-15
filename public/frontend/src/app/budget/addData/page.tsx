@@ -32,6 +32,8 @@ const BudgetAddDataPage: React.FC = () => {
         })
 
         if (!validationResult.success) {
+            toast.error("Form tidak valid, harap periksa kembali", { position: 'top-right'})
+
             setErrors(validationResult.error.flatten().fieldErrors)
             return
         }
@@ -76,7 +78,7 @@ const BudgetAddDataPage: React.FC = () => {
                             Menambahkan
                         </div>
                     ) : (
-                        <> Tambah Biaya</>
+                        <>Tambah Biaya</>
                     )}
                     </button>
                 </div>
