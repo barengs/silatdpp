@@ -11,6 +11,8 @@ import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields"
 import { useGetSppdsQuery } from "@/services/sppd"
 import { useGetTransportationsQuery } from "@/services/transporation"
+import { useGetBudgetsQuery } from "@/services/budget"
+import ProgressLine from "@/components/progressiveBar"
 
 const SppdPage: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
@@ -18,11 +20,37 @@ const SppdPage: React.FC = () => {
 
     const { data: sppdData, isLoading } = useGetSppdsQuery()
     const { data: transporationData } = useGetTransportationsQuery()
+    const { data: budgetData } = useGetBudgetsQuery()
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
         setSelectedData(data);
     };
+
+    const getTransport = () => {
+        if (transporationData) {
+            const res = transporationData.data.filter(transport => transport.id == selectedData.alat_transportasi_id)
+
+            if (res.length < 1) {
+                return ""
+            }
+
+            return res[0].nama
+        }
+    }
+
+
+    const getBudget = () => {
+        if (budgetData) {
+            const res = budgetData.data.filter(budget => budget.id == selectedData.biaya_id) 
+            
+            if (res.length < 1) {
+                return ""
+            }
+
+            return res[0].name
+        }
+    }
 
 
     const columns = [
@@ -62,6 +90,10 @@ const SppdPage: React.FC = () => {
         },
     ]
 
+    useEffect(() => {
+        transporationData ? console.log(transporationData.data) : ""
+    }, [transporationData])
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Histori SPPD" />
@@ -80,7 +112,7 @@ const SppdPage: React.FC = () => {
                     title="Transportasi Perjalanan"
                     name="alat_transportasi_id"
                     disabled={true}
-                    defaultValue={transporationData}
+                    defaultValue={getTransport()}
                 />
                 <div className="flex gap-x-4">
                     <InputFields
@@ -103,33 +135,30 @@ const SppdPage: React.FC = () => {
                     defaultValue={selectedData.tanggal_kegiatan}
                 />
                
-                {/* <InputFields
+                <InputFields
                     title="Biaya Perjalanan"
-                    name="tingkat_biaya_id"
+                    name="biaya_id"
                     disabled={true}
-                    defaultValue={store.getState().services.budgets.map(budget => {
-                        if (budget.id == selectedData.tingkat_biaya_id) {
-                            console.log(budget.biaya)
-                            return budget.biaya
-                        }
-
-                        return ""
-                    })[0]}
-                /> */}
+                    defaultValue={getBudget()}
+                />
                 <InputFields
                     title="Status Diterima"
-                    name="tingkat_biaya_id"
                     disabled={true}
                     defaultValue={selectedData.approval ? "Disetujui" : "Belum Disetujui"}
                 />
+                 <div className="col-span-2">
+                    <h3>Diinput Oleh:</h3>
+                    <p className="text-black-2">{selectedData.user.name}</p>
+                </div>
                 <div className="col-span-2 text-black-2">
-                    <h2>Histori Alur</h2>
-                    {selectedData.history.map(history => (
+
+                    {/* <ProgressLine data={[{name: "Pengajuan", desc:}]} /> */}
+                    {/* {selectedData.history.map(history => (
                         <div className="mt-4 px-2">
                             <h3 className="font-semibold">{history.nama}</h3>
                             <p className="text-sm text-gray-500">{getDateTime(history.created_at)}</p>
                         </div>
-                    ))}
+                    ))} */}
                 </div>
 
             </Modal>
