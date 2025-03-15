@@ -66,7 +66,7 @@ const Modal: React.FC<PopupPropsType> = ({
                 onClick={() => stateSetter(false)}
             ></div>
 
-            <div className="w-max rounded-md bg-white p-4">
+            <div className="w-max max-h-[80vh] overflow-y-scroll rounded-md bg-white p-4">
                 <div className="flex w-full justify-between">
                     <h2 className="font-semibold text-black-2">{title}</h2>
                     <button onClick={() => stateSetter(false)}>
@@ -88,7 +88,7 @@ const Modal: React.FC<PopupPropsType> = ({
 
                 <form
                     onSubmit={handleDataSubmit}
-                    className="mt-8 grid  gap-x-4 gap-y-8"
+                    className="mt-8 flex flex-col md:grid md:grid-cols-2 gap-x-4 gap-y-8"
                 >
                     {children}
                     <div className="col-span-2 flex gap-x-4">
