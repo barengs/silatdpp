@@ -47,7 +47,6 @@ export default function DefaultLayout({
 
 
     return (
-        <>
 
             <div className="flex">
                 <Sidebar
@@ -71,6 +70,5 @@ export default function DefaultLayout({
                     </main>
                 </div>
             </div>
-        </>
     );
 }
