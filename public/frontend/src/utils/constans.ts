@@ -196,3 +196,20 @@ export const DEFAULT_NEWS_DATA = {
   isi:  "",
   gambar: ""
 }
+
+export const DEFAULT_STUDENT_TRANSFER_DATA = {
+  "id": "",
+  "sekolah_asal_id": "",
+  "sekolah_tujuan_id": "",
+  "nama_siswa": "",
+  "nis": "",
+  "jenis_kelamin": "",
+  "tingkat_kelas": "",
+  "nama_wali": "",
+  "alamat_wali": "",
+  "kontak_wali": "",
+  "status": "",
+  "file": "",
+  "created_at": "",
+  "updated_at": ""
+}
