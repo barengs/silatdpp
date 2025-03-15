@@ -78,6 +78,7 @@ export default function GuestBookDetail() {
             alamat_institusi: data.get("alamat_institusi"),
             kontak_institusi: data.get("kontak_institusi"),
         })
+
         
         if (!validation_res.success) {
             console.log(validation_res.error.flatten().fieldErrors)
@@ -142,7 +143,7 @@ export default function GuestBookDetail() {
                         title="No Telepon"
                         name="no_telpon"
                         type="phone"
-                        error={errors.no_telepon ? errors.no_telepon[0] : ""}
+                        error={errors.no_telpon ? errors.no_telpon[0] : ""}
                     />
                     <InputFields
                         title="Keperluan"
