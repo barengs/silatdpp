@@ -4,29 +4,10 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setToken } from "@/store/authSlice";
-import {
-    fetchBudget,
-    fetchDivision,
-    fetchGuestBook,
-    fetchInsitution,
-    fetchPartners,
-    fetchRoles,
-    fetchTransportation,
-    fetchUsers,
-} from "@/services/common";
-import {
-    setBudget,
-    setDivision,
-    setGuestBook,
-    setInstitution,
-    setPartners,
-    setTransportation,
-    setRoles,
-    setUsers,
-} from "@/store/servicesSlice";
 import { toast } from "react-toastify";
 import useFetch from "@/hooks/useFetch";
 import InputFields from "@/components/Fields/InputFields";
+import { useGetAllNewsQuery } from "@/services/news";
 
 export default function Page() {
     const router = useRouter();
@@ -34,6 +15,8 @@ export default function Page() {
     const [isPending, fetchCaller] = useFetch();
 
     const [errors, setErrors] = useState({});
+
+    const { data: newsData, isLoading } = useGetAllNewsQuery();
 
     const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -59,14 +42,6 @@ export default function Page() {
         const data = await res.json();
 
         dispatch(setToken(data));
-        dispatch(setInstitution(await fetchInsitution()));
-        dispatch(setDivision(await fetchDivision()));
-        dispatch(setGuestBook(await fetchGuestBook()));
-        dispatch(setPartners(await fetchPartners()));
-        dispatch(setTransportation(await fetchTransportation()));
-        dispatch(setBudget(await fetchBudget()));
-        dispatch(setRoles(await fetchRoles()));
-        dispatch(setUsers(await fetchUsers()));
 
         toast.success("Berhasil Masuk!", {
             position: "top-right",
@@ -79,46 +54,58 @@ export default function Page() {
         document.title = "SILATDPP - Login dulu yuk :)";
     }, []);
 
-    return (
-        <div className="mx-auto flex min-h-screen flex-col items-center justify-center gap-16 bg-gray-200 lg:flex-row">
-            <div className="text-center lg:text-right">
-                <h1 className="text-semibold text-black-2 lg:text-lg">
-                    "The only way to do great work is to love what you do."
-                </h1>
-                <span>Steve Jobs</span>
-            </div>
+    useEffect(() => console.log(newsData), [isLoading]);
 
-            <div className="bg-white px-8 py-12  min-w-[400px]">
-                <h1 className="text-center text-3xl font-semibold text-black">
-                    Login
-                </h1>
-                <form onSubmit={onSubmit} className="mt-16 space-y-12">
-                    <InputFields
-                        title="Email"
-                        name="email"
-                        error={errors.messege}
-                    />
-                    <InputFields
-                        title="Password"
-                        name="password"
-                        type="password"
-                        error={errors.messege}
-                    />
-                    <button
-                        className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
-                        type="submit"
-                        disabled={isPending}
-                    >
-                        {isPending ? (
-                            <>
-                                <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                                Memeriksa identitas
-                            </>
-                        ) : (
-                            <>Masuk</>
-                        )}
-                    </button>
-                </form>
+    return (
+        <div className="flex w-full min-h-screen">
+            <div className="w-full flex flex-col md:flex-row items-center justify-center flex-1">
+                <div className="flex-1 hidden lg:flex justify-center items-center p-4 w-full lg:min-w-[500px] h-full bg-primary">
+                    <div className="bg-white py-8 px-12 rounded-md">
+                        <h1 className="font-semibold text-black-2 lg:text-xl">
+                            Berita Terbaru
+                        </h1>
+
+                        <img src={newsData ? newsData.data[0].gambar : ""} alt="berita" />
+
+                        <div className="h-full flex flex-col mt-12 text-left">
+                            <p> {newsData ? newsData.data[0].judul : ""}</p>
+                            <p>{newsData ? newsData.data[0].isi : ""}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex-1 w-full flex flex-col justify-center px-4">
+                    <h1 className="text-center text-3xl font-semibold text-black">
+                        Login
+                    </h1>
+                    <form onSubmit={onSubmit} className="mt-16 space-y-12">
+                        <InputFields
+                            title="Email"
+                            name="email"
+                            error={errors.messege}
+                        />
+                        <InputFields
+                            title="Password"
+                            name="password"
+                            type="password"
+                            error={errors.messege}
+                        />
+                        <button
+                            className="flex w-full items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
+                            type="submit"
+                            disabled={isPending}
+                        >
+                            {isPending ? (
+                                <>
+                                    <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                    Memeriksa identitas
+                                </>
+                            ) : (
+                                <>Masuk</>
+                            )}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );
