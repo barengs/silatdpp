@@ -75,7 +75,7 @@ const InputFields: React.FC<InputFieldsProps> = ({
     }, [autoCompleteData]);
 
     return (
-        <div  onBlur={onBlurHandler}>
+        <div className="flex-1"  onBlur={onBlurHandler}>
             <label
                 className={`mb-3 block text-sm font-medium dark:text-white ${errorMessege ? "text-red-500" : "text-black"}`}
             >
