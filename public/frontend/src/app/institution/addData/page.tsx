@@ -62,13 +62,13 @@ export default function InstitutionAddData() {
 
             <form
                 onSubmit={handlePostData}
-                className="flex flex-col gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark"
+                className="flex flex-col lg:grid lg:grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark"
             >
                 <InputFields title="Nama Institusi" name="nama" error={errors.nama ? errors.nama[0] : ""}/>
                 <InputFields title="Alamat Institusi" name="alamat" error={errors.alamat ? errors.alamat[0] : ""}/>
                 <InputFields title="kontak Institusi" name="kontak" error={errors.kontak ? errors.kontak[0] : ""}/>
                 <button
-                    className="flex w-max columns-2 items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
+                    className="flex w-max col-span-2 columns-2 items-center justify-center gap-x-2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 disabled:cursor-not-allowed disabled:bg-opacity-75"
                     type="submit"
                     disabled={isPending}
                 >
