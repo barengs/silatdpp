@@ -277,7 +277,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
             <div className="flex flex-col overflow-y-auto">
                 {/* <!-- Sidebar Menu --> */}
-                <nav className="mt-5 overflow-hidden px-4 py-4 lg:mt-9 lg:px-6">
+                <nav className="mt-5 overflow-x-hidden overflow-y-auto px-4 py-4 lg:mt-9 lg:px-6">
                     {menuGroups.map((group, groupIndex) => (
                         <div key={groupIndex}>
                             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
