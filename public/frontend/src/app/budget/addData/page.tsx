@@ -17,7 +17,7 @@ const BudgetAddDataPage: React.FC = () => {
     const router = useRouter();
 
     const formSchema = z.object({
-        biaya: z.string().min(1, "Harap masukkan nama tingkat biaya")
+        name: z.string().min(1, "Harap masukkan nama tingkat biaya")
     })
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
@@ -28,7 +28,7 @@ const BudgetAddDataPage: React.FC = () => {
 
 
         const validationResult = formSchema.safeParse({
-            biaya: form.get("biaya")
+            name: form.get("name")
         })
 
         if (!validationResult.success) {
@@ -65,7 +65,7 @@ const BudgetAddDataPage: React.FC = () => {
             <form onSubmit={handlePostData} className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
                 <InputFields
                     title="Tingkat Biaya"
-                    name="biaya"
+                    name="name"
                     error={errors.biaya ? errors.biaya[0] : ""}
                 />
                 <div className="col-span-2">
