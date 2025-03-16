@@ -15,10 +15,10 @@ const Page: React.FC = () => {
     const authState = state.auth;
     const [, fetchCaller] = useFetch()
 
-    const [errors, setErrors] = useState()
+    const [errors, setErrors] = useState({})
 
     const schema = z.object({
-        nama: z.string().min(1, "Role wajib diisi")
+        name: z.string().min(1, "Role wajib diisi")
     })
 
     const handlePost = async(event: FormEvent<HTMLFormElement>) => {
@@ -26,14 +26,17 @@ const Page: React.FC = () => {
 
         const form = new FormData(event.currentTarget)
 
-        const res = schema
-            .safeParse({ nama: data.get("nama") })
-            .error?.flatten().fieldErrors;
+        const validationRes = schema
+            .safeParse({ name: form.get("name") })
 
-        if (Object.keys(res).length >= 1) {
-            setErrors(res);
-            return;
+
+        if (!validationRes.success) {
+            toast.error("Form input tidak valid!", { position: 'top-right'} )
+
+            setErrors(validationRes.error.flatten().fieldErrors)
+            return
         }
+
 
         await fetchCaller('tugas', {
             method: 'post',
@@ -59,7 +62,7 @@ const Page: React.FC = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Manajemen Tugas / Tambah Tugas" />
             <form onSubmit={handlePost} className="grid grid-cols-2 gap-9 rounded-sm border border-stroke bg-white px-6.5 py-4 shadow-default dark:border-strokedark dark:bg-boxdark">
-                <InputFields title="Nama Role" name="nama" />
+                <InputFields title="Nama Role" name="name" error={errors.nama ? errors.nama : ""}/>
                 <button
                     type="submit"
                     className="flex w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90 col-span-2"

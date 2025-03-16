@@ -1,6 +1,7 @@
 "use client"
 
 import Breadcrumb from "@/components/Breadcrumb"
+import FilesFields from "@/components/Fields/FileFields";
 import InputFields from "@/components/Fields/InputFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout"
 import Modal from "@/components/Modal";
@@ -11,6 +12,7 @@ import { useState } from "react";
 
 const Page: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
+    const [file, setFile] = useState<File>()
     const { data: newsData, isLoading } = useGetAllNewsQuery()
     const [selectedData, setSelectedData] = useState(DEFAULT_NEWS_DATA)
     const [updateNews] = useUpdateNewsMutation()
@@ -23,7 +25,7 @@ const Page: React.FC = () => {
     const columns = [
         {
             name: "Judul Berita",
-            selector: (row: Record<string, string>) => row.juduk,
+            selector: (row: Record<string, string>) => row.judul,
             sortable: true,
         },
         {
@@ -79,9 +81,9 @@ const Page: React.FC = () => {
                     name="alamat"
                     defaultValue={selectedData.isi}
                 />
-                <InputFields
+                <FilesFields
                     title="Gambar"
-                    name="gambar"
+                    setter={(file: File[]) => setFile(file[0])}
                     defaultValue={selectedData.gambar}
                 />
             </Modal>

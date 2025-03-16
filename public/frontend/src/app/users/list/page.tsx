@@ -12,13 +12,17 @@ import { useDispatch, useStore } from "react-redux";
 import Modal from "@/components/Modal";
 import InputFields from "@/components/Fields/InputFields";
 import { useGetAllUserQuery } from "@/services/users";
+import { useGetRolesQuery } from "@/services/role";
+import SelectFields from "@/components/Fields/SelectFields";
 
 const Page: React.FC = () => {
 
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_PROFILE_DATA);
     
-    const { data, isLoading } = useGetAllUserQuery() 
+    const { data: userData } = useGetAllUserQuery() 
+    const { data: rolesData } = useGetRolesQuery()
+
 
     const handleSelectedData = (data) => {
         setShowPopup(true);
@@ -54,25 +58,26 @@ const Page: React.FC = () => {
         },
     ];
 
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Daftar Karyawan" />
             <Table
                 name="List karyawan"
                 column={columns}
-                data={data ? data.data : []}
+                data={userData ? userData.data : []}
                 addButtonName="Tambah Karyawan"
                 addButtonLink="/register"
             />
             <Modal
-                url={`buku-tamu/${selectedData.id}`}
+                idItem={selectedData.id}
                 title="Detail Karyawan"
                 state={showPopup}
                 stateSetter={setShowPopup}
             >
-                <InputFields title="Nama Karyawan" name="nama_karyawan" defaultValue={selectedData.name} disabled={true}/>
-                <InputFields title="Role Karyawan" name="roles" defaultValue={selectedData.roles[0] ? selectedData.roles[0].name : "Belum ditugaskan"} disabled={true}/>
-                <InputFields title="Email Karyawan" name="email" defaultValue={selectedData.email} disabled={true}/>
+                <InputFields title="Nama Karyawan" name="nama_karyawan" defaultValue={selectedData.name} />
+                <SelectFields title="Hak Akses" name="roles" defaultValue={selectedData.roles[0] ? selectedData.roles[0].id : "Belum Ditugaskan"} options={rolesData ? rolesData.data.map(role => { return {name: role.name, value: role.id} }): []} />
+                <InputFields title="Email Karyawan" name="email" defaultValue={selectedData.email} />
             </Modal>
         </DefaultLayout>
     );

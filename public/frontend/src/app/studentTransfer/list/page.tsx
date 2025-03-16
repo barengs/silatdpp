@@ -7,13 +7,15 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Modal from "@/components/Modal";
 import Table from "@/components/Table";
 import { useGetInstitutionsQuery } from "@/services/institution";
-import { useGetStudentTransferQuery } from "@/services/studentTransfer";
+import { useGetStudentTransferQuery, useUpdateStudentTransferMutation } from "@/services/studentTransfer";
 import { DEFAULT_STUDENT_TRANSFER_DATA } from "@/utils/constans";
 import { useState } from "react";
 
 const Page: React.FC = () => {
     const { data: studentTransferData } = useGetStudentTransferQuery();
-    const { data: institutionData } = useGetInstitutionsQuery()
+    const { data: institutionData } = useGetInstitutionsQuery();
+
+    const [updateStudent] = useUpdateStudentTransferMutation()
 
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_STUDENT_TRANSFER_DATA);
@@ -75,7 +77,8 @@ const Page: React.FC = () => {
                 detailLink={{ name: "Pengaturan", to: "/studentTransfer" }}
             />
             <Modal
-                url={`studentTransfer/${selectedData.id}`}
+                idItem={selectedData.id}
+                mutation={updateStudent}
                 title="Edit data"
                 state={showPopup}
                 stateSetter={setShowPopup}

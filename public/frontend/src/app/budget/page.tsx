@@ -68,8 +68,8 @@ const Page: React.FC = () => {
             >
                 <InputFields
                     title="Jenis Biaya"
-                    name="biaya"
-                    defaultValue={selectedData.biaya}
+                    name="name"
+                    defaultValue={selectedData.name}
                 />
             </Modal>
         </DefaultLayout>

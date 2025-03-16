@@ -5,7 +5,7 @@ export const userApi = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllUser: builder.query({
       query: () => "/karyawan"
-    }),
+    })
   })
 })
 

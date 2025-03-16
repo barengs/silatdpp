@@ -42,6 +42,8 @@ const Modal: React.FC<PopupPropsType> = ({
 
         const res = await mutation({idItem, form})
 
+        console.log(res)
+
 
         if (!res.data.success) {
             toast.error("Galat saat memperbarui data", {

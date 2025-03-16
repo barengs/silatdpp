@@ -93,7 +93,7 @@ export const DEFAULT_PARTNERS_DATA = {
 
 export const DEFAULT_BUDGET_DATA = {
   id: "",
-  biaya: "",
+  name: "",
   created_at: "",
   updated_at: ""
 }
