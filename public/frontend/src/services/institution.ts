@@ -11,7 +11,7 @@ export const institutionApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/institusi/${idItem}`,
         method: "PUT",
-        body: form
+        body: new URLSearchParams(form)
       }),
       invalidatesTags: ["Institutions"]
     })

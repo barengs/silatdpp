@@ -11,7 +11,7 @@ export const budgetApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/biaya/${idItem}`,
         method: 'PUT',
-        body: form
+        body: new URLSearchParams(form)
       }),
       invalidatesTags: ["Budgets"]
     })

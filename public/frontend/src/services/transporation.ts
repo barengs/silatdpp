@@ -11,7 +11,7 @@ export const transportationApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form}) => ({
         url: `/transportasi/${idItem}`,
         method: "PUT",
-        body: form
+        body: new URLSearchParams(form)
       }),
       invalidatesTags: ["Transportations"] 
     })

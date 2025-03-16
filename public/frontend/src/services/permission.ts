@@ -11,7 +11,7 @@ export const permissionApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/hak-akses/${idItem}`,
         method: 'PUT',
-        body: new URLSearchParams(form).toString()
+        body: new URLSearchParams(form)
       }),
       invalidatesTags: ["Permissions"]
     })

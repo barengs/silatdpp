@@ -11,7 +11,7 @@ export const newsApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/berita/${idItem}`,
         method: "PUT",
-        body: form
+        body: new URLSearchParams(form)
       }),
       invalidatesTags: ["News"]
     })

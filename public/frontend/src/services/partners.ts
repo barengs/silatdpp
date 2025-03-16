@@ -11,7 +11,7 @@ export const partnerApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/rekanan/${idItem}`,
         method: 'PUT',
-        body: form
+        body: new URLSearchParams(form)
       }),
       invalidatesTags: ["Partners"]
     })

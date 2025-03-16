@@ -14,7 +14,7 @@ export const divisionApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/divisi/${idItem}`,
         method: "PUT",
-        body: form,
+        body: new URLSearchParams(form),
       }),
       invalidatesTags: ['Divisions'],
     })

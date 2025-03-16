@@ -12,7 +12,7 @@ export const roleApi = baseApiSlice.injectEndpoints({
       query: ({ itemId, form }) => ({
         url: `/tugas/${itemId}`,
         method: 'PUT',
-        body: form
+        body: new URLSearchParams(form)
       }),
 
       invalidatesTags: ["Roles"]

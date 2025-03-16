@@ -11,7 +11,7 @@ export const certificateApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/ijazah/${idItem}`,
         method: 'PUT',
-        body: new URLSearchParams(form).toString(),
+        body: new URLSearchParams(form),
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         }

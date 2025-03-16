@@ -11,7 +11,7 @@ export const recomendationApi = baseApiSlice.injectEndpoints({
       query: ({ idItem, form }) => ({
         url: `/rekom/${idItem}`,
         method: 'PUT',
-        body: form
+        body: new URLSearchParams(form)
       }),
       invalidatesTags: ["Budgets"]
     })
