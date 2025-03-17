@@ -52,7 +52,7 @@ const Page: React.FC = () => {
             const res = await fetchCaller("berita", {
                 method: "POST",
                 headers: {
-                    Authorization: authState.token,
+                    Authorization: `Bearer ${authState.token}`,
                 },
                 body: data,
             })
