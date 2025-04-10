@@ -51,37 +51,51 @@ export default function Page() {
     };
 
     useEffect(() => {
-        document.title = "SILATDPP - Login dulu yuk :)";
+        document.title = "SILAT - Login dulu yuk :)";
     }, []);
-
-    useEffect(() => console.log(newsData), [isLoading]);
 
     return (
         <div className="flex min-h-screen w-full">
             <div className="flex w-full flex-1 flex-col items-center justify-center md:flex-row">
-                <div className="hidden h-full w-full flex-1 items-center justify-center bg-primary p-4 lg:flex lg:min-w-[500px]">
-                    <div className="rounded-md bg-white px-12 py-8">
-                        <h1 className="font-semibold text-black-2 lg:text-xl">
-                            Berita Terbaru
-                        </h1>
-
+                <div className="flex h-full w-full flex-1 flex-col items-center justify-center bg-primary p-4 lg:min-w-[500px]">
+                    <div className="flex w-full items-center justify-center gap-x-4">
                         <img
-                            src={newsData ? newsData.data[0].gambar : ""}
-                            alt="berita"
+                            src="https://upload.wikimedia.org/wikipedia/commons/8/84/Lambang_Daerah_Kab._Pamekasan%2C_Jawa_Timur.png"
+                            alt="logo"
+                            className="size-14"
                         />
-
-                        <div className="mt-12 flex h-full flex-col text-left">
-                            <p> {newsData ? newsData.data[0].judul : ""}</p>
-                            <p>{newsData ? newsData.data[0].isi : ""}</p>
-                        </div>
+                        <h1 className="text-3xl font-semibold text-white">
+                            SILAT
+                        </h1>
                     </div>
+                    <h2 className="mt-4 text-white capitalize">Sistem informasi layanan terpadu dinas pendidikan pamekasan</h2>
                 </div>
 
                 <div className="flex w-full flex-1 flex-col justify-center px-4">
-                    <div className="w-[350px] lg:w-[450px] mx-auto">
+                    <div className="mx-auto w-[350px] lg:w-[450px]">
                         <h1 className="text-center text-3xl font-semibold text-black">
                             Login
                         </h1>
+                        {/* news */}
+
+                        <div className="mt-12 flex items-center gap-x-4 rounded-md bg-blue-500 px-4 py-4 text-white">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="white"
+                                className="size-6"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+
+                            <p className="flex-1 text-sm">
+                                {newsData ? newsData.data[0].isi : ""}
+                            </p>
+                        </div>
                         <form onSubmit={onSubmit} className="mt-16 space-y-12">
                             <InputFields
                                 title="Email"
