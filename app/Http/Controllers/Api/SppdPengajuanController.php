@@ -159,7 +159,7 @@ class SppdPengajuanController extends Controller
         //
     }
 
-    public function approval(Request $request, $id)
+    public function approval($id)
     {
         $data = SppdPengajuan::find($id);
         $approval = SppdApproval::create([
