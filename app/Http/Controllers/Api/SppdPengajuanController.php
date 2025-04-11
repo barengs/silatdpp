@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SppdPengajuanResource;
 use App\Models\DokumenKegiatan;
+use App\Models\SppdApproval;
 use App\Models\SppdHistory;
 use App\Models\SppdPengajuan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -155,5 +157,24 @@ class SppdPengajuanController extends Controller
     public function destroy(SppdPengajuan $sppdPengajuan)
     {
         //
+    }
+
+    public function approval(Request $request, $id)
+    {
+        $data = SppdPengajuan::find($id);
+        $approval = SppdApproval::create([
+            'sppd_pengajuan_id' => $data->id,
+            'user_id' => Auth::user()->id,
+            'tanggal_disetujui' => Carbon::now(),
+        ]);
+
+        SppdHistory::create([
+            'sppd_pengajuan_id' => $data->id,
+            'history_id' => 3,
+        ]);
+
+        $sppd = SppdPengajuan::where('id', $data->id)->with(['user', 'dokumens', 'approval', 'history', 'biaya', 'alat_transportasi'])->first();
+
+        return new SppdPengajuanResource(true, 'Berhasil di setujui', $data);
     }
 }
