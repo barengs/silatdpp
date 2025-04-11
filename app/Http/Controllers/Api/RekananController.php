@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ApiResource;
 use App\Models\Rekanan;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\RekananResource;
-use Illuminate\Support\Facades\Validator;
 
 class RekananController extends Controller
 {
@@ -16,8 +15,7 @@ class RekananController extends Controller
     public function index()
     {
         $data = Rekanan::all();
-
-        return new RekananResource(true, 'semau data rekanan!', $data);
+        return new ApiResource(true, 'semua data rekanan', $data);
     }
 
     /**
@@ -25,19 +23,14 @@ class RekananController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nama' => 'required',
-            'alamat' => 'required',
-            'kota' => 'required',
+        $create = Rekanan::create([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'kota' => $request->kota,
         ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator, 422);
+        if ($create) {
+            return new ApiResource(true, 'data berhasil di tambah', $create);
         }
-
-        $rekan = Rekanan::create($request->all());
-
-        return new RekananResource(true, 'data berhasil di simpan', $rekan);
     }
 
     /**
@@ -45,8 +38,8 @@ class RekananController extends Controller
      */
     public function show(string $id)
     {
-        $data = Rekanan::find($id);
-        return new RekananResource(true, 'data rekanan', $data);
+        $data = Rekanan::findOrFail($id);
+        return new ApiResource(true, 'detil rekanan', $data);
     }
 
     /**
@@ -54,9 +47,17 @@ class RekananController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $data = Rekanan::find($id);
-        $data->update($request->all());
-        return new RekananResource(true, 'data berhasil di update', $data);
+        $data = Rekanan::findOrFail($id);
+        $update = $data->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'kota' => $request->kota
+        ]);
+        if ($update) {
+            return new ApiResource(true, 'berhasil update data', $data);
+        } else {
+            return response()->json('gagal melakukan update data');
+        }
     }
 
     /**
@@ -64,8 +65,6 @@ class RekananController extends Controller
      */
     public function destroy(string $id)
     {
-        $data = Rekanan::find($id);
-        $data->delete();
-        return new RekananResource(true, 'data berhasil di hapus', $data);
+        //
     }
 }

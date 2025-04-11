@@ -62,6 +62,14 @@ class KaryawanController extends Controller
                 'gender' => $request->gender,
                 'address' => $request->address,
             ]);
+            if ($profile) {
+                $user->profile = $profile;
+            } else {
+                return new KaryawanResource(false, 'gagal membuat profile', '');
+            }
+            $user->roles = $user->getRoleNames();
+            $user->profile = $profile;
+            $user->permissions = $user->getAllPermissions();
             return new KaryawanResource(true, 'Berhasil daftakan pengguna', $user);
         } else {
             return new KaryawanResource(false, 'gagal mendaftarkan pengguna', '');
@@ -73,7 +81,14 @@ class KaryawanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $karyawan = User::with('profile')->with('roles')->where('id', $id)->first();
+        if ($karyawan) {
+            $karyawan->roles = $karyawan->getRoleNames();
+            $karyawan->permissions = $karyawan->getAllPermissions();
+            return new KaryawanResource(true, 'detail data karyawan', $karyawan);
+        } else {
+            return new KaryawanResource(false, 'data tidak di temukan', null);
+        }
     }
 
     /**

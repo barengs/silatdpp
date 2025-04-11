@@ -50,7 +50,12 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $role = Role::where('id', $id) - with('permissions')->first();
+        if ($role) {
+            return new ApiResource(true, 'detail data role', $role);
+        } else {
+            return new ApiResource(false, 'data tidak di temukan', null);
+        }
     }
 
     /**
@@ -59,8 +64,10 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $data = Role::findOrFail($id);
-        $data->name = $request->name;
-        $data->update();
+
+        $data->update([
+            'name' => $request->name,
+        ]);
         return new ApiResource(true, 'Tugas berhasil di ubah!', $data);
     }
 

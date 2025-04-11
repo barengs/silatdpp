@@ -33,7 +33,7 @@ class RekomController extends Controller
             'nama_pejabat_pengganti' => 'required',
             'nip_pejabat' => 'required',
             'nip_pejabat_pengganti' => 'required',
-            'rekanan_id' => 'required',
+            'mitra_id' => 'required',
             'institusi_id' => 'required',
             'alamat_pejabat_pengganti' => 'required',
             'jabatan' => 'required',

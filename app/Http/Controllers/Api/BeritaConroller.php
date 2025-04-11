@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Berita;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Resources\ApiResource;
@@ -40,18 +41,20 @@ class BeritaConroller extends Controller
 
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
-            $fileName = time() . '-' . $file->getClientOriginalName();
+            $fileName = time() . '-' . Str::slug($file->getClientOriginalName());
             $filePath = $file->move('documents/berita', $fileName);
 
             $save = Berita::create([
                 'judul' => $request->judul,
                 'isi' => $request->isi,
                 'gambar' => $fileName,
-                'slug' => \Str::slug($request->judul),
+                'slug' => Str::slug($request->judul),
                 'user_id' => $user->id,
             ]);
 
             return new ApiResource(true, 'berita berhasil ditambahkan', $save);
+        } else {
+            return response()->json('gambar harus di isi');
         }
     }
 
