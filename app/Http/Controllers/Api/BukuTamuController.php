@@ -83,8 +83,13 @@ class BukuTamuController extends Controller
 	 */
 	public function show(BukuTamu $bukuTamu)
 	{
-		$tamu = BukuTamu::find($bukuTamu->id);
-
+		$tamu = BukuTamu::where($bukuTamu->id)->with('institusi')->with('divisi')->with('user')->first();
+		if (!$tamu) {
+			return response()->json([
+				'status' => false,
+				'message' => 'data tidak di temukan'
+			]);
+		}
 		return new BukuTamuResource(true, 'Data tamu', $tamu);
 	}
 

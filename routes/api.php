@@ -39,6 +39,7 @@ Route::apiResource('buku-tamu', BukuTamuController::class);
 Route::apiResource('divisi', DivisiController::class);
 Route::apiResource('institusi', InstitusiController::class);
 Route::apiResource('sppd', SppdPengajuanController::class);
+Route::post('sppd/approval', [SppdPengajuanController::class, 'approval'])->name('sppd.approval');
 Route::apiResource('transportasi', AlatTransportasiController::class);
 Route::apiResource('biaya', BiayaController::class);
 Route::apiResource('mitra', MitraController::class);
