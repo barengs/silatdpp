@@ -9,7 +9,7 @@ class Rekom extends Model
     protected $fillable = [
         'noreg',
         'user_id',
-        'rekanan_id',
+        'mitra_id',
         'institusi_id',
         'nama_pejabat',
         'nip_pejabat',
@@ -20,4 +20,17 @@ class Rekom extends Model
         'konten',
         'status',
     ];
+
+    public function mitra()
+    {
+        return $this->belongsTo(Mitra::class);
+    }
+    public function institusi()
+    {
+        return $this->belongsTo(Institusi::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

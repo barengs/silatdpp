@@ -72,8 +72,12 @@ class RekomController extends Controller
      */
     public function show(string $id)
     {
-        $data = Rekom::find($id);
-        return new RekomResource(true, 'data rekom', $data);
+        $data = Rekom::where('id', $id)->with(['mitra', 'institusi'])->first();
+        if ($data) {
+            return new RekomResource(true, 'detail data rekom', $data);
+        } else {
+            return new RekomResource(false, 'data tidak di temukan', null);
+        }
     }
 
     /**
@@ -82,8 +86,23 @@ class RekomController extends Controller
     public function update(Request $request, string $id)
     {
         $update = Rekom::find($id);
-        $update->update($request->all());
-        return new RekomResource(true, 'data berhasil di update', $update);
+        if (!$update) {
+            return new RekomResource(false, 'data tidak di temukan', null);
+        }
+        $update->update([
+            'nama_pejabat' => $request->nama_pejabat,
+            'nip_pejabat' => $request->nip_pejabat,
+            'nama_pejabat_pengganti' => $request->nama_pejabat_pengganti,
+            'nip_pejabat_pengganti' => $request->nip_pejabat_pengganti,
+            'mitra_id' => $request->mitra_id,
+            'institusi_id' => $request->institusi_id,
+            'alamat_pejabat_pengganti' => $request->alamat_pejabat_pengganti,
+            'jabatan' => $request->jabatan,
+            'konten' => $request->konten,
+        ]);
+        if ($update) {
+            return new RekomResource(true, 'data berhasil di update', $update);
+        }
     }
 
     /**
