@@ -99,14 +99,14 @@ class KaryawanController extends Controller
             $karyawan->permissions = $karyawan->getAllPermissions();
             return new KaryawanResource(true, 'detail data karyawan', $karyawan);
         } else {
-            return new KaryawanResource(false, 'data tidak di temukan', null);
+            return new KaryawanResource(false, 'data karyawan tidak di temukan', null);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         dd($request->all());
         // $data = User::find($id);
