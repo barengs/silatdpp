@@ -106,37 +106,37 @@ class KaryawanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         dd($request->all());
-        $data = User::find($id);
-        $user = $data->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->get('password')),
-        ]);
-        if (!$user) {
-            return new KaryawanResource(false, 'gagal mengupdate pengguna', null);
-        }
-        $profile = UserProfile::where('user_id', $data->id)->first();
-        if ($profile) {
-            try {
-                $profile->update([
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'nick_name' => $request->nick_name,
-                    'gender' => $request->gender,
-                    'address' => $request->address,
-                    'phone' => $request->phone,
-                    'nip' => $request->nip,
-                ]);
-            } catch (\Exception $e) {
-                return new KaryawanResource(false, 'gagal mengupdate profile', $e->getMessage());
-            }
-        } else {
-            return new KaryawanResource(false, 'data profile tidak di temukan', null);
-        }
-        return new KaryawanResource(true, 'data berhasil di update', $data);
+        // $data = User::find($id);
+        // $user = $data->update([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->get('password')),
+        // ]);
+        // if (!$user) {
+        //     return new KaryawanResource(false, 'gagal mengupdate pengguna', null);
+        // }
+        // $profile = UserProfile::where('user_id', $data->id)->first();
+        // if ($profile) {
+        //     try {
+        //         $profile->update([
+        //             'first_name' => $request->first_name,
+        //             'last_name' => $request->last_name,
+        //             'nick_name' => $request->nick_name,
+        //             'gender' => $request->gender,
+        //             'address' => $request->address,
+        //             'phone' => $request->phone,
+        //             'nip' => $request->nip,
+        //         ]);
+        //     } catch (\Exception $e) {
+        //         return new KaryawanResource(false, 'gagal mengupdate profile', $e->getMessage());
+        //     }
+        // } else {
+        //     return new KaryawanResource(false, 'data profile tidak di temukan', null);
+        // }
+        // return new KaryawanResource(true, 'data berhasil di update', $data);
     }
 
     /**
