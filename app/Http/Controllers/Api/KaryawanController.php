@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class KaryawanController extends Controller
 {
@@ -54,6 +55,16 @@ class KaryawanController extends Controller
 
         if ($user) {
             $user->assignRole($request->otoritas);
+            if ($request->hasFile('photo')) {
+                $path = public_path('documents/profile');
+                if (!is_dir($path)) {
+                    File::makeDirectory($path, 0775, true, true);
+                }
+                $file = $request->file('photo');
+                $fileName = time() . '-' . $file->getClientOriginalName();
+                $filePath = $file->move('documents/profile', $fileName);
+                $user->profile_photo_path = $fileName;
+            }
             $profile = UserProfile::create([
                 'user_id' => $user->id,
                 'first_name' => $request->first_name,
@@ -61,6 +72,9 @@ class KaryawanController extends Controller
                 'nick_name' => $request->nick_name,
                 'gender' => $request->gender,
                 'address' => $request->address,
+                'photo' => $fileName ?? null,
+                'phone' => $request->phone,
+                'nip' => $request->nip,
             ]);
             if ($profile) {
                 $user->profile = $profile;
