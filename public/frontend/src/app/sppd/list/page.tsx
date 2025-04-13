@@ -96,7 +96,7 @@ const SppdPage: React.FC = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Histori SPPD" />
+            <Breadcrumb pageName="SPPD" />
             <Table addButtonName='Tambah SPPD' addButtonLink='/sppd' name='Daftar Pengajuan SPPD' column={columns} data={sppdData ? sppdData.data.data : []} detailLink={{name: "Pengaturan", to: "/sppd"}} isLoading={isLoading} />
             <Modal 
                 url={`buku-tamu/${selectedData.id}`}
