@@ -96,7 +96,18 @@ class KaryawanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = User::find($id);
+        $data->update($request->all());
+        $profile = UserProfile::where('user_id', $data->id)->first();
+        if ($profile) {
+            $profile->update($request->all());
+        } else {
+            return new KaryawanResource(false, 'gagal mengupdate profile', '');
+        }
+        $data->roles = $data->getRoleNames();
+        $data->permissions = $data->getAllPermissions();
+        $data->profile = $profile;
+        return new KaryawanResource(true, 'data berhasil di update', $data);
     }
 
     /**
