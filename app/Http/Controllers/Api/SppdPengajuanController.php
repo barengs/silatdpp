@@ -44,8 +44,7 @@ class SppdPengajuanController extends Controller
 
         // Validasi inputan dari front end
         $validator = Validator::make($request->all(), [
-
-            'nama_kegiatan' => 'required',
+            'maksud_kegiatan' => 'required',
             'tempat_kegiatan' => 'required',
             'tanggal_kegiatan' => 'required',
             'files' => 'required',
@@ -83,11 +82,12 @@ class SppdPengajuanController extends Controller
             // validasi
             // $allowFileExtention = ['pdf', 'jpg', 'jpeg'];
             $files = $request->file('files');
-
+            // dd($files);
             foreach ($files as $file) {
                 $fileName = time() . '-' . $file->getClientOriginalName();
-                $filePath = $file->move('documents/sppd', $fileName);
-
+                $filePath = $file->storeAs('documents/sppd', $fileName, 'public');
+                // https://silatdpp.barengsaya.com/documents/sppd/file_name.ext
+                // dd($filePath);
                 $doc = DokumenKegiatan::create([
                     'sppd_pengajuan_id' => $sppd->id,
                     'nama_dokumen' => $fileName,
