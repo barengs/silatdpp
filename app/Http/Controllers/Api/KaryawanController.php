@@ -108,6 +108,7 @@ class KaryawanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        dd($request->all());
         $data = User::find($id);
         $user = $data->update([
             'name' => $request->name,
