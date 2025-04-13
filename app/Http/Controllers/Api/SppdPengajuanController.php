@@ -85,7 +85,7 @@ class SppdPengajuanController extends Controller
             // dd($files);
             foreach ($files as $file) {
                 $fileName = time() . '-' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('documents/sppd', $fileName, 'public');
+                $filePath = $file->move('documents/sppd', $fileName);
                 // https://silatdpp.barengsaya.com/documents/sppd/file_name.ext
                 // dd($filePath);
                 $doc = DokumenKegiatan::create([
