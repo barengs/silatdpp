@@ -47,7 +47,7 @@ class IjazahConroller extends Controller
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             $fileName = time() . '-' . $file->getClientOriginalName();
-            $filePath = $file->move('documents/ijazah', $fileName);
+            $filePath = $file->storeAs('documents/ijazah', $fileName);
 
             $save = Ijazah::create([
                 'institusi_id' => $request->institusi_id,
