@@ -16,6 +16,7 @@ interface PopupPropsType extends PropsWithChildren {
     ableDelete?: boolean;
     mutation?: unknown;
     isLoading?: boolean;
+    expanded?: boolean;
     immutableData?: immutableDataType[];
 }
 
@@ -29,6 +30,7 @@ const Modal: React.FC<PopupPropsType> = ({
     ableDelete = false,
     mutation = null,
     isLoading = false,
+    expanded = false,
     immutableData = [{ name: "", value: ""}]
 }) => {
     const [method, setMethod] = useState("update");
@@ -61,14 +63,14 @@ const Modal: React.FC<PopupPropsType> = ({
 
     return (
         <div
-            className={`${state || closed ? "fixed" : "hidden"} bottom-0 left-0 z-9999 flex min-h-screen w-full items-center justify-center`}
+            className={`${state || closed ? "fixed" : "hidden"} bottom-0 left-0 z-9999 flex min-h-screen w-full items-end`}
         >
             <div
                 className="absolute bottom-0 left-0 -z-10 min-h-screen w-full bg-black-2 bg-opacity-75"
                 onClick={() => stateSetter(false)}
             ></div>
 
-            <div className="w-max max-h-[80vh] overflow-y-scroll rounded-md bg-white p-4">
+            <div className="w-full max-h-[80vh] overflow-y-scroll rounded-t-md bg-white p-4 overflow-y-auto">
                 <div className="flex w-full justify-between">
                     <h2 className="font-semibold text-black-2">{title}</h2>
                     <button onClick={() => stateSetter(false)}>

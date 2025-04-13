@@ -91,9 +91,9 @@ const Page: React.FC = () => {
                 <SelectFields title="institusi" name="institusi_id" options={institutionData ? institutionData.data.map(institution => { 
                     return {name: institution.nama, value: institution.id}
                 }) : []} defaultValue={selectedData.institusi_id}/>
-                <SelectFields title="Institusi Rekan" name="rekanan_id" options={partnerData ? partnerData.data.map(partner => { 
+                <SelectFields title="Institusi Rekan" name="mitra_id" options={partnerData ? partnerData.data.map(partner => { 
                     return {name: partner.nama, value: partner.id}
-                }) : []} defaultValue={selectedData.rekanan_id}/>
+                }) : []} defaultValue={selectedData.mitra_id}/>
                 <TextFields title="Konten" name="konten" defaultValue={selectedData.konten}/>
             </Modal>
         </DefaultLayout>

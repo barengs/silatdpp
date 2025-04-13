@@ -17,9 +17,9 @@ const PartnerAddPage = () => {
     const [errors, setErrors] = useState({})
 
     const formSchema = z.object({
-        nama: z.string().min(1, "Harap masukkan nama rekanan"),
-        alamat: z.string().min(1, "Harap masukkan alamat rekanan"),
-        kota: z.string().min(1, "Harap masukkan kota rekanan"),
+        nama: z.string().min(1, "Harap masukkan nama mitra"),
+        alamat: z.string().min(1, "Harap masukkan alamat mitra"),
+        kota: z.string().min(1, "Harap masukkan kota mitra"),
     })
 
     const handlePostData = async (event: FormEvent<HTMLFormElement>) => {
@@ -41,7 +41,7 @@ const PartnerAddPage = () => {
             return
         }
         
-        await fetchCaller('rekanan', {
+        await fetchCaller('mitra', {
             method: "post",
             body: formData,
             headers: {
@@ -81,7 +81,7 @@ const PartnerAddPage = () => {
                             Menambahkan
                         </div>
                     ) : (
-                        <>Tambah Rekanan</>
+                        <>Tambah Mitra</>
                     )}
                 </button>
             </form>

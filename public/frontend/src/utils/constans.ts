@@ -159,7 +159,7 @@ export const DEFAULT_SPPD_DATA = {
 export const DEFAULT_RECOMENDATION_DATA = {
   id: "",
   noreg: "",
-  rekanan_id: "",
+  mitra_id: "",
   user_id: "",
   institusi_id: "",
   nama_pejabat: "",

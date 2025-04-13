@@ -11,6 +11,7 @@ interface ComponentProps {
     title: string;
     setter: (value: FILE_PROTOTYPE_TYPE[]) => void;
     multiple?: boolean;
+    defaultValue?: File[];
     error?: string;
 }
 
@@ -18,10 +19,11 @@ const FilesFields: React.FC<ComponentProps> = ({
     title,
     setter,
     multiple = true,
+    defaultValue = [],
     error = "",
 }) => {
     const [fieldActive, setFieldActive] = useState<boolean>(false);
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<File[]>(defaultValue);
     const fileRef = useRef<HTMLInputElement>(null);
     const [_, setForceUpdate] = useState<boolean>(false);
 

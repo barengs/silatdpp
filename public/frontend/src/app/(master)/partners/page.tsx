@@ -54,7 +54,7 @@ const Partner = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Data Rekan" />
             <Table
-                name="Data Rekanan"
+                name="Data Mitra"
                 column={columns}
                 data={data ? data.data : []}
                 addButtonName="Tambah Rekan"
@@ -70,17 +70,17 @@ const Partner = () => {
                 ableUpdate={true}
             >
                 <InputFields
-                    title="Nama Instansi Rekanan"
+                    title="Nama Instansi Mitra"
                     name="biaya"
                     defaultValue={selectedData.nama}
                 />
                 <InputFields
-                    title="Alamat Instansi Rekanan"
+                    title="Alamat Instansi Mitra"
                     name="biaya"
                     defaultValue={selectedData.alamat}
                 />
                 <InputFields
-                    title="Kota Instansi Rekanan"
+                    title="Kota Instansi Mitra"
                     name="biaya"
                     defaultValue={selectedData.kota}
                 />

@@ -57,7 +57,7 @@ const ExchequerPage = () => {
                 <SelectFields title="institusi" name="institusi_id" options={institutionData ? institutionData.data.map(institution => { 
                     return {name: institution.nama, value: institution.id}
                 }) : []} />
-                <SelectFields title="Institusi Rekan" name="rekanan_id" options={partnerData ? partnerData.data.map(partner => { 
+                <SelectFields title="Institusi Rekan" name="mitra_id" options={partnerData ? partnerData.data.map(partner => { 
                     return {name: partner.nama, value: partner.id}
                 }) : []} />
                 <TextFields title="Konten" name="konten" />

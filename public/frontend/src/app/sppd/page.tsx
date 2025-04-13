@@ -35,23 +35,21 @@ const SppdAddData: React.FC = () => {
         files: z.instanceof(File).array().nonempty("Berkas diperlukan"),
     });
 
-    const dateValidationSchema = z.object({
-        tanggal_berangkat: z.preprocess(
-            (val) => new Date(val as string),
-            z.date(),
-        ),
-        tanggal_kembali: z.preprocess(
-            (val) => new Date(val as string),
-            z.date(),
-        ),
-    }).refine(
-        (data) => data.tanggal_berangkat <= data.tanggal_kembali,
-        {
-          message: "Tanggal berangkat tidak boleh lebih dari tanggal kembali",
-          path: ["tanggal_berangkat"],
-        }
-      );
-      
+    const dateValidationSchema = z
+        .object({
+            tanggal_berangkat: z.preprocess(
+                (val) => new Date(val as string),
+                z.date(),
+            ),
+            tanggal_kembali: z.preprocess(
+                (val) => new Date(val as string),
+                z.date(),
+            ),
+        })
+        .refine((data) => data.tanggal_berangkat <= data.tanggal_kembali, {
+            message: "Tanggal berangkat tidak boleh lebih dari tanggal kembali",
+            path: ["tanggal_berangkat"],
+        });
 
     const { data: budgetsData } = useGetBudgetsQuery();
     const { data: transportationData } = useGetTransportationsQuery();
@@ -234,12 +232,20 @@ const SppdAddData: React.FC = () => {
                     error={errors.files ? errors.files[0] : ""}
                 />
 
-                <button
-                    type="submit"
-                    className="col-span-2 w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-                >
-                    Ajukan SPPD
-                </button>
+                <div className="flex gap-x-4">
+                    <button
+                        type="submit"
+                        className="col-span-2 w-max justify-center rounded bg-red-500 p-3 font-medium text-gray hover:bg-opacity-90"
+                    >
+                        Batalkan Pengajuan
+                    </button>
+                    <button
+                        type="submit"
+                        className="col-span-2 w-max justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                    >
+                        Ajukan SPPD
+                    </button>
+                </div>
             </form>
         </DefaultLayout>
     );

@@ -7,7 +7,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import useFetch from "@/hooks/useFetch";
 import { useGetRolesQuery } from "@/services/role";
 import { useRouter } from "next/navigation";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -17,12 +17,22 @@ const Page: React.FC = () => {
     const authState = store.getState().auth;
     const [isPending, fetchCaller] = useFetch();
 
+    const [errors, setErrors] = useState({})
+
     const { data: rolesData } = useGetRolesQuery()
 
     const handlePost = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const form = new FormData(event.currentTarget);
+
+        if (form.get("password") != form.get("password_confirmation")) {
+            
+            toast.error("Kesalahan Validasi")
+            setErrors({name: "password", messege: "Password tidak sama"})
+            
+            return
+        }
 
         const res = await fetchCaller("karyawan", {
             method: "post",
@@ -60,11 +70,12 @@ const Page: React.FC = () => {
                 <InputFields title="Nama Depan" name="first_name" />
                 <InputFields title="Nama Belakang" name="last_name" />
                 <InputFields title="Alamat" name="address" />
-                <InputFields title="Password" name="password" type="password" />
+                <InputFields title="Password" name="password" type="password" error={errors.name == "password" ? errors.messege : ""}/>
                 <InputFields
                     title="Konfirmasi Password"
                     name="password_confirmation"
                     type="password"
+                    error={errors.name == "password" ? errors.messege : ""}
                 />
                 <InputFields title="Email" name="email" />
                 <SelectFields title="Sebagai" name="otoritas" options={rolesData ? rolesData.data : []} />
