@@ -42,7 +42,7 @@ class BeritaConroller extends Controller
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
             $fileName = time() . '-' . Str::slug($file->getClientOriginalName());
-            $filePath = $file->move('documents/berita', $fileName);
+            $filePath = $file->storeAs('documents/berita', $fileName);
 
             $save = Berita::create([
                 'judul' => $request->judul,
