@@ -82,9 +82,6 @@ class KaryawanController extends Controller
             } else {
                 return new KaryawanResource(false, 'gagal membuat profile', '');
             }
-            $user->roles = $user->getRoleNames();
-            $user->profile = $profile;
-            $user->permissions = $user->getAllPermissions();
             return new KaryawanResource(true, 'Berhasil daftakan pengguna', $user);
         } else {
             return new KaryawanResource(false, 'gagal mendaftarkan pengguna', '');
@@ -138,9 +135,6 @@ class KaryawanController extends Controller
         } else {
             return new KaryawanResource(false, 'data profile tidak di temukan', null);
         }
-        $data->roles = $data->getRoleNames();
-        $data->permissions = $data->getAllPermissions();
-        $data->profile = $profile;
         return new KaryawanResource(true, 'data berhasil di update', $data);
     }
 
