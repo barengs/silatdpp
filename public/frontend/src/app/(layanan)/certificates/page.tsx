@@ -88,7 +88,7 @@ const Page: React.FC = () => {
 
     return (
         <DefaultLayout>
-            <Breadcrumb pageName="Permohonan Perubahan Ijazah" />
+            <Breadcrumb pageName="Revisi Ijazah" />
             <Form onSubmit={handleSubmit}>
                 <InputFields
                     title="Nama Siswa"
