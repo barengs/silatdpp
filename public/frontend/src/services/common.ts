@@ -34,7 +34,7 @@ export async function fetchDivision() {
 }
 
 export async function fetchPartners() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/rekanan`, { cache: 'no-store'})
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/mitra`, { cache: 'no-store'})
 
     if (!res.ok) return [DEFAULT_PARTNERS_DATA]
 

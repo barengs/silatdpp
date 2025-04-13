@@ -4,12 +4,12 @@ import { baseApiSlice } from "./base";
 export const partnerApi = baseApiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPartners: builder.query({
-      query: () => "/rekanan",
+      query: () => "/mitra",
       providesTags: ["Partners"]
     }),
     updatePartner: builder.mutation({
       query: ({ idItem, form }) => ({
-        url: `/rekanan/${idItem}`,
+        url: `/mitra/${idItem}`,
         method: 'PUT',
         body: new URLSearchParams(form)
       }),
