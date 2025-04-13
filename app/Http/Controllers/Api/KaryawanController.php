@@ -114,7 +114,15 @@ class KaryawanController extends Controller
         $data->update($request->all());
         $profile = UserProfile::where('user_id', $data->id)->first();
         if ($profile) {
-            $profile->update($request->all());
+            $profile->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'nick_name' => $request->nick_name,
+                'gender' => $request->gender,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'nip' => $request->nip,
+            ]);
         } else {
             return new KaryawanResource(false, 'gagal mengupdate profile', '');
         }
