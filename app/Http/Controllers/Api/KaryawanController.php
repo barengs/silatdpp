@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\KaryawanResource;
 use App\Models\User;
-use App\Models\UserProfile;
+use App\Models\Karyawan;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
-use PhpParser\Node\Stmt\TryCatch;
+use App\Http\Resources\KaryawanResource;
+use Illuminate\Support\Facades\Validator;
 
 class KaryawanController extends Controller
 {
@@ -19,15 +18,13 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        $users = User::with('profile')->with('roles')->get();
-        // $userRole = $users->map(function ($user) {
-        //     return [
-        //         'user' => $user,
-        //         'role' => $user->getRoleNames(),
-        //     ];
-        // });
-        // $users->getRoleNames();
-        return new KaryawanResource(true, 'semua data karyawan', $users);
+        $data = User::with(['karyawan', 'role'])->get();
+        if ($data->isEmpty()) {
+            return response()->json([
+                'message' => 'Data tidak ditemukan',
+            ], 404);
+        }
+        return new KaryawanResource(true, 'data karyawan', $data);
     }
 
     /**
@@ -47,44 +44,53 @@ class KaryawanController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->get('password')),
+            'password' => bcrypt($request->password),
         ]);
 
-        if ($user) {
-            $user->assignRole($request->otoritas);
-            if ($request->hasFile('photo')) {
-                $path = public_path('documents/profile');
-                if (!is_dir($path)) {
-                    File::makeDirectory($path, 0775, true, true);
-                }
-                $file = $request->file('photo');
-                $fileName = time() . '-' . $file->getClientOriginalName();
-                $filePath = $file->move('documents/profile', $fileName);
-                $user->profile_photo_path = $fileName;
+        if (!$user) {
+            return response()->json([
+                'message' => 'Gagal menambahkan akun user',
+            ], 500);
+        }
+        $user->assignRole($request->otoritas);
+
+        if ($request->hasFile('photo')) {
+            $path = public_path('documents/profile');
+
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0775, true, true);
             }
-            $profile = UserProfile::create([
+
+            $file = $request->file('photo');
+            $filename = time() . '.' . Str::slug($file->getClientOriginalExtension());
+            $file->move($path, $filename);
+        } else {
+            $request->photo = null;
+        }
+
+        try {
+            //code...
+            $karyawan = Karyawan::create([
                 'user_id' => $user->id,
+                'nip' => $request->nip,
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'nick_name' => $request->nick_name,
-                'gender' => $request->gender,
                 'address' => $request->address,
-                'photo' => $fileName ?? null,
+                'gender' => $request->gender,
                 'phone' => $request->phone,
-                'nip' => $request->nip,
+                'photo' => $filename,
             ]);
-            if ($profile) {
-                $user->profile = $profile;
-            } else {
-                return new KaryawanResource(false, 'gagal membuat profile', '');
-            }
-            return new KaryawanResource(true, 'Berhasil daftakan pengguna', $user);
-        } else {
-            return new KaryawanResource(false, 'gagal mendaftarkan pengguna', '');
+
+            return new KaryawanResource(true, 'data karyawan berhasil ditambahkan', $karyawan);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Gagal menambahkan data karyawan',
+                'error' => $e->getMessage(),
+            ], 500);
         }
     }
 
@@ -93,7 +99,7 @@ class KaryawanController extends Controller
      */
     public function show(string $id)
     {
-        $karyawan = User::with('profile')->with('roles')->where('id', $id)->first();
+        $karyawan = User::with(['karyawan', 'role'])->where('id', $id)->first();
         if ($karyawan) {
             $karyawan->roles = $karyawan->getRoleNames();
             $karyawan->permissions = $karyawan->getAllPermissions();
@@ -106,37 +112,55 @@ class KaryawanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
-        dd($request->all());
-        // $data = User::find($id);
-        // $user = $data->update([
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->get('password')),
-        // ]);
-        // if (!$user) {
-        //     return new KaryawanResource(false, 'gagal mengupdate pengguna', null);
-        // }
-        // $profile = UserProfile::where('user_id', $data->id)->first();
-        // if ($profile) {
-        //     try {
-        //         $profile->update([
-        //             'first_name' => $request->first_name,
-        //             'last_name' => $request->last_name,
-        //             'nick_name' => $request->nick_name,
-        //             'gender' => $request->gender,
-        //             'address' => $request->address,
-        //             'phone' => $request->phone,
-        //             'nip' => $request->nip,
-        //         ]);
-        //     } catch (\Exception $e) {
-        //         return new KaryawanResource(false, 'gagal mengupdate profile', $e->getMessage());
-        //     }
-        // } else {
-        //     return new KaryawanResource(false, 'data profile tidak di temukan', null);
-        // }
-        // return new KaryawanResource(true, 'data berhasil di update', $data);
+        $data = User::find($id);
+        $user = $data->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+        if (!$user) {
+            return new KaryawanResource(false, 'gagal mengupdate pengguna', null);
+        }
+        $profile = Karyawan::where('user_id', $data->id)->first();
+        if (!$profile) {
+            return new KaryawanResource(false, 'data profile tidak di temukan', null);
+        }
+
+        if ($request->hasFile('photo')) {
+            if ($profile->photo) {
+                $path = public_path('documents/profile/' . $profile->photo);
+                if (File::exists($path)) {
+                    File::delete($path);
+                }
+            }
+            $file = $request->file('photo');
+            $filename = time() . '.' . Str::slug($file->getClientOriginalExtension());
+            $file->move($path, $filename);
+        } else {
+            $filename = $profile->photo;
+        }
+        try {
+            //code...
+            $profile->update([
+                'nip' => $request->nip,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'nick_name' => $request->nick_name,
+                'address' => $request->address,
+                'gender' => $request->gender,
+                'phone' => $request->phone,
+                'photo' => $filename,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Gagal mengupdate data karyawan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+        return new KaryawanResource(true, 'data karyawan berhasil diupdate', $profile);
     }
 
     /**
@@ -144,6 +168,21 @@ class KaryawanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = User::find($id);
+        if (!$data) {
+            return new KaryawanResource(false, 'gagal menghapus pengguna', null);
+        }
+        $profile = Karyawan::where('user_id', $data->id)->first();
+        if ($profile) {
+            if ($profile->photo) {
+                $path = public_path('documents/profile/' . $profile->photo);
+                if (File::exists($path)) {
+                    File::delete($path);
+                }
+            }
+            $profile->delete();
+        }
+        $data->delete();
+        return new KaryawanResource(true, 'data karyawan berhasil dihapus', null);
     }
 }

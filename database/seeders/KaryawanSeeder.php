@@ -2,13 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Karyawan;
 use App\Models\User;
-use App\Models\UserProfile;
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class UserProfileSeeder extends Seeder
+class KaryawanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -22,7 +21,7 @@ class UserProfileSeeder extends Seeder
             'email_verified_at' => Carbon::now(),
         ]);
 
-        UserProfile::create([
+        Karyawan::create([
             'user_id' => $user->id,
             'first_name' => 'admin',
             'last_name' => 'admin',
