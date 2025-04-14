@@ -70,13 +70,13 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function profile()
+    public function karyawan()
     {
-        return $this->belongsTo(UserProfile::class);
+        return $this->belongsTo(Karyawan::class);
     }
 
-    // public function roles()
-    // {
-    //     return $this->belongsToMany(Role::class);
-    // }
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
