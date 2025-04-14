@@ -18,7 +18,7 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        $data = User::with('karyawan')->get();
+        $data = User::with('role')->withWhereHas('karyawan')->get();
         $data->roles = $data->getRoleNames();
         if ($data->isEmpty()) {
             return response()->json([
