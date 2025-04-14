@@ -103,7 +103,7 @@ class KaryawanController extends Controller
         $karyawan = User::with(['karyawan', 'roles'])->where('id', $id)->first();
         if ($karyawan) {
             $karyawan->roles = $karyawan->getRoleNames();
-            $karyawan->permissions = $karyawan->getAllPermissions();
+            // $karyawan->permissions = $karyawan->getAllPermissions();
             return new KaryawanResource(true, 'detail data karyawan', $karyawan);
         } else {
             return new KaryawanResource(false, 'data karyawan tidak di temukan', null);
