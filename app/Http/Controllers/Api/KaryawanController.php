@@ -18,8 +18,8 @@ class KaryawanController extends Controller
      */
     public function index()
     {
-        $data = User::with('karyawan')->get();
-        $data->roles = $data->getRoleNames();
+        $data = User::with(['karyawan', 'roles'])->get();
+
         if ($data->isEmpty()) {
             return response()->json([
                 'message' => 'Data tidak ditemukan',
