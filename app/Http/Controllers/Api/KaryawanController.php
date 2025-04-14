@@ -100,7 +100,7 @@ class KaryawanController extends Controller
      */
     public function show(string $id)
     {
-        $karyawan = User::with(['karyawan', 'role'])->where('id', $id)->first();
+        $karyawan = User::with(['karyawan', 'roles'])->where('id', $id)->first();
         if ($karyawan) {
             $karyawan->roles = $karyawan->getRoleNames();
             $karyawan->permissions = $karyawan->getAllPermissions();
