@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Karyawan;
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Karyawan;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
