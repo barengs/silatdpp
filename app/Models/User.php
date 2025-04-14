@@ -70,10 +70,10 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    // public function karyawan()
-    // {
-    //     return $this->belongsTo(Karyawan::class);
-    // }
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class);
+    }
 
     // public function roles()
     // {
