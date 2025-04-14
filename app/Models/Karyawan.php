@@ -13,8 +13,8 @@ class Karyawan extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
+    // public function role()
+    // {
+    //     return $this->belongsTo(Role::class);
+    // }
 }
