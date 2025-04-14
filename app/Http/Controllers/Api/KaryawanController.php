@@ -58,6 +58,8 @@ class KaryawanController extends Controller
         }
         $user->assignRole($request->otoritas);
 
+        $filename = null;
+
         if ($request->hasFile('photo')) {
             $path = public_path('documents/profile');
 
@@ -68,8 +70,6 @@ class KaryawanController extends Controller
             $file = $request->file('photo');
             $filename = time() . '.' . Str::slug($file->getClientOriginalExtension());
             $file->move($path, $filename);
-        } else {
-            $request->photo = null;
         }
 
         try {
