@@ -42,9 +42,9 @@ class SppdPengajuan extends Model
         return $this->belongsToMany(History::class, 'sppd_histories');
     }
 
-    public function biaya(): HasMany
+    public function biaya()
     {
-        return $this->hasMany(Biaya::class);
+        return $this->belongsTo(Biaya::class);
     }
 
     public function alat_transportasi(): BelongsTo
