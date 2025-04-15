@@ -232,27 +232,7 @@ const SppdPage: React.FC = () => {
                         <FilesFields
                             title="Bukti Kegiatan"
                             setter={(file) => null}
-                            defaultValue={selectedData.dokumens.map(
-                                async (document) => {
-                                    const res = await fetch(
-                                        `https://silat.barengsaya.com/documents/sppd/${document.nama_dokumen}`,
-                                    );
-
-                                    const blob = await res.blob();
-
-                                    const file = new File(
-                                        [blob],
-                                        document.nama_dokumen,
-                                        {
-                                            type: blob.type,
-                                            lastModified: document.created_at,
-                                        },
-                                    );
-
-                                    console.log(file);
-                                    return file;
-                                },
-                            )}
+                            defaultValue={selectedData.dokumens}
                         />
 
                         <div className="col-span-2">
@@ -378,27 +358,7 @@ const SppdPage: React.FC = () => {
                         <FilesFields
                             title="Bukti Kegiatan"
                             setter={(file) => null}
-                            defaultValue={selectedData.dokumens.map(
-                                async (document) => {
-                                    const res = await fetch(
-                                        `https://silat.barengsaya.com/documents/sppd/${document.nama_dokumen}`,
-                                    );
-
-                                    const blob = await res.blob();
-
-                                    const file = new File(
-                                        [blob],
-                                        document.nama_dokumen,
-                                        {
-                                            type: blob.type,
-                                            lastModified: document.created_at,
-                                        },
-                                    );
-
-                                    console.log(file);
-                                    return file;
-                                },
-                            )}
+                            defaultValue={selectedData.dokumens}
                         />
 
                         <div className="col-span-2">
@@ -478,6 +438,7 @@ const SppdPage: React.FC = () => {
                             setter={(file) => null}
                             defaultValue={selectedData.dokumens}
                         />
+                        {/* <p>{JSON.stringify(selectedData.dokumens)}</p> */}
 
                         <div className="col-span-2">
                             <h3 className="text-black">Diinput Oleh:</h3>

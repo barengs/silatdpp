@@ -79,8 +79,7 @@ const FilesFields: React.FC<ComponentProps> = ({
 
     useEffect(() => handleError(true), [error]);
 
-    useEffect(() => console.log(files), [])
-
+    useEffect(() => setFiles(defaultValue), [defaultValue])
 
     return (
         <>
