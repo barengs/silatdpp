@@ -1,15 +1,21 @@
+import { getDateTime } from "@/utils/data";
 import { useState } from "react";
 
 interface Props {
     data: { name: string; desc: string; }[];
-    filledAt: number
+    filledAt: number;
+    isDescDate?: boolean
 }
 
-const ProgressLine = ({ data, filledAt }: Props) => {
+const ProgressLine = ({ data, filledAt, isDescDate = true }: Props) => {
+
+
+
+
     return (
         <div className="flex flex-col justify-start lg:items-center lg:h-max lg:min-w-[500px] lg:flex-row gap-4">
             {data.map((item, index) => (
-                <div key={index}>
+                <div className="w-full flex items-center" key={index}>
                 {index > 0 &&
                 
                 <div className={`h-[200px] w-[5px] lg:h-[5px] lg:w-[200px] ${filledAt >= index + 1 ? 'bg-green-500' : 'bg-gray-300'} rounded-md`}></div>
@@ -20,8 +26,8 @@ const ProgressLine = ({ data, filledAt }: Props) => {
                         <p className="text-sm text-white">{index + 1}</p>
                     </div>
                     <div className="space-y-1 text-left md:text-center">
-                        <h3 className="font-medium">Pengajuan</h3>
-                        <p className="text-sm text-black">31 Desember 2024</p>
+                        <h3 className="font-medium">{item.name}</h3>
+                        <p className="text-sm text-black">{isDescDate ? getDateTime(item.desc) : item.desc}</p>
                     </div>
                 </div>                
                 </div>

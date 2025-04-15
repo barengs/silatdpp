@@ -436,6 +436,7 @@ export function getSidebar(role: string) {
                             route: "#",
                             children: [
                                 { label: "Pengajuan Sppd", route: "/sppd" },
+                                { label: "Daftar Sppd", route: "/sppd/list" },
                             ],
                         },
                         {

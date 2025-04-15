@@ -23,7 +23,7 @@ const FilesFields: React.FC<ComponentProps> = ({
     error = "",
 }) => {
     const [fieldActive, setFieldActive] = useState<boolean>(false);
-    const [files, setFiles] = useState<File[]>(defaultValue);
+    const [files, setFiles] = useState<File[]|{}[]>(defaultValue);
     const fileRef = useRef<HTMLInputElement>(null);
     const [_, setForceUpdate] = useState<boolean>(false);
 
@@ -53,6 +53,7 @@ const FilesFields: React.FC<ComponentProps> = ({
 
     const handleFileRemove = (index: number) => {
         setFiles((prevFile) => {
+            // console.log(pre)
             prevFile.splice(index, 1);
             return prevFile;
         });
@@ -77,6 +78,9 @@ const FilesFields: React.FC<ComponentProps> = ({
     };
 
     useEffect(() => handleError(true), [error]);
+
+    useEffect(() => console.log(files), [])
+
 
     return (
         <>
@@ -160,17 +164,17 @@ const FilesFields: React.FC<ComponentProps> = ({
                     </>
                 ) : (
                     <div className="space-y-2">
-                        {files.map((file, index) => (
+                        {files.map((file, index) =>  (
                             <div
                                 key={index}
                                 className="flex w-full items-center justify-between rounded-md border-[1.5px] border-black-2 px-2 py-2"
                             >
                                 <a
                                     target="_blank"
-                                    href={URL.createObjectURL(file)}
+                                    href={ file instanceof File ? URL.createObjectURL(file) : `https://silat.barengsaya.com/${file.alamat_dokumen}`}
                                     className="text-sm hover:underline"
                                 >
-                                    {file.name}
+                                    {file instanceof File ? file.name : file.nama_dokumen}
                                 </a>
                                 <button
                                     type="button"

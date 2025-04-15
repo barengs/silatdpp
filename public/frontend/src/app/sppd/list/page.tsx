@@ -16,13 +16,11 @@ import ProgressLine from "@/components/progressiveBar";
 import FilesFields from "@/components/Fields/FileFields";
 import { useStore } from "react-redux";
 import CustomModal from "@/components/CustomModal";
-
-
-
+import { toast } from "react-toastify";
 
 const SppdPage: React.FC = () => {
-    const store = useStore()
-    const authState = store.getState().auth
+    const store = useStore();
+    const authState = store.getState().auth;
 
     const [showPopup, setShowPopup] = useState(false);
     const [selectedData, setSelectedData] = useState(DEFAULT_SPPD_DATA);
@@ -104,247 +102,232 @@ const SppdPage: React.FC = () => {
         },
     ];
 
-    // function getModal(role: string) {
-    //     switch(role) {
+    function getModal() {
+        switch (authState.user.role) {
+            case "administrasi":
+                const approve = async () => {
+                    await fetch(
+                        `${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd/${selectedData.id}/approval`,
+                        {
+                            method: "POST",
+                            headers: {
+                                Authorization: `Bearer ${authState.token}`,
+                            },
+                        },
+                    ).then((res) => {
+                        if (res.ok) {
+                            toast.success("Berhasil memproses SPPD", {
+                                position: "top-right",
+                            });
+                            return
+                        }
 
-    //         case "admin":
-    //             return (
-    //                 <CustomModal
-    //                     title="Detail SPPD"
-    //                     state={showPopup}
-    //                     stateSetter={setShowPopup}
-    //                     idItem={selectedData.id}
-    //                     buttons={["Serahkan Pengajuan"]}
-    //                     buttonsOnClick={[() => fetch("")]}
-    //                 >   
-    //                     <InputFields
-    //                     title="Tempat Tujuan"
-    //                     name="tempat_tujuan"
-    //                     defaultValue={selectedData.tempat_tujuan}
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Tempat Berangkat"
-    //                     name="tempat_berangkat"
-    //                     defaultValue={selectedData.tempat_berangkat}
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Status Persetujuan"
-    //                     name="approval"
-    //                     defaultValue={
-    //                         selectedData.approval
-    //                             ? selectedData.approval
-    //                             : "Belum Disetujui"
-    //                     }
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Maksud Kegiatan"
-    //                     name="maksud_kegiatan"
-    //                     defaultValue={selectedData.maksud_kegiatan}
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Transportasi Perjalanan"
-    //                     name="alat_transportasi_id"
-    //                     disabled={true}
-    //                     defaultValue={getTransport()}
-    //                 />
-    //                 <div className="flex gap-x-4">
-    //                     <InputFields
-    //                         title="Tanggal Berangkat"
-    //                         name="tanggal_berangkat"
-    //                         disabled={true}
-    //                         defaultValue={selectedData.tanggal_berangkat}
-    //                     />
-    //                     <InputFields
-    //                         title="Tanggal Sampai"
-    //                         name="tanggal_kembali"
-    //                         disabled={true}
-    //                         defaultValue={selectedData.tanggal_kembali}
-    //                     />
-    //                 </div>
-    //                 <InputFields
-    //                     title="Tanggal Kegiatan"
-    //                     name="tanggal_kegiatan"
-    //                     disabled={true}
-    //                     defaultValue={selectedData.tanggal_kegiatan}
-    //                 />
-    
-    //                 <InputFields
-    //                     title="Biaya Perjalanan"
-    //                     name="biaya_id"
-    //                     disabled={true}
-    //                     defaultValue={getBudget()}
-    //                 />
-    //                 <InputFields
-    //                     title="Status Diterima"
-    //                     disabled={true}
-    //                     defaultValue={
-    //                         selectedData.approval ? "Disetujui" : "Belum Disetujui"
-    //                     }
-    //                 />
-    
-    //                 <FilesFields
-    //                     title="Bukti Kegiatan"
-    //                     setter={(file) => null}
-    //                     defaultValue={selectedData.dokumens.map(
-    //                         async (document) => {
-    //                             const res = await fetch(
-    //                                 `https://silat.barengsaya.com/documents/sppd/${document.nama_dokumen}`,
-    //                             );
-    
-    //                             const blob = await res.blob();
-    
-    //                             const file = new File([blob], document.nama_dokumen, {
-    //                                 type: blob.type,
-    //                                 lastModified: document.created_at,
-    //                             });
-    
-    //                             console.log(file)
-    //                             return file
-    //                         },
-    //                     )}
-    //                 />
-    
-    //                 <div className="col-span-2">
-    //                     <h3 className="text-black">Diinput Oleh:</h3>
-    //                     <p className="text-black-2">{selectedData.user.name}</p>
-    //                 </div>
-    
-    //                 <div className="col-span-2 text-black-2">
-    //                     <ProgressLine
-    //                         data={[
-    //                             { name: "Pengajuan", desc: "31 Desember 2024" },
-    //                             { name: "Pengajuan", desc: "31 Desember 2024" },
-    //                             { name: "Pengajuan", desc: "31 Desember 2024" },
-    //                         ]}
-    //                         filledAt={2}
-    //                     />
-    //                 </div>
-    //                 </CustomModal>
-    //             )
-    //             return
+                        toast.error("Gagal memproses SPPD", {
+                            position: "top-right",
+                        });
+                    });
+                };
 
-    //         default:
-    //             return (
-    //                 <Modal
-    //                 title="Detail SPPD"
-    //                 state={showPopup}
-    //                 stateSetter={setShowPopup}
-    //                 idItem={selectedData.id}
-    //             >
-    //                 <InputFields
-    //                     title="Tempat Tujuan"
-    //                     name="tempat_tujuan"
-    //                     defaultValue={selectedData.tempat_tujuan}
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Tempat Berangkat"
-    //                     name="tempat_berangkat"
-    //                     defaultValue={selectedData.tempat_berangkat}
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Status Persetujuan"
-    //                     name="approval"
-    //                     defaultValue={
-    //                         selectedData.approval
-    //                             ? selectedData.approval
-    //                             : "Belum Disetujui"
-    //                     }
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Maksud Kegiatan"
-    //                     name="maksud_kegiatan"
-    //                     defaultValue={selectedData.maksud_kegiatan}
-    //                     disabled={true}
-    //                 />
-    //                 <InputFields
-    //                     title="Transportasi Perjalanan"
-    //                     name="alat_transportasi_id"
-    //                     disabled={true}
-    //                     defaultValue={getTransport()}
-    //                 />
-    //                 <div className="flex gap-x-4">
-    //                     <InputFields
-    //                         title="Tanggal Berangkat"
-    //                         name="tanggal_berangkat"
-    //                         disabled={true}
-    //                         defaultValue={selectedData.tanggal_berangkat}
-    //                     />
-    //                     <InputFields
-    //                         title="Tanggal Sampai"
-    //                         name="tanggal_kembali"
-    //                         disabled={true}
-    //                         defaultValue={selectedData.tanggal_kembali}
-    //                     />
-    //                 </div>
-    //                 <InputFields
-    //                     title="Tanggal Kegiatan"
-    //                     name="tanggal_kegiatan"
-    //                     disabled={true}
-    //                     defaultValue={selectedData.tanggal_kegiatan}
-    //                 />
-    
-    //                 <InputFields
-    //                     title="Biaya Perjalanan"
-    //                     name="biaya_id"
-    //                     disabled={true}
-    //                     defaultValue={getBudget()}
-    //                 />
-    //                 <InputFields
-    //                     title="Status Diterima"
-    //                     disabled={true}
-    //                     defaultValue={
-    //                         selectedData.approval ? "Disetujui" : "Belum Disetujui"
-    //                     }
-    //                 />
-    
-    //                 <FilesFields
-    //                     title="Bukti Kegiatan"
-    //                     setter={(file) => null}
-    //                     defaultValue={selectedData.dokumens.map(
-    //                         async (document) => {
-    //                             const res = await fetch(
-    //                                 `https://silat.barengsaya.com/documents/sppd/${document.nama_dokumen}`,
-    //                             );
-    
-    //                             const blob = await res.blob();
-    
-    //                             const file = new File([blob], document.nama_dokumen, {
-    //                                 type: blob.type,
-    //                                 lastModified: document.created_at,
-    //                             });
-    
-    //                             console.log(file)
-    //                             return file
-    //                         },
-    //                     )}
-    //                 />
-    
-    //                 <div className="col-span-2">
-    //                     <h3 className="text-black">Diinput Oleh:</h3>
-    //                     <p className="text-black-2">{selectedData.user.name}</p>
-    //                 </div>
-    
-    //                 <div className="col-span-2 text-black-2">
-    //                     <ProgressLine
-    //                         data={[
-    //                             { name: "Pengajuan", desc: "31 Desember 2024" },
-    //                             { name: "Pengajuan", desc: "31 Desember 2024" },
-    //                             { name: "Pengajuan", desc: "31 Desember 2024" },
-    //                         ]}
-    //                         filledAt={2}
-    //                     />
-    //                 </div>
-    //             </Modal>
-    //             )
-    //     }
-    //  }
+                return (
+                    <CustomModal
+                        title="Detail SPPD"
+                        state={showPopup}
+                        stateSetter={setShowPopup}
+                        idItem={selectedData.id}
+                        buttons={[
+                            <button
+                                className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
+                                onClick={approve}
+                            >
+                                Serahkan Pengajuan
+                            </button>,
+                        ]}
+                    >
+                        <InputFields
+                            title="Tempat Tujuan"
+                            name="tempat_tujuan"
+                            defaultValue={selectedData.tempat_tujuan}
+                            disabled={true}
+                        />
+                        <InputFields
+                            title="Tempat Berangkat"
+                            name="tempat_berangkat"
+                            defaultValue={selectedData.tempat_berangkat}
+                            disabled={true}
+                        />
+                        <InputFields
+                            title="Maksud Kegiatan"
+                            name="maksud_kegiatan"
+                            defaultValue={selectedData.maksud_kegiatan}
+                            disabled={true}
+                        />
+                        <InputFields
+                            title="Transportasi Perjalanan"
+                            name="alat_transportasi_id"
+                            disabled={true}
+                            defaultValue={getTransport()}
+                        />
+                        <div className="flex gap-x-4">
+                            <InputFields
+                                title="Tanggal Berangkat"
+                                name="tanggal_berangkat"
+                                disabled={true}
+                                defaultValue={selectedData.tanggal_berangkat}
+                            />
+                            <InputFields
+                                title="Tanggal Sampai"
+                                name="tanggal_kembali"
+                                disabled={true}
+                                defaultValue={selectedData.tanggal_kembali}
+                            />
+                        </div>
+                        <InputFields
+                            title="Tanggal Kegiatan"
+                            name="tanggal_kegiatan"
+                            disabled={true}
+                            defaultValue={selectedData.tanggal_kegiatan}
+                        />
+
+                        <InputFields
+                            title="Biaya Perjalanan"
+                            name="biaya_id"
+                            disabled={true}
+                            defaultValue={getBudget()}
+                        />
+                        <InputFields
+                            title="Status Diterima"
+                            disabled={true}
+                            defaultValue={
+                                selectedData.approval
+                                    ? "Disetujui"
+                                    : "Belum Disetujui"
+                            }
+                        />
+
+                        <FilesFields
+                            title="Bukti Kegiatan"
+                            setter={(file) => null}
+                            defaultValue={selectedData.dokumens.map(
+                                async (document) => {
+                                    const res = await fetch(
+                                        `https://silat.barengsaya.com/documents/sppd/${document.nama_dokumen}`,
+                                    );
+
+                                    const blob = await res.blob();
+
+                                    const file = new File(
+                                        [blob],
+                                        document.nama_dokumen,
+                                        {
+                                            type: blob.type,
+                                            lastModified: document.created_at,
+                                        },
+                                    );
+
+                                    console.log(file);
+                                    return file;
+                                },
+                            )}
+                        />
+
+                        <div className="col-span-2">
+                            <h3 className="text-black">Diinput Oleh:</h3>
+                            <p className="text-black-2">
+                                {selectedData.user.name}
+                            </p>
+                        </div>
+
+                        <div className="col-span-2 text-black-2">
+                            <ProgressLine
+                                data={selectedData.history.map((history) => ({
+                                    name: history.nama,
+                                    desc: history.created_at,
+                                }))}
+                                filledAt={selectedData.history.length}
+                            />
+                        </div>
+                    </CustomModal>
+                );
+
+            default:
+                return (
+                    <Modal
+                        title="Detail SPPD"
+                        state={showPopup}
+                        stateSetter={setShowPopup}
+                        idItem={selectedData.id}
+                        ableUpdate={true}
+                    >
+                        <InputFields
+                            title="Tempat Tujuan"
+                            name="tempat_tujuan"
+                            defaultValue={selectedData.tempat_tujuan}
+                        />
+                        <InputFields
+                            title="Tempat Berangkat"
+                            name="tempat_berangkat"
+                            defaultValue={selectedData.tempat_berangkat}
+                        />                      
+                        <InputFields
+                            title="Maksud Kegiatan"
+                            name="maksud_kegiatan"
+                            defaultValue={selectedData.maksud_kegiatan}
+                        />
+                        <InputFields
+                            title="Transportasi Perjalanan"
+                            name="alat_transportasi_id"
+                            defaultValue={getTransport()}
+                        />
+                        <div className="flex gap-x-4">
+                            <InputFields
+                                title="Tanggal Berangkat"
+                                name="tanggal_berangkat"
+                                defaultValue={selectedData.tanggal_berangkat}
+                            />
+                            <InputFields
+                                title="Tanggal Sampai"
+                                name="tanggal_kembali"
+                                defaultValue={selectedData.tanggal_kembali}
+                            />
+                        </div>
+                        <InputFields
+                            title="Tanggal Kegiatan"
+                            name="tanggal_kegiatan"
+                            defaultValue={selectedData.tanggal_kegiatan}
+                        />
+
+                        <InputFields
+                            title="Biaya Perjalanan"
+                            name="biaya_id"
+                            defaultValue={getBudget()}
+                        />
+
+                        <FilesFields
+                            title="Bukti Kegiatan"
+                            setter={(file) => null}
+                            defaultValue={selectedData.dokumens}
+                        />
+
+                        <div className="col-span-2">
+                            <h3 className="text-black">Diinput Oleh:</h3>
+                            <p className="text-black-2">
+                                {selectedData.user.name}
+                            </p>
+                        </div>
+
+                        <div className="col-span-2 text-black-2">
+                            <ProgressLine
+                                data={selectedData.history.map((history) => ({
+                                    name: history.nama,
+                                    desc: history.created_at,
+                                }))}
+                                filledAt={2}
+                            />
+                        </div>
+                    </Modal>
+                );
+        }
+    }
 
     return (
         <DefaultLayout>
@@ -358,119 +341,7 @@ const SppdPage: React.FC = () => {
                 detailLink={{ name: "Pengaturan", to: "/sppd" }}
                 isLoading={isLoading}
             />
-            <Modal
-                url={`buku-tamu/${selectedData.id}`}
-                title="Detail SPPD"
-                state={showPopup}
-                stateSetter={setShowPopup}
-            >
-                <InputFields
-                    title="Tempat Tujuan"
-                    name="tempat_tujuan"
-                    defaultValue={selectedData.tempat_tujuan}
-                    disabled={true}
-                />
-                <InputFields
-                    title="Tempat Berangkat"
-                    name="tempat_berangkat"
-                    defaultValue={selectedData.tempat_berangkat}
-                    disabled={true}
-                />
-                <InputFields
-                    title="Status Persetujuan"
-                    name="approval"
-                    defaultValue={
-                        selectedData.approval
-                            ? selectedData.approval
-                            : "Belum Disetujui"
-                    }
-                    disabled={true}
-                />
-                <InputFields
-                    title="Maksud Kegiatan"
-                    name="maksud_kegiatan"
-                    defaultValue={selectedData.maksud_kegiatan}
-                    disabled={true}
-                />
-                <InputFields
-                    title="Transportasi Perjalanan"
-                    name="alat_transportasi_id"
-                    disabled={true}
-                    defaultValue={getTransport()}
-                />
-                <div className="flex gap-x-4">
-                    <InputFields
-                        title="Tanggal Berangkat"
-                        name="tanggal_berangkat"
-                        disabled={true}
-                        defaultValue={selectedData.tanggal_berangkat}
-                    />
-                    <InputFields
-                        title="Tanggal Sampai"
-                        name="tanggal_kembali"
-                        disabled={true}
-                        defaultValue={selectedData.tanggal_kembali}
-                    />
-                </div>
-                <InputFields
-                    title="Tanggal Kegiatan"
-                    name="tanggal_kegiatan"
-                    disabled={true}
-                    defaultValue={selectedData.tanggal_kegiatan}
-                />
-
-                <InputFields
-                    title="Biaya Perjalanan"
-                    name="biaya_id"
-                    disabled={true}
-                    defaultValue={getBudget()}
-                />
-                <InputFields
-                    title="Status Diterima"
-                    disabled={true}
-                    defaultValue={
-                        selectedData.approval ? "Disetujui" : "Belum Disetujui"
-                    }
-                />
-
-                <FilesFields
-                    title="Bukti Kegiatan"
-                    setter={(file) => null}
-                    defaultValue={selectedData.dokumens.map(
-                        async (document) => {
-                            const res = await fetch(
-                                `https://silat.barengsaya.com/documents/sppd/${document.nama_dokumen}`,
-                            );
-
-                            const blob = await res.blob();
-
-                            const file = new File([blob], document.nama_dokumen, {
-                                type: blob.type,
-                                lastModified: document.created_at,
-                            });
-
-                            console.log(file)
-                            return file
-                        },
-                    )}
-                />
-
-                <div className="col-span-2">
-                    <h3 className="text-black">Diinput Oleh:</h3>
-                    <p className="text-black-2">{selectedData.user.name}</p>
-                </div>
-
-                <div className="col-span-2 text-black-2">
-                    <ProgressLine
-                        data={[
-                            { name: "Pengajuan", desc: "31 Desember 2024" },
-                            { name: "Pengajuan", desc: "31 Desember 2024" },
-                            { name: "Pengajuan", desc: "31 Desember 2024" },
-                        ]}
-                        filledAt={2}
-                    />
-                </div>
-            </Modal>
+            {getModal()}
         </DefaultLayout>
     );
 };

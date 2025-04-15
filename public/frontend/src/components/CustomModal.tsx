@@ -1,4 +1,4 @@
-import { FormEvent, PropsWithChildren, useState } from "react";
+import { FormEvent, PropsWithChildren, ReactNode, useState } from "react";
 import { toast } from "react-toastify";
 
 
@@ -15,8 +15,7 @@ interface PopupPropsType extends PropsWithChildren {
     mutation?: unknown;
     isLoading?: boolean;
     expanded?: boolean;
-    buttons: string[];
-    buttonsOnClick?: [];
+    buttons: ReactNode[];
     immutableData?: immutableDataType[];
 }
 
@@ -27,39 +26,12 @@ const CustomModal: React.FC<PopupPropsType> = ({
     idItem,
     children,
     buttons,
-    buttonsOnClick = [],
     mutation = null,
     isLoading = false,
     expanded = false,
     immutableData = [{ name: "", value: ""}]
 }) => {
-    const [method, setMethod] = useState("update");
 
-    const handleDataSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const form = new FormData(event.currentTarget)
-
-        immutableData.map(data => form.append(data.name, data.value))
-
-        const res = await mutation({idItem, form})
-
-        console.log(res)
-
-
-        if (!res.data.success) {
-            toast.error("Galat saat memperbarui data", {
-                position: "top-right",
-            });
-            return;
-        }
-
-        toast.success(`Berhasil ${method == "update" ? "Memperbarui" : "Menghapus"} data`, {
-            position: "top-right",
-        });
-        stateSetter(false);
-        
-    };
 
     return (
         <div
@@ -90,17 +62,14 @@ const CustomModal: React.FC<PopupPropsType> = ({
                     </button>
                 </div>
 
-                <form
-                    onSubmit={handleDataSubmit}
+                <div
                     className="mt-8 flex flex-col md:grid md:grid-cols-2 gap-x-4 gap-y-8"
                 >
                     {children}
                     <div className="col-span-2 flex gap-x-4">
-                        {buttons.map((button, index) => (
-                            <button className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90" onClick={buttonsOnClick[index]}>{button}</button>
-                        ))}
+                        {buttons.map((button) => button)}
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
