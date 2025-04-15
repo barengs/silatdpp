@@ -75,7 +75,7 @@ export default function Page() {
                         </svg>
 
                         <p className="flex-1 text-sm">
-                            {isError ? newsData.data[0].isi : ""}
+                            {isErsror ? newsData.data[0].isi : ""}
                         </p>
                     </div>
 

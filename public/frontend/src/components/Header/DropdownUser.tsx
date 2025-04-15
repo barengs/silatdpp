@@ -45,9 +45,14 @@ const DropdownUser = () => {
     };
 
     const getRole = () => {
+
         if (!data) return
 
         if (!data.roles[0]) return "Tidak Ditugaskan"
+        
+        // temp
+        // if (!data.roles) return "Tidak Ditugaskan"
+
 
         return data.roles[0].name
     }
@@ -56,8 +61,9 @@ const DropdownUser = () => {
 
         if (!userData) return
         
+        
         const user = userData.data.filter(userData => userData.name == authState.user.name)
-
+        
         if (!user) {
             return
         } 

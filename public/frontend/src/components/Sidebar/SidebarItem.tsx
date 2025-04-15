@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import SidebarDropdown from "@/components/Sidebar/SidebarDropdown";
 import { usePathname } from "next/navigation";
 
 const SidebarItem = ({ item, pageName, setPageName, sidebarOpened }: any) => {
+
+
   const handleClick = () => {
     const updatedPageName =
       pageName !== item.label.toLowerCase() ? item.label.toLowerCase() : "";
@@ -22,6 +24,8 @@ const SidebarItem = ({ item, pageName, setPageName, sidebarOpened }: any) => {
   };
 
   const isItemActive = isActive(item);
+
+
 
   return (
     <>

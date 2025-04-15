@@ -8,7 +8,8 @@ import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { useGetBudgetsQuery } from "@/services/budget";
 import { useGetTransportationsQuery } from "@/services/transporation";
-import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -20,6 +21,8 @@ const SppdAddData: React.FC = () => {
     const store = useStore();
     const state = store.getState();
     const authState = state.auth;
+
+    const router = useRouter()
 
     const baseSchema = z.object({
         nama_kegiatan: z.string().min(1, "Harap diisi"),
@@ -58,8 +61,6 @@ const SppdAddData: React.FC = () => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-
-        console.log(formData.get("nama_kegiatan"));
 
         // Validate required fields
         const validationRes = baseSchema.safeParse({
@@ -101,7 +102,10 @@ const SppdAddData: React.FC = () => {
             return;
         }
 
-        formData.append("files", files);
+        files.forEach((file: File) => {
+            formData.append("files[]", file);
+        })
+
 
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd`,
@@ -123,6 +127,16 @@ const SppdAddData: React.FC = () => {
         toast.success("Berhasil mengajukan SPPD", { position: "top-right" });
         setTimeout(() => window.location.reload(), 3000);
     };
+
+
+    useEffect(() => {
+
+        const EXCLUDED_ROLE = ["administrasi", "kabid", "kadis"]
+
+        if (EXCLUDED_ROLE.includes(authState.user.role)) {
+            router.push("/")
+        }
+    }, [])
 
     return (
         <DefaultLayout>

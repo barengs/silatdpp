@@ -149,6 +149,7 @@ const FilesFields: React.FC<ComponentProps> = ({
                             ref={fileRef}
                             type="file"
                             multiple={multiple}
+                            accept=".png, .jpg, .jpeg, .pdf"
                             className={`w-full rounded-lg border-[1.5px] bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary  ${errorMessege ? "border-red-500" : "border-stroke"}`}
                         />
                         {errorMessege && (

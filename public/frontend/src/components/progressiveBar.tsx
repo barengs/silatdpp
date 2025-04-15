@@ -9,7 +9,7 @@ const ProgressLine = ({ data, filledAt }: Props) => {
     return (
         <div className="flex flex-col justify-start lg:items-center lg:h-max lg:min-w-[500px] lg:flex-row gap-4">
             {data.map((item, index) => (
-                <>
+                <div key={index}>
                 {index > 0 &&
                 
                 <div className={`h-[200px] w-[5px] lg:h-[5px] lg:w-[200px] ${filledAt >= index + 1 ? 'bg-green-500' : 'bg-gray-300'} rounded-md`}></div>
@@ -24,7 +24,7 @@ const ProgressLine = ({ data, filledAt }: Props) => {
                         <p className="text-sm text-black">31 Desember 2024</p>
                     </div>
                 </div>                
-                </>
+                </div>
             ))}
         </div>
     );

@@ -12,22 +12,22 @@ interface PopupPropsType extends PropsWithChildren {
     idItem: string;
     state: boolean;
     stateSetter: (state: boolean) => void;
-    ableUpdate?: boolean;
-    ableDelete?: boolean;
     mutation?: unknown;
     isLoading?: boolean;
     expanded?: boolean;
+    buttons: string[];
+    buttonsOnClick?: [];
     immutableData?: immutableDataType[];
 }
 
-const Modal: React.FC<PopupPropsType> = ({
+const CustomModal: React.FC<PopupPropsType> = ({
     title,
     state,
     stateSetter,
     idItem,
     children,
-    ableUpdate = false,
-    ableDelete = false,
+    buttons,
+    buttonsOnClick = [],
     mutation = null,
     isLoading = false,
     expanded = false,
@@ -44,6 +44,7 @@ const Modal: React.FC<PopupPropsType> = ({
 
         const res = await mutation({idItem, form})
 
+        console.log(res)
 
 
         if (!res.data.success) {
@@ -95,38 +96,9 @@ const Modal: React.FC<PopupPropsType> = ({
                 >
                     {children}
                     <div className="col-span-2 flex gap-x-4">
-                        {ableUpdate && (
-                            <button
-                                className="flex w-max justify-center rounded bg-primary p-3 text-sm font-medium text-gray hover:bg-opacity-90"
-                                type="submit"
-                                onClick={() => setMethod("update")}
-                            >
-                                {isLoading && method == "update" ? (
-                                    <>
-                                        <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                                        Memperbarui Data
-                                    </>
-                                ) : (
-                                    <>Perbarui </>
-                                )}
-                            </button>
-                        )}
-                        {ableDelete && (
-                            <button
-                                className="flex w-max justify-center rounded bg-red-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
-                                type="submit"
-                                onClick={() => setMethod("delete")}
-                            >
-                                {isLoading && method == "delete" ? (
-                                    <>
-                                        <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                                        Menghapus Data
-                                    </>
-                                ) : (
-                                    <>Hapus </>
-                                )}
-                            </button>
-                        )}
+                        {buttons.map((button, index) => (
+                            <button className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90" onClick={buttonsOnClick[index]}>{button}</button>
+                        ))}
                     </div>
                 </form>
             </div>
@@ -134,4 +106,4 @@ const Modal: React.FC<PopupPropsType> = ({
     );
 };
 
-export default Modal;
+export default CustomModal;
