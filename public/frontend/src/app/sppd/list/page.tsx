@@ -34,6 +34,22 @@ const SppdPage: React.FC = () => {
         setSelectedData(data);
     };
 
+    const getStatus = (approval: Record<string, string>): [string, string] => {
+        switch (approval.nama) {
+            case "pengajuan":
+                return ["bg-blue-500 text-white", "Pengajuan"];
+
+            case "penanganan":
+                return ["bg-yellow-500 text-white", "Penanganan"];
+
+            case "disetujui":
+                return ["bg-green-500 text-white", "Disetujui"];
+
+            default:
+                return ["", ""];
+        }
+    };
+
     const getTransport = () => {
         if (transporationData) {
             const res = transporationData.data.filter(
@@ -81,13 +97,20 @@ const SppdPage: React.FC = () => {
         },
         {
             name: "Status Persetujuan",
-            cell: (row: SppdDataType) => (
-                <div
-                    className={`${row.approval ? "bg-green-500 text-white" : "bg-yellow-500 text-white"} rounded-md p-2 text-xs font-semibold`}
-                >
-                    {row.approval ? "Surat disetujui" : "Sedang Menunggu"}
-                </div>
-            ),
+            cell: (row: SppdDataType) => {
+
+                const [color, label] = getStatus(row.history[row.history.length - 1]);
+                // const color = "bg-red-500"
+                // const label = "Hello"
+
+                return (
+                    <div
+                        className={`${color} rounded-md p-2 text-xs font-semibold mx-auto`}
+                    >
+                        {label}
+                    </div>
+                );
+            },
         },
         {
             name: "Aksi",
@@ -96,7 +119,7 @@ const SppdPage: React.FC = () => {
                     className="text-blue-500 hover:underline"
                     onClick={() => handleSelectedData(row)}
                 >
-                    Edit
+                    Lihat
                 </button>
             ),
         },
@@ -107,7 +130,7 @@ const SppdPage: React.FC = () => {
             case "administrasi":
                 const approve = async () => {
                     await fetch(
-                        `${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd/${selectedData.id}/approval`,
+                        `${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd/${selectedData.id}/proses`,
                         {
                             method: "POST",
                             headers: {
@@ -119,12 +142,14 @@ const SppdPage: React.FC = () => {
                             toast.success("Berhasil memproses SPPD", {
                                 position: "top-right",
                             });
-                            return
+                            setShowPopup(false);
+                            return;
                         }
 
                         toast.error("Gagal memproses SPPD", {
                             position: "top-right",
                         });
+                        setShowPopup(false);
                     });
                 };
 
@@ -139,7 +164,153 @@ const SppdPage: React.FC = () => {
                                 className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
                                 onClick={approve}
                             >
-                                Serahkan Pengajuan
+                                Proses Pengajuan
+                            </button>,
+                        ]}
+                    >
+                        <InputFields
+                            title="Tempat Tujuan"
+                            name="tempat_tujuan"
+                            defaultValue={selectedData.tempat_tujuan}
+                            disabled={true}
+                        />
+                        <InputFields
+                            title="Tempat Berangkat"
+                            name="tempat_berangkat"
+                            defaultValue={selectedData.tempat_berangkat}
+                            disabled={true}
+                        />
+                        <InputFields
+                            title="Maksud Kegiatan"
+                            name="maksud_kegiatan"
+                            defaultValue={selectedData.maksud_kegiatan}
+                            disabled={true}
+                        />
+                        <InputFields
+                            title="Transportasi Perjalanan"
+                            name="alat_transportasi_id"
+                            disabled={true}
+                            defaultValue={getTransport()}
+                        />
+                        <div className="flex gap-x-4">
+                            <InputFields
+                                title="Tanggal Berangkat"
+                                name="tanggal_berangkat"
+                                disabled={true}
+                                defaultValue={selectedData.tanggal_berangkat}
+                            />
+                            <InputFields
+                                title="Tanggal Sampai"
+                                name="tanggal_kembali"
+                                disabled={true}
+                                defaultValue={selectedData.tanggal_kembali}
+                            />
+                        </div>
+                        <InputFields
+                            title="Tanggal Kegiatan"
+                            name="tanggal_kegiatan"
+                            disabled={true}
+                            defaultValue={selectedData.tanggal_kegiatan}
+                        />
+
+                        <InputFields
+                            title="Biaya Perjalanan"
+                            name="biaya_id"
+                            disabled={true}
+                            defaultValue={getBudget()}
+                        />
+                        <InputFields
+                            title="Status Diterima"
+                            disabled={true}
+                            defaultValue={
+                                selectedData.approval
+                                    ? "Disetujui"
+                                    : "Belum Disetujui"
+                            }
+                        />
+
+                        <FilesFields
+                            title="Bukti Kegiatan"
+                            setter={(file) => null}
+                            defaultValue={selectedData.dokumens.map(
+                                async (document) => {
+                                    const res = await fetch(
+                                        `https://silat.barengsaya.com/documents/sppd/${document.nama_dokumen}`,
+                                    );
+
+                                    const blob = await res.blob();
+
+                                    const file = new File(
+                                        [blob],
+                                        document.nama_dokumen,
+                                        {
+                                            type: blob.type,
+                                            lastModified: document.created_at,
+                                        },
+                                    );
+
+                                    console.log(file);
+                                    return file;
+                                },
+                            )}
+                        />
+
+                        <div className="col-span-2">
+                            <h3 className="text-black">Diinput Oleh:</h3>
+                            <p className="text-black-2">
+                                {selectedData.user.name}
+                            </p>
+                        </div>
+
+                        <div className="col-span-2 text-black-2">
+                            <ProgressLine
+                                data={selectedData.history.map((history) => ({
+                                    name: history.nama,
+                                    desc: history.created_at,
+                                }))}
+                                filledAt={selectedData.history.length}
+                            />
+                        </div>
+                    </CustomModal>
+                );
+            case "kabid":
+                const kabidApprove = async () => {
+                    await fetch(
+                        `${process.env.NEXT_PUBLIC_BASE_API_URL}/sppd/${selectedData.id}/approval`,
+                        {
+                            method: "POST",
+                            headers: {
+                                Authorization: `Bearer ${authState.token}`,
+                            },
+                        },
+                    ).then((res) => {
+                        if (res.ok) {
+                            toast.success("Berhasil memproses SPPD", {
+                                position: "top-right",
+                            });
+                            setShowPopup(false);
+                            return;
+                        }
+
+                        toast.error("Gagal memproses SPPD", {
+                            position: "top-right",
+                        });
+                        setShowPopup(false);
+                    });
+                };
+
+                return (
+                    <CustomModal
+                        title="Detail SPPD"
+                        state={showPopup}
+                        stateSetter={setShowPopup}
+                        idItem={selectedData.id}
+                        buttons={[
+                            <button
+                                className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
+                                onClick={kabidApprove}
+                            >
+                                Izinkan Pengajuan
                             </button>,
                         ]}
                     >
@@ -267,7 +438,7 @@ const SppdPage: React.FC = () => {
                             title="Tempat Berangkat"
                             name="tempat_berangkat"
                             defaultValue={selectedData.tempat_berangkat}
-                        />                      
+                        />
                         <InputFields
                             title="Maksud Kegiatan"
                             name="maksud_kegiatan"
