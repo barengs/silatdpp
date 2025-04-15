@@ -32,9 +32,9 @@ class SppdPengajuan extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function approval(): BelongsTo
+    public function approval()
     {
-        return $this->belongsTo(SppdApproval::class);
+        return $this->hasOne(SppdApproval::class);
     }
 
     public function history(): BelongsToMany
