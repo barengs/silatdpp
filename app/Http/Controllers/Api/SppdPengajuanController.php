@@ -159,6 +159,25 @@ class SppdPengajuanController extends Controller
         //
     }
 
+    public function proses($id)
+    {
+        $data = SppdPengajuan::find($id);
+        $approval = SppdApproval::create([
+            'sppd_pengajuan_id' => $data->id,
+            'user_id' => Auth::user()->id,
+            'tanggal_disetujui' => Carbon::now(),
+        ]);
+
+        SppdHistory::create([
+            'sppd_pengajuan_id' => $data->id,
+            'history_id' => 2,
+        ]);
+
+        $sppd = SppdPengajuan::where('id', $data->id)->with(['user', 'dokumens', 'approval', 'history', 'biaya', 'alat_transportasi'])->first();
+
+        return new SppdPengajuanResource(true, 'Berhasil di setujui', $data);
+    }
+
     public function approval($id)
     {
         $data = SppdPengajuan::find($id);
