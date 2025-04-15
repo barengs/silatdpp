@@ -23,7 +23,7 @@ const FilesFields: React.FC<ComponentProps> = ({
     error = "",
 }) => {
     const [fieldActive, setFieldActive] = useState<boolean>(false);
-    const [files, setFiles] = useState<File[]|{}[]>(defaultValue);
+    const [files, setFiles] = useState<File[]|{}[]>();
     const fileRef = useRef<HTMLInputElement>(null);
     const [_, setForceUpdate] = useState<boolean>(false);
 

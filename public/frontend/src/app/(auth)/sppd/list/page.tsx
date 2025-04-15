@@ -453,7 +453,7 @@ const SppdPage: React.FC = () => {
                                     name: history.nama,
                                     desc: history.created_at,
                                 }))}
-                                filledAt={2}
+                                filledAt={selectedData.history.length}
                             />
                         </div>
                     </Modal>

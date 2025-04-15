@@ -121,6 +121,10 @@ const menuGroups = [
                     { label: "Data Transportasi", route: "/transport" },
                     { label: "Data Biaya", route: "/budget" },
                     { label: "Data Mitra", route: "/partners" },
+                    { label: "Data Revisi Ijazah", route: "/certificates/list" },
+                    { label: "Data Siswa Pindah", route: "/studentTransfer/list" },
+                    { label: "Data Rekomendasi", route: "/recomendation/list" },
+
                 ],
             },
             

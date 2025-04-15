@@ -7,6 +7,7 @@ import Modal from "@/components/Modal";
 import React, { useState } from "react";
 import InputFields from "@/components/Fields/InputFields";
 import { useGetInstitutionsQuery, useUpdateInstitutionMutation } from "@/services/institution";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const Institution: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
@@ -50,6 +51,7 @@ const Institution: React.FC = () => {
 
     return (
         <DefaultLayout>
+             <Breadcrumb pageName="Data Instansi" />
             <Table
                 addButtonName="Tambah Institusi"
                 addButtonLink="/institution/addData"
