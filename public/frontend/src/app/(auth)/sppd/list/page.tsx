@@ -98,14 +98,15 @@ const SppdPage: React.FC = () => {
         {
             name: "Status Persetujuan",
             cell: (row: SppdDataType) => {
-
-                const [color, label] = getStatus(row.history[row.history.length - 1]);
+                const [color, label] = getStatus(
+                    row.history[row.history.length - 1],
+                );
                 // const color = "bg-red-500"
                 // const label = "Hello"
 
                 return (
                     <div
-                        className={`${color} rounded-md p-2 text-xs font-semibold mx-auto`}
+                        className={`${color} mx-auto rounded-md p-2 text-xs font-semibold`}
                     >
                         {label}
                     </div>
@@ -115,12 +116,26 @@ const SppdPage: React.FC = () => {
         {
             name: "Aksi",
             cell: (row: Record<string, string>) => (
-                <button
-                    className="text-blue-500 hover:underline"
-                    onClick={() => handleSelectedData(row)}
-                >
-                    Lihat
-                </button>
+                <div className="flex items-center justify-center gap-x-2">
+                    <button
+                        className="text-blue-500 hover:underline"
+                        onClick={() => handleSelectedData(row)}
+                    >
+                        Lihat
+                    </button>
+                    {row.history[row.history.length - 1].nama ==
+                        "disetujui" && (
+                        <>
+                            <div className="h-[12px] w-[2px] bg-slate-500"></div>
+                            <button
+                                className="text-blue-500 hover:underline"
+                                onClick={() => console.log(row)}
+                            >
+                                Cetak
+                            </button>
+                        </>
+                    )}
+                </div>
             ),
         },
     ];
@@ -387,7 +402,13 @@ const SppdPage: React.FC = () => {
                         state={showPopup}
                         stateSetter={setShowPopup}
                         idItem={selectedData.id}
-                        ableUpdate={true}
+                        ableUpdate={
+                            selectedData.history[
+                                selectedData.history.length - 1
+                            ].nama == "disetujui"
+                                ? false
+                                : true
+                        }
                     >
                         <InputFields
                             title="Tempat Tujuan"

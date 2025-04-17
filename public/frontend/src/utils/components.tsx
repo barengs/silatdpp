@@ -90,9 +90,9 @@ const menuGroups = [
                 label: "Layanan",
                 route: "#",
                 children: [
-                    { label: "Revisi Ijazah", route: "/certificates" },
-                    { label: "Surat Pindah Siswa", route: "/studentTransfer" },
-                    { label: "Penggantian Bendahara", route: "/recomendation" },
+                    { label: "Revisi Ijazah", route: "/certificates/list" },
+                    { label: "Surat Pindah Siswa", route: "/studentTransfer/list" },
+                    { label: "Penggantian Bendahara", route: "/recomendation/list" },
                 ],
             },
           
@@ -436,9 +436,9 @@ export function getSidebar(role: string) {
                             label: "Layanan",
                             route: "#",
                             children: [
-                                { label: "Revisi Ijazah", route: "/certificates" },
-                                { label: "Surat Pindah Siswa", route: "/studentTransfer" },
-                                { label: "Penggantian Bendahara", route: "/recomendation" },
+                                { label: "Revisi Ijazah", route: "/certificates/list" },
+                                { label: "Surat Pindah Siswa", route: "/studentTransfer/list" },
+                                { label: "Penggantian Bendahara", route: "/recomendation/list" },
                             ],
                         },
                       

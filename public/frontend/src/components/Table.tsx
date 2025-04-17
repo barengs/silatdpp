@@ -203,12 +203,6 @@ const Table: React.FC<TableProps> = ({
                         >
                             <button
                                 className="hover:underline"
-                                onClick={() => handleExport("csv")}
-                            >
-                                Expor ke CSV
-                            </button>
-                            <button
-                                className="hover:underline"
                                 onClick={() => handleExport("pdf")}
                             >
                                 Expor ke PDF
