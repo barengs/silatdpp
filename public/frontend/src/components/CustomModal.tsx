@@ -23,13 +23,8 @@ const CustomModal: React.FC<PopupPropsType> = ({
     title,
     state,
     stateSetter,
-    idItem,
     children,
     buttons,
-    mutation = null,
-    isLoading = false,
-    expanded = false,
-    immutableData = [{ name: "", value: ""}]
 }) => {
 
 

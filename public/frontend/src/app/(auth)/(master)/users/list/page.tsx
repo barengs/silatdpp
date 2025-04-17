@@ -74,10 +74,22 @@ const Page: React.FC = () => {
                 title="Detail Karyawan"
                 state={showPopup}
                 stateSetter={setShowPopup}
+                ableUpdate={true}
+                ableDelete={true}
             >
                 <InputFields title="Nama Karyawan" name="nama_karyawan" defaultValue={selectedData.name} />
                 <SelectFields title="Hak Akses" name="roles" defaultValue={selectedData.roles[0] ? selectedData.roles[0].id : "Belum Ditugaskan"} options={rolesData ? rolesData.data.map(role => { return {name: role.name, value: role.id} }): []} />
-                <InputFields title="Email Karyawan" name="email" defaultValue={selectedData.email} />
+                <InputFields title="NIP Karyawan" name="email" defaultValue={selectedData.karyawan.nip} />
+                <InputFields title="Nama Depan" name="first_name" defaultValue={selectedData.karyawan.first_name} />
+                <InputFields title="Nama Belakang" name="last_name" defaultValue={selectedData.karyawan.last_name} />
+                <InputFields title="Nama Lengkap" name="nick_name" defaultValue={selectedData.karyawan.nick_name} />
+                <InputFields title="Nama Lengkap" name="nick_name" defaultValue={selectedData.karyawan.nick_name} />
+                <InputFields title="Alamat" name="address" defaultValue={selectedData.karyawan.address} />
+                <InputFields title="Jenis Kelamin" name="gender" defaultValue={selectedData.karyawan.gender} />
+                <InputFields title="Nomor Telepon" name="phone" defaultValue={selectedData.karyawan.phone} />
+                <InputFields title="Foto" name="photo" defaultValue={selectedData.karyawan.photo} />
+                
+
             </Modal>
         </DefaultLayout>
     );

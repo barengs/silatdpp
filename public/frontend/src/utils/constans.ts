@@ -50,6 +50,20 @@ export const DEFAULT_PROFILE_DATA = {
   created_at: "",
   updated_at: "",
   profile: "",
+  karyawan: {
+    id: "",
+    user_id: "",
+    nip: "",
+    first_name: "",
+    last_name: "",
+    nick_name: "",
+    address: " ",
+    gender: "",
+    phone: "",
+    photo: "",
+    created_at: "",
+    updated_at: ""
+  },
   roles: [
     {
       id: "",
@@ -193,7 +207,7 @@ export const DEFAULT_CERTIFICATE_DATA = {
 export const DEFAULT_NEWS_DATA = {
   id: "",
   judul: "",
-  isi:  "",
+  isi: "",
   gambar: ""
 }
 

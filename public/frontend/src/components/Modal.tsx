@@ -69,7 +69,7 @@ const Modal: React.FC<PopupPropsType> = ({
                 onClick={() => stateSetter(false)}
             ></div>
 
-            <div className="w-full max-h-[80vh] rounded-t-md bg-white p-4 overflow-y-auto">
+            <div className="w-full min-h-screen bg-white p-4 overflow-y-auto">
                 <div className="flex w-full justify-between">
                     <h2 className="font-semibold text-black-2">{title}</h2>
                     <button onClick={() => stateSetter(false)}>

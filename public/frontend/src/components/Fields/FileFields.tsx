@@ -23,7 +23,7 @@ const FilesFields: React.FC<ComponentProps> = ({
     error = "",
 }) => {
     const [fieldActive, setFieldActive] = useState<boolean>(false);
-    const [files, setFiles] = useState<File[]|{}[]>();
+    const [files, setFiles] = useState<File[]|{}[]>(defaultValue);
     const fileRef = useRef<HTMLInputElement>(null);
     const [_, setForceUpdate] = useState<boolean>(false);
 
@@ -53,7 +53,6 @@ const FilesFields: React.FC<ComponentProps> = ({
 
     const handleFileRemove = (index: number) => {
         setFiles((prevFile) => {
-            // console.log(pre)
             prevFile.splice(index, 1);
             return prevFile;
         });
@@ -79,7 +78,13 @@ const FilesFields: React.FC<ComponentProps> = ({
 
     useEffect(() => handleError(true), [error]);
 
-    useEffect(() => setFiles(defaultValue), [defaultValue])
+    useEffect(() => {
+        if ((JSON.stringify(defaultValue) != JSON.stringify(files)) && (defaultValue.length != 0)) {
+            setFiles(defaultValue)
+            return
+        }
+
+    }, [defaultValue])
 
     return (
         <>
