@@ -17,6 +17,7 @@ import FilesFields from "@/components/Fields/FileFields";
 import { useStore } from "react-redux";
 import CustomModal from "@/components/CustomModal";
 import { toast } from "react-toastify";
+import { exportRecomendation, exportSppd } from "@/utils/documents";
 
 const SppdPage: React.FC = () => {
     const store = useStore();
@@ -129,7 +130,7 @@ const SppdPage: React.FC = () => {
                             <div className="h-[12px] w-[2px] bg-slate-500"></div>
                             <button
                                 className="text-blue-500 hover:underline"
-                                onClick={() => console.log(row)}
+                                onClick={() => exportSppd()}
                             >
                                 Cetak
                             </button>

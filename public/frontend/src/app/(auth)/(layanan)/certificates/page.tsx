@@ -50,7 +50,6 @@ const Page: React.FC = () => {
             })
             .error?.flatten().fieldErrors;
 
-        console.log(validation_res);
         // console.log(formData.get("nomor_ijazah").length)
 
         if (validation_res) {

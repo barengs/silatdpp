@@ -5,9 +5,9 @@ import React, { useEffect } from "react";
 import { useStore } from "react-redux";
 
 
-const ADMIN_ALLOWED_URL = ["/sppd/", "/sppd/list/", "/guestBook/", "/guestBook/list/", "/news", "/news/addData"]
+const ADMIN_ALLOWED_URL = ["/sppd/", "/sppd/list/", "/guestBook/", "/guestBook/list/", "/news/", "/news/addData/"]
 
-const KABID_ALLOWED_URL = ["/sppd/list/", "/news/"]
+const KABID_ALLOWED_URL = ["/sppd/list/", "/news/", "/news/addData/"]
 
 
 export default function AuthLayout({
@@ -24,6 +24,7 @@ export default function AuthLayout({
     const pathname = usePathname()
 
     useEffect(() => {
+
         switch(authState.user.role) {
             case "administrasi":
                 if (!ADMIN_ALLOWED_URL.includes(pathname)){

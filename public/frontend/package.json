@@ -10,14 +10,18 @@
     "export": "next export"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@lexical/react": "^0.30.0",
     "@next/bundle-analyzer": "^15.1.6",
     "@reduxjs/toolkit": "^2.4.0",
-    "@tinymce/tinymce-react": "^6.1.0",
     "apexcharts": "^3.45.2",
     "flatpickr": "^4.6.13",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "jsvectormap": "^1.6.0",
+    "lexical": "^0.30.0",
     "next": "^14.2.4",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
@@ -26,7 +30,6 @@
     "react-redux": "^9.1.2",
     "react-toastify": "^11.0.3",
     "redux-persist": "^6.0.0",
-    "tinymce-react-demo": "^0.0.14-t",
     "zod": "^3.24.2"
   },
   "devDependencies": {

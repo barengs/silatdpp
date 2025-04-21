@@ -12,7 +12,7 @@ import { useState } from "react";
 
 const Page: React.FC = () => {
     const [showPopup, setShowPopup] = useState(false);
-    const [file, setFile] = useState<File>()
+    // const [file, setFile] = useState<File>()
     const { data: newsData, isLoading } = useGetAllNewsQuery()
     const [selectedData, setSelectedData] = useState(DEFAULT_NEWS_DATA)
     const [updateNews] = useUpdateNewsMutation()
@@ -81,9 +81,9 @@ const Page: React.FC = () => {
                     name="alamat"
                     defaultValue={selectedData.isi}
                 />
-                <FilesFields
+                <InputFields
                     title="Gambar"
-                    setter={(file: File[]) => setFile(file[0])}
+                    name="gambar"
                     defaultValue={selectedData.gambar}
                 />
             </Modal>

@@ -2,6 +2,58 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { getDateNow, getDateTime } from './data';
 
+// Exports
+
+function exportAsPdf(data, excludes: string[]) {
+
+    if (Object.keys(data[0]).length == 0) return
+
+    const doc = new jsPDF();
+
+    doc.text('Employee List', 14, 10);
+
+    const tableColumn = Object.keys(data[0]).filter(item => !excludes.some(excludeItem => item == excludeItem)).map(col => col);
+    const tableRows = data.filter(item => !excludes.some(excludeItem => item == excludeItem)).map(item => Object.values(item));
+
+
+    autoTable(doc, {
+        head: [tableColumn],
+        body: tableRows,
+        headStyles: {
+            cellWidth: 'wrap'
+        }
+    });
+
+
+    // Save the PDF
+    doc.save('table_data.pdf');
+}
+
+
+function exportAsCsv(data) {
+    const csvContent =
+    'data:text/csv;charset=utf-8,' +
+    [
+      Object.keys(data[0]).join(','), // Add headers
+      ...data.map(row => Object.values(row).join(',')), // Add rows
+    ].join('\n');
+
+    const link = document.createElement("a")
+    link.href = encodeURI(csvContent)
+    link.download = "data.csv"
+    link.click()
+}
+
+
+export function exportDocument(type, data, excludes: string[]) {
+    if (type == "pdf") {
+        exportAsPdf(data, excludes)
+    } else if (type == "csv") {
+        exportAsCsv(data)
+    }
+}
+
+
 // set part of letter structure
 
 function setHeader(doc) {
@@ -68,56 +120,8 @@ function setFootNote(doc) {
     doc.text('Yth. Kepala Dinas Pendidikan Dan Kebudayaan Kabupaten Pamekasan', 10, 240)
 }
 
-// Exports
 
-function exportAsPdf(data, excludes: string[]) {
-
-    if (Object.keys(data[0]).length == 0) return
-
-    const doc = new jsPDF();
-
-    doc.text('Employee List', 14, 10);
-
-    const tableColumn = Object.keys(data[0]).filter(item => !excludes.some(excludeItem => item == excludeItem)).map(col => col);
-    const tableRows = data.filter(item => !excludes.some(excludeItem => item == excludeItem)).map(item => Object.values(item));
-
-
-    autoTable(doc, {
-        head: [tableColumn],
-        body: tableRows,
-        headStyles: {
-            cellWidth: 'wrap'
-        }
-    });
-
-
-    // Save the PDF
-    doc.save('table_data.pdf');
-}
-
-
-function exportAsCsv(data) {
-    const csvContent =
-    'data:text/csv;charset=utf-8,' +
-    [
-      Object.keys(data[0]).join(','), // Add headers
-      ...data.map(row => Object.values(row).join(',')), // Add rows
-    ].join('\n');
-
-    const link = document.createElement("a")
-    link.href = encodeURI(csvContent)
-    link.download = "data.csv"
-    link.click()
-}
-
-
-export function exportDocument(type, data, excludes: string[]) {
-    if (type == "pdf") {
-        exportAsPdf(data, excludes)
-    } else if (type == "csv") {
-        exportAsCsv(data)
-    }
-}
+// Documents Formatter
 
 
 export function exportRecomendation(content) {
@@ -130,7 +134,7 @@ export function exportRecomendation(content) {
     setLetterAttachment(doc)
 
     doc.setFontSize(10);
-    const resized = doc.splitTextToSize(`          ${content}`, pageWidth - 23);
+    const resized = doc.splitTextToSize(`          ${content}`, (pageWidth) - 23);
     doc.text(resized, 17, 95, { lineHeightFactor: 2})
     doc.text("          Demikian permohonan ini atas perhatian dan kerjasamanya kami sampaikan terimakasih", 17, 120, { lineHeightFactor: 2});
     
@@ -139,4 +143,25 @@ export function exportRecomendation(content) {
 
     doc.save("Surat Permohonan.pdf");
 
+}
+
+
+export function exportSppd() {
+    const doc = new jsPDF()
+    const pageWidth = doc.internal.pageSize.width
+
+    const header = "Surat Perjalanan Dinas (SPD)"
+
+    setHeader(doc)
+
+    doc.setFontSize(12)
+    doc.setFont("Times New Roman", "bold")
+    doc.text("SURAT PERJALANAN DINAS (SPPD)", (pageWidth - doc.getTextWidth(header)) / 2, 48)
+
+    doc.setLineWidth(1);
+    doc.line((pageWidth - doc.getTextWidth(header)) / 2, 50, (pageWidth - doc.getTextWidth(header)), 50);
+
+    setSignature(doc)
+
+    doc.save("Surat Perjalanan Dinas.pdf")
 }
