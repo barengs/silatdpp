@@ -55,7 +55,7 @@ class RekomController extends Controller
             'nip_pejabat' => $request->nip_pejabat,
             'nama_pejabat_pengganti' => $request->nama_pejabat_pengganti,
             'nip_pejabat_pengganti' => $request->nip_pejabat_pengganti,
-            'rekanan_id' => $request->rekanan_id,
+            'mitra_id' => $request->mitra_id,
             'institusi_id' => $request->institusi_id,
             'alamat_pejabat_pengganti' => $request->alamat_pejabat_pengganti,
             'jabatan' => $request->jabatan,
