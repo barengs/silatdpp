@@ -19,6 +19,7 @@ const ExchequerPage = () => {
     const { data: institutionData } = useGetInstitutionsQuery()
     const { data: partnerData } = useGetPartnersQuery()
     
+    const [files, setFiles] = useState<File[]>([])
 
     const handlePost = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -61,6 +62,7 @@ const ExchequerPage = () => {
                     return {name: partner.nama, value: partner.id}
                 }) : []} />
                 <TextFields title="Konten" name="konten" />
+                <FilesFields setter={setFiles} title="Dokumen Pendukung" />
                
                 <button
                     type="submit"
