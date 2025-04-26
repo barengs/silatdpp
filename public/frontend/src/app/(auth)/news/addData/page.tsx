@@ -3,12 +3,9 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import FilesFields from "@/components/Fields/FileFields";
 import InputFields from "@/components/Fields/InputFields";
-import TextEditorFields from "@/components/Fields/TextEditorFields";
 import TextFields from "@/components/Fields/TextFields";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import useFetch from "@/hooks/useFetch";
-import { useUpdateNewsMutation } from "@/services/news";
-import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useStore } from "react-redux";
 import { toast } from "react-toastify";

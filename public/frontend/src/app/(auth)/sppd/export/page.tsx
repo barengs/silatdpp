@@ -1,15 +1,40 @@
-"use client"
+"use client";
 
 import LetterHeading from "@/components/Letter/LetterHeading";
-import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-interface PageProps {}
+interface PageProps {
+    
+}
 
 export default function Page() {
+    const [hasPrinted, setHasPrinted] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        window.print()
-    }, [])
+        const onAfterPrint = () => {
+            if (!hasPrinted) {
+                // User canceled print
+                router.back(); // or window.history.back();
+            }
+        };
+
+        const onBeforePrint = () => {
+            setHasPrinted(true); // Only set to true if printing actually happens
+        };
+
+        window.addEventListener("beforeprint", onBeforePrint);
+        window.addEventListener("afterprint", onAfterPrint);
+
+        // Trigger print dialog
+        window.print();
+
+        return () => {
+            window.removeEventListener("beforeprint", onBeforePrint);
+            window.removeEventListener("afterprint", onAfterPrint);
+        };
+    }, [hasPrinted, router]);
 
     return (
         <div className="mx-auto max-w-[800px] bg-white p-8 text-black-2">
@@ -191,7 +216,6 @@ export default function Page() {
                         </div>
                     </section>
                 </main>
-
             </div>
         </div>
     );

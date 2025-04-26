@@ -18,6 +18,7 @@ import { useStore } from "react-redux";
 import CustomModal from "@/components/CustomModal";
 import { toast } from "react-toastify";
 import { exportRecomendation, exportSppd } from "@/utils/documents";
+import Link from "next/link";
 
 const SppdPage: React.FC = () => {
     const store = useStore();
@@ -128,12 +129,12 @@ const SppdPage: React.FC = () => {
                         "disetujui" && (
                         <>
                             <div className="h-[12px] w-[2px] bg-slate-500"></div>
-                            <button
+                            <Link
                                 className="text-blue-500 hover:underline"
-                                onClick={() => exportSppd()}
+                                href="/sppd/export"
                             >
                                 Cetak
-                            </button>
+                            </Link>
                         </>
                     )}
                 </div>
