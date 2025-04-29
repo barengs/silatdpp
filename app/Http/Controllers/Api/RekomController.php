@@ -21,6 +21,12 @@ class RekomController extends Controller
      */
     public function index()
     {
+        $user = JWTAuth::parseToken()->authenticate();
+        $user->getRolename();
+        if ($user->getRolename() == 'admin') {
+            $data = Rekom::with(['mitra', 'institusi', 'user', 'approval', 'history'])->get();
+            return new RekomResource(true, 'semua data rekom', $data);
+        }
         $data = Rekom::with(['user', 'approval'])->get();
 
         return new RekomResource(true, 'semua data rekom', $data);

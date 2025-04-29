@@ -38,7 +38,7 @@ class RoleController extends Controller
         ]);
 
         if ($role) {
-            $permission = $role->syncPermission($request->permission);
+            $permission = $role->syncPermissions($request->permission);
             return new ApiResource(true, 'Tugas berhasil di tambahkan!', $role);
         } else {
             return new ApiResource(false, 'gagal membuat Tugas', $role);
