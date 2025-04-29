@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\RekomApproval;
+use App\Models\RekomHistory;
+use Carbon\Carbon;
 use Str;
 use App\Models\Rekom;
 use Illuminate\Http\Request;
@@ -18,7 +21,7 @@ class RekomController extends Controller
      */
     public function index()
     {
-        $data = Rekom::latest()->paginate(10);
+        $data = Rekom::with(['user', 'approval'])->get();
 
         return new RekomResource(true, 'semua data rekom', $data);
     }
@@ -63,6 +66,10 @@ class RekomController extends Controller
         ]);
 
         if ($data) {
+            RekomHistory::create([
+                'rekom_id' => $data->id,
+                'history_id' => 1,
+            ]);
             return new RekomResource(true, 'data berhasil di simpan', $data);
         }
     }
@@ -72,7 +79,7 @@ class RekomController extends Controller
      */
     public function show(string $id)
     {
-        $data = Rekom::where('id', $id)->with(['mitra', 'institusi'])->first();
+        $data = Rekom::where('id', $id)->with(['mitra', 'institusi', 'user', 'approval', 'history'])->first();
         if ($data) {
             return new RekomResource(true, 'detail data rekom', $data);
         } else {
@@ -113,5 +120,41 @@ class RekomController extends Controller
         $data = Rekom::find($id);
         $data->delete();
         return new RekomResource(true, 'data berhasil di hapus', $data);
+    }
+
+    public function proses($id)
+    {
+        $rekom = Rekom::findOrFail($id);
+        $rekom->update([
+            'status' => 'proses',
+        ]);
+        RekomHistory::create([
+            'rekom_id' => $rekom->id,
+            'history_id' => 2,
+        ]);
+        $rekom->load(['mitra', 'institusi', 'user', 'approval', 'history']);
+        return new RekomResource(true, 'data berhasil di proses', $rekom);
+    }
+
+    public function approval($id)
+    {
+        $rekom = Rekom::findOrFail($id);
+        $rekom->update([
+            'status' => 'disetujui',
+        ]);
+        RekomHistory::create([
+            'rekom_id' => $rekom->id,
+            'history_id' => 3,
+        ]);
+
+        RekomApproval::create([
+            'rekom_id' => $rekom->id,
+            'user_id' => JWTAuth::parseToken()->authenticate()->id,
+            'tanggal_disetujui' => Carbon::now(),
+        ]);
+
+        $rekom->load(['mitra', 'institusi', 'user', 'approval', 'history']);
+
+        return new RekomResource(true, 'data berhasil di setujui', $rekom);
     }
 }

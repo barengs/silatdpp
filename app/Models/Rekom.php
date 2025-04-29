@@ -33,4 +33,14 @@ class Rekom extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function approval()
+    {
+        return $this->hasMany(RekomApproval::class);
+    }
+
+    public function history()
+    {
+        return $this->belongsToMany(RekomHistory::class);
+    }
 }

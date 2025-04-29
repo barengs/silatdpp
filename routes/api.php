@@ -45,6 +45,8 @@ Route::apiResource('transportasi', AlatTransportasiController::class);
 Route::apiResource('biaya', BiayaController::class);
 Route::apiResource('mitra', MitraController::class);
 Route::apiResource('rekom', RekomController::class);
+Route::post('rekom/{id}/approval', [RekomController::class, 'approval'])->name('rekom.approval');
+Route::post('rekom/{id}/proses', [RekomController::class, 'proses'])->name('rekom.proses');
 
 Route::apiResource('karyawan', KaryawanController::class);
 Route::apiResource('tugas', RoleController::class);
