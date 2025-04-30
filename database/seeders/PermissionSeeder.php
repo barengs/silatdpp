@@ -42,6 +42,9 @@ class PermissionSeeder extends Seeder
             ['name' => 'dapat menambah sppd', 'guard_name' => 'web'],
             ['name' => 'dapat mengubah sppd', 'guard_name' => 'web'],
             ['name' => 'dapat menghapus sppd', 'guard_name' => 'web'],
+            ['name' => 'menyetujui sppd', 'guard_name' => 'web'],
+            ['name' => 'menyetujui rekom', 'guard_name' => 'web'],
+            ['name' => 'menolak sppd', 'guard_name' => 'web'],
         ];
 
         foreach ($this->data as $value) {

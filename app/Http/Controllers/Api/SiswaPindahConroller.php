@@ -16,7 +16,14 @@ class SiswaPindahConroller extends Controller
      */
     public function index()
     {
-        $data = SiswaPindah::latest()->get();
+        $user = JWTAuth::user();
+        $role = $user->getRolename();
+        if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
+            $data = SiswaPindah::latest()->get();
+            return new ApiResource(true, 'semua data siswa pindah', $data);
+        }
+        $data = SiswaPindah::where('user_id', $user->id)->latest()->get();
+
         return new ApiResource(true, 'semua data siswa pindah', $data);
     }
 
@@ -79,7 +86,13 @@ class SiswaPindahConroller extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = SiswaPindah::findOrFail($id);
+        $data->load('sekolah_asal', 'sekolah_tujuan');
+        if ($data) {
+            return new ApiResource(true, 'detail data siswa pindah', $data);
+        } else {
+            return new ApiResource(false, 'data tidak di temukan', null);
+        }
     }
 
     /**
