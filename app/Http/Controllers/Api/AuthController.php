@@ -41,6 +41,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->get('password')),
         ]);
 
+        $user->assignRole($request->role); // Assign a default role to the user
+
         $token = JWTAuth::fromUser($user);
 
         return response()->json(compact('user', 'token'), 201);
@@ -62,7 +64,7 @@ class AuthController extends Controller
 
             // Get the authenticated user.
             $user = auth()->user();
-            $user->role = $user->getRoleNames()->first(); // Assuming you are using Spatie's Laravel Permission package
+            $user->role = $user->getRoleNames(); // Assuming you are using Spatie's Laravel Permission package
 
             // (optional) Attach the role to the token.
             $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
@@ -155,8 +157,8 @@ class AuthController extends Controller
     //     //if auth success
     //     return response()->json([
     //         'success' => true,
-    //         'user'    => auth()->guard('api')->user(),    
-    //         'token'   => $token   
+    //         'user'    => auth()->guard('api')->user(),
+    //         'token'   => $token
     //     ], 200);
     // }
 }
