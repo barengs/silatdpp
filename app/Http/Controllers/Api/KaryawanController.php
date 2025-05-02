@@ -125,7 +125,7 @@ class KaryawanController extends Controller
             return new KaryawanResource(false, 'gagal mengupdate pengguna', null);
         }
         $profile = Karyawan::where('user_id', $data->id)->first();
-        $filename = null;
+        $filename = '';
         if (!$profile) {
 
             if ($request->hasFile('photo')) {
@@ -146,7 +146,7 @@ class KaryawanController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'phone' => $request->phone,
-                'photo' => $filename ?? null,
+                'photo' => $filename ?? '',
             ]);
 
             return new KaryawanResource(true, 'data karyawan berhasil ditambahkan', $karyawan);
@@ -174,7 +174,7 @@ class KaryawanController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'phone' => $request->phone,
-                'photo' => $filename ?? null,
+                'photo' => $filename ?? '',
             ]);
 
         } catch (\Exception $e) {
