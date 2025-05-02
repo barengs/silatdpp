@@ -125,10 +125,32 @@ class KaryawanController extends Controller
             return new KaryawanResource(false, 'gagal mengupdate pengguna', null);
         }
         $profile = Karyawan::where('user_id', $data->id)->first();
+        $filename = null;
         if (!$profile) {
-            return new KaryawanResource(false, 'data profile tidak di temukan', null);
-        }
 
+            if ($request->hasFile('photo')) {
+                $path = public_path('documents/profile');
+                $file = $request->file('photo');
+                $filename = time() . '.' . Str::slug($file->getClientOriginalExtension());
+                $file->move($path, $filename);
+            } else {
+                $filename = $profile->photo;
+            }
+
+            $karyawan = Karyawan::create([
+                'user_id' => $data->id,
+                'nip' => $request->nip,
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'nick_name' => $request->nick_name,
+                'address' => $request->address,
+                'gender' => $request->gender,
+                'phone' => $request->phone,
+                'photo' => $filename,
+            ]);
+
+            return new KaryawanResource(true, 'data karyawan berhasil ditambahkan', $karyawan);
+        }
         if ($request->hasFile('photo')) {
             if ($profile->photo) {
                 $path = public_path('documents/profile/' . $profile->photo);
