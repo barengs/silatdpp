@@ -146,7 +146,7 @@ class KaryawanController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'phone' => $request->phone,
-                'photo' => $filename ?? '',
+                'photo' => $filename,
             ]);
 
             return new KaryawanResource(true, 'data karyawan berhasil ditambahkan', $karyawan);
@@ -174,7 +174,7 @@ class KaryawanController extends Controller
                 'address' => $request->address,
                 'gender' => $request->gender,
                 'phone' => $request->phone,
-                'photo' => $filename ?? '',
+                'photo' => $filename,
             ]);
 
         } catch (\Exception $e) {
