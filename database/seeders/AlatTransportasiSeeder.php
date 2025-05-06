@@ -14,7 +14,8 @@ class AlatTransportasiSeeder extends Seeder
     public function run(): void
     {
         AlatTransportasi::create([
-            'name' => 'Roda 4',
+            'nama' => 'Roda 4',
+            'jenis' => 'Mobil',
         ]);
     }
 
