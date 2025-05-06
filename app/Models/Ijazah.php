@@ -10,7 +10,7 @@ class Ijazah extends Model
 
     public function institusi()
     {
-        return $this->belongTo(Institusi::class);
+        return $this->belongsTo(Institusi::class);
     }
 
     public function user()
