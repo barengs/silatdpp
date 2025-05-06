@@ -37,7 +37,7 @@ class SppdPengajuanController extends Controller
         //     $sppd = SppdPengajuan::with(['user', 'documents', 'approval', 'history'])->paginate(10);
         //     return new SppdPengajuanResource(true, 'List Pengajuan SPPD', $sppd);
         // }
-        $sppd = SppdPengajuan::with(['user', 'documents', 'approval', 'history'])->paginate(10);
+        $sppd = SppdPengajuan::with(['user', 'approval', 'history'])->paginate(10);
 
         return new SppdPengajuanResource(true, 'List Pengajuan SPPD', $sppd);
     }
