@@ -36,7 +36,7 @@ export default function RootLayout({
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               {children}
-              {/* {loading ? <Loader /> : children} */}
+              {loading ? <Loader /> : children}
             </PersistGate>
           </Provider>
         </div>
