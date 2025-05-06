@@ -64,9 +64,15 @@ export default function AuthLayout({
 
     useEffect(() => {
 
+        if (!state.auth.token || Object.keys(state.auth.user).length == 0) {
+            navigate.push("/login")
+            return
+        }
+
         if (state.auth.user.role.includes("superadmin")) {
             return
         }
+
 
 
         const allowed_pages: string[] = [];

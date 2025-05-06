@@ -2,9 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import { useRouter } from "next/navigation";
-import { useDispatch, useStore } from "react-redux";
-import { setToken } from "@/store/authSlice";
 
 export default function DefaultLayout({
     children,
