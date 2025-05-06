@@ -129,15 +129,6 @@ const SppdAddData: React.FC = () => {
     };
 
 
-    useEffect(() => {
-
-        const EXCLUDED_ROLE = ["administrasi", "kabid", "kadis"]
-
-        if (EXCLUDED_ROLE.includes(authState.user.role)) {
-            router.push("/")
-        }
-    }, [])
-
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Pengajuan SPPD" />
