@@ -31,8 +31,8 @@ class SppdPengajuanController extends Controller
      */
     public function index()
     {
-        // $user = auth()->user();
-        // // dd($user);
+        $user = Auth::user();
+        dd($user);
         // $role = $user->getRoleNames();
         // if ($role == 'admin' || $role == 'superadmin' || $role == 'kabid' || $role == 'kadis') {
         //     $sppd = SppdPengajuan::with(['user', 'documents', 'approval', 'history'])->paginate(10);
