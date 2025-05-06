@@ -17,7 +17,7 @@ class SiswaPindahConroller extends Controller
     public function index()
     {
         // $user = JWTAuth::user();
-        // $role = $user->getRolename();
+        // $role = $user->getRoleNames();
         // if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
         //     $data = SiswaPindah::latest()->get();
         //     return new ApiResource(true, 'semua data siswa pindah', $data);

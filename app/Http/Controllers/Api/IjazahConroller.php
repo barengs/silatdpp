@@ -17,7 +17,7 @@ class IjazahConroller extends Controller
     public function index()
     {
         $user = auth()->user();
-        $role = $user->getRolename();
+        $role = $user->getRoleNames();
         if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
             $data = Ijazah::with(['user', 'institusi'])->latest()->get();
             return new ApiResource(true, 'semua data pengajuan ijazah', $data);
