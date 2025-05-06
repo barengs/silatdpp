@@ -22,7 +22,7 @@ class IjazahConroller extends Controller
         //     $data = Ijazah::with(['user', 'institusi'])->latest()->get();
         //     return new ApiResource(true, 'semua data pengajuan ijazah', $data);
         // }
-        $data = Ijazah::with(['user', 'institusi'])->latest()->get();
+        $data = Ijazah::with(['institusi'])->latest()->get();
 
         return new ApiResource(true, 'data pengajuan perubahan ijazah', $data);
     }
