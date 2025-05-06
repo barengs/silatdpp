@@ -4,14 +4,13 @@ import React, { useEffect } from "react";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useStore } from "react-redux";
+import { storeType } from "@/store"; // Adjust the path to your store file
 import { getSidebar } from "@/utils/components";
 
 interface SidebarProps {
     sidebarOpen: boolean;
     setSidebarOpen: (arg: boolean) => void;
 }
-
-
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     const [pageName, setPageName] = useLocalStorage(
@@ -20,11 +19,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     );
 
     const store = useStore();
-    const state = store.getState();
+
+    const state = store.getState() as storeType;
     const authState = state.auth;
-
-    useEffect(() => console.log(authState.user), [])
-
 
     return (
         <aside
@@ -59,8 +56,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
             <div className="flex flex-col overflow-y-auto">
                 {/* <!-- Sidebar Menu --> */}
-                <nav className="mt-5 overflow-x-hidden overflow-y-auto px-4 py-4 lg:mt-9 lg:px-6">
-                    {getSidebar(authState.user.role).map((group, groupIndex) => (
+                <nav className="mt-5 overflow-y-auto overflow-x-hidden px-4 py-4 lg:mt-9 lg:px-6">
+                    {getSidebar(
+                        Array.isArray(authState.user.role)
+                            ? authState.user.role
+                            : [authState.user.role],
+                    ).map((group, groupIndex) => (
                         <div key={groupIndex}>
                             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                                 {group.name}
