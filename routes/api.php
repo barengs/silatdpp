@@ -34,13 +34,15 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
 // Route::middleware('auth:api')->get('user', function (Request $request) {
 //     return $request->user();
 // });
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('buku-tamu', BukuTamuController::class);
+    Route::apiResource('sppd', SppdPengajuanController::class);
+    Route::post('sppd/{id}/approval', [SppdPengajuanController::class, 'approval'])->name('sppd.approval');
+    Route::post('sppd/{id}/proses', [SppdPengajuanController::class, 'proses'])->name('sppd.proses');
 
-Route::apiResource('buku-tamu', BukuTamuController::class);
+});
 Route::apiResource('divisi', DivisiController::class);
 Route::apiResource('institusi', InstitusiController::class);
-Route::apiResource('sppd', SppdPengajuanController::class);
-Route::post('sppd/{id}/approval', [SppdPengajuanController::class, 'approval'])->name('sppd.approval');
-Route::post('sppd/{id}/proses', [SppdPengajuanController::class, 'proses'])->name('sppd.proses');
 Route::apiResource('transportasi', AlatTransportasiController::class);
 Route::apiResource('biaya', BiayaController::class);
 Route::apiResource('mitra', MitraController::class);
