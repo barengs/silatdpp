@@ -23,6 +23,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     const state = store.getState();
     const authState = state.auth;
 
+    useEffect(() => console.log(authState.user), [])
+
 
     return (
         <aside

@@ -1,6 +1,7 @@
 "use client"
 
 import Breadcrumb from "@/components/Breadcrumb";
+import CustomModal from "@/components/CustomModal";
 import InputFields from "@/components/Fields/InputFields";
 import SelectFields from "@/components/Fields/SelectFields";
 import TextFields from "@/components/Fields/TextFields";
@@ -74,13 +75,19 @@ const Page: React.FC = () => {
         <DefaultLayout>
             <Breadcrumb pageName="Daftar Surat Rekom" />
             <Table name="Data Surat Rekomendasi" data={recomendationData ? recomendationData.data.data : []} column={columns} addButtonLink="/recomendation" addButtonName="Ajukan Permohonan"/>
-            <Modal
-                idItem={selectedData.id}
-                mutation={updateRecomendation}
+            <CustomModal
                 title="Detail Hak Akses"
                 state={showPopup}
                 stateSetter={setShowPopup}
-                ableUpdate={true}
+                idItem={selectedData.id}
+                buttons={[
+                    <button
+                        className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
+                        onClick={approve}
+                    >
+                        Proses Pengajuan
+                    </button>,
+                ]}
             >
                 <InputFields title="Nama Pejabat" name="nama_pejabat" defaultValue={selectedData.nama_pejabat}/>
                 <InputFields title="NIP Pejabat" name="nip_pejabat" defaultValue={selectedData.nip_pejabat}/>
@@ -95,7 +102,7 @@ const Page: React.FC = () => {
                     return {name: partner.nama, value: partner.id}
                 }) : []} defaultValue={selectedData.mitra_id}/>
                 <TextFields title="Konten" name="konten" defaultValue={selectedData.konten}/>
-            </Modal>
+            </CustomModal>
         </DefaultLayout>
     )
 }
