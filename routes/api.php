@@ -21,8 +21,8 @@ use App\Http\Controllers\Api\SiswaPindahConroller;
 use App\Http\Controllers\Api\SppdPengajuanController;
 use App\Http\Controllers\Api\AlatTransportasiController;
 
-Route::post('register', [AuthController::class, 'register'])->name('auth.register');
-Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('register', [AuthController::class, 'register'])->name('register');
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
     Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
