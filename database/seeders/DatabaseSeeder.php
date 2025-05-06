@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             DivisiSeeder::class,
             HistorySeeder::class,
             RekananSeeder::class,
+            AlatTransportasiSeeder::class,
+            BiayaSeeder::class,
         ]);
     }
 }
