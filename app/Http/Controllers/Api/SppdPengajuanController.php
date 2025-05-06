@@ -33,7 +33,7 @@ class SppdPengajuanController extends Controller
     {
         $user = JWTAuth::user();
         $role = $user->getRolename();
-        if ($role == 'admin' || $role == 'kabid' || $role == 'kadis') {
+        if ($role == 'admin' || $role == 'superadmin' || $role == 'kabid' || $role == 'kadis') {
             $sppd = SppdPengajuan::with(['user', 'documents', 'approval', 'history'])->paginate(10);
             return new SppdPengajuanResource(true, 'List Pengajuan SPPD', $sppd);
         }
