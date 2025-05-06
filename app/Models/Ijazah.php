@@ -12,4 +12,9 @@ class Ijazah extends Model
     {
         return $this->belongTo(Institusi::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
