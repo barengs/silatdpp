@@ -28,4 +28,14 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-export type storeType = typeof store
+export interface storeType {
+  auth: {
+      user: {
+          role: string[];
+          [key: string]: any; // Adjust based on your user structure
+      };
+      token: string | null;
+  };
+  persistedApi: any; // Adjust based on your persistedApi structure
+  // Other properties of the store
+}
