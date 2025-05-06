@@ -35,7 +35,6 @@ export default function RootLayout({
           <ToastContainer limit={3} transition={Zoom}/>
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-              {children}
               {loading ? <Loader /> : children}
             </PersistGate>
           </Provider>
