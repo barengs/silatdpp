@@ -1,50 +1,54 @@
 "use client";
 
+import { storeType } from "@/store";
 import { useRouter, usePathname } from "next/navigation";
 import React, { useEffect } from "react";
 import { useStore } from "react-redux";
 
-const ADMIN_ALLOWED_URL = [
-    "/sppd/",
-    "/sppd/list/",
-    "/guestBook/",
-    "/guestBook/list/",
-    "/news/",
-    "/news/addData/",
-];
 
-const KABID_ALLOWED_URL = ["/sppd/list/", "/news/", "/news/addData/"];
-
-const RESEPSIONIS_ALLOWED_URL = [
-    "/sppd/",
-    "/sppd/list/",
-    "/certificate/list/",
-    "/certificate/",
-    "/studentTransfer/",
-    "/studentTransfer/list",
-    "/recomendation/",
-    "/recomendation/list/",
-    "/news/",
-    "/news/addData/",
-];
-
-const HEADMASTER_ALLOWED_URL = [
-    "/certificate/list/",
-    "/certificate/",
-    "/studentTransfer/",
-    "/studentTransfer/list",
-    "/recomendation/",
-    "/recomendation/list/",
-];
-
-const SCHOOL_ADMIN_ALLOWED_URL = [
-    "/certificate/list/",
-    "/certificate/",
-    "/studentTransfer/",
-    "/studentTransfer/list",
-    "/recomendation/",
-    "/recomendation/list/",
-];
+const AUTH_MAPS = {
+    superadmin: [],
+    administrasi: [
+        "/sppd/",
+        "/sppd/list/",
+        "/guestBook/",
+        "/guestBook/list/",
+        "/news/",
+        "/news/addData/",
+    ],
+    kadis: ["/sppd/list/", "/news/", "/news/addData/"],
+    kabid: ["/sppd/list/", "/news/", "/news/addData/"],
+    resepsionis: ["/guestBook/", "/guestBook/list/"],
+    staff: ["/sppd/", "/sppd/list/", "/news/", "/news/addData/"],
+    kepsek: [
+        "/sppd/",
+        "/sppd/list/",
+        "/certificate/list/",
+        "/certificate/",
+        "/studentTransfer/",
+        "/studentTransfer/list",
+        "/recomendation/",
+        "/recomendation/list/",
+    ],
+    adminsekolah: [
+        "/sppd/",
+        "/sppd/list/",
+        "/certificate/list/",
+        "/certificate/",
+        "/studentTransfer/",
+        "/studentTransfer/list",
+        "/recomendation/",
+        "/recomendation/list/",
+    ],
+    guru: [
+        "/certificate/list/",
+        "/certificate/",
+        "/studentTransfer/",
+        "/studentTransfer/list",
+        "/recomendation/",
+        "/recomendation/list/",
+    ],
+};
 
 export default function AuthLayout({
     children,
@@ -52,51 +56,31 @@ export default function AuthLayout({
     children: React.ReactNode;
 }>) {
     const store = useStore();
-    const authState = store.getState().auth;
+    const state = store.getState() as storeType;
 
     const navigate = useRouter();
 
     const pathname = usePathname();
 
     useEffect(() => {
-        switch (authState.user.role) {
-            case "superadmin":
-                return;
 
-            case "administrasi":
-                if (!ADMIN_ALLOWED_URL.includes(pathname)) {
-                    navigate.push("/login");
-                }
-                return;
-
-            case "kabid":
-                if (!KABID_ALLOWED_URL.includes(pathname)) {
-                    navigate.push("/login");
-                }
-                return;
-
-            case "resepsionis":
-                if (!RESEPSIONIS_ALLOWED_URL.includes(pathname)) {
-                    navigate.push("/login");
-                }
-                return;
-
-            case "kepala-sekolah":
-                if (!HEADMASTER_ALLOWED_URL.includes(pathname)) {
-                    navigate.push("/login");
-                }
-                return;
-
-            case "admin-sekolah":
-                if (!SCHOOL_ADMIN_ALLOWED_URL.includes(pathname)) {
-                    navigate.push("/login");
-                }
-                return;
-
-            default:
-                // unrecognized role
-                navigate.push("/login");
+        if (state.auth.user.role.includes("superadmin")) {
+            return
         }
+
+
+        const allowed_pages: string[] = [];
+
+        Object.entries(AUTH_MAPS).filter(([role, urls]) => {
+            if (state.auth.user.role.includes(role)) {
+                urls.forEach(url => allowed_pages.includes(url) ? undefined : allowed_pages.push(url))
+            }
+        })
+
+        if (!allowed_pages.includes(pathname)) {
+            navigate.push("/login");
+        }
+
     }, []);
 
     return <div>{children}</div>;
