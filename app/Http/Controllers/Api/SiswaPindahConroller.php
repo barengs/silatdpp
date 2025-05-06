@@ -11,6 +11,10 @@ use App\Http\Controllers\Controller;
 
 class SiswaPindahConroller extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      */
