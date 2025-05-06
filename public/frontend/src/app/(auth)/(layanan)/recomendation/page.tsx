@@ -41,6 +41,8 @@ const ExchequerPage = () => {
             return
         }
 
+        console.log(res)
+
         toast.error("Gagal membuat pengajuan", { position: "top-right" })
     }
 

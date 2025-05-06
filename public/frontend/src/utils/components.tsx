@@ -113,8 +113,6 @@ export function getSidebar(roles: string[]) {
             })[0]
         }
     ]
-
-
     return sidebar
 
 }

@@ -20,16 +20,16 @@ import { toast } from "react-toastify";
 
 const Page: React.FC = () => {
 
-    const {data: recomendationData} = useGetRecomendationsQuery()
-        const { data: institutionData } = useGetInstitutionsQuery()
-        const { data: partnerData } = useGetPartnersQuery()
+    const {data: recomendationData} = useGetRecomendationsQuery({})
+        const { data: institutionData } = useGetInstitutionsQuery({})
+        const { data: partnerData } = useGetPartnersQuery({})
 
-    const [updateRecomendation] = useUpdateRecomendationMutation()
+    // const [updateRecomendation] = useUpdateRecomendationMutation()
 
     const [selectedData, setSelectedData] = useState(DEFAULT_RECOMENDATION_DATA)
     const [showPopup, setShowPopup] = useState(false)
 
-    const handleSelectedData = (data) => {
+    const handleSelectedData = (data: RecomendationType) => {
         setSelectedData(data)
         setShowPopup(true)
     }
@@ -71,6 +71,11 @@ const Page: React.FC = () => {
             ),
         },
     ]
+
+    const approvalHandler = () => {
+        
+    }
+
     return (
         <DefaultLayout>
             <Breadcrumb pageName="Daftar Surat Rekom" />
@@ -83,7 +88,7 @@ const Page: React.FC = () => {
                 buttons={[
                     <button
                         className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
-                        onClick={approve}
+                        onClick={approvalHandler}
                     >
                         Proses Pengajuan
                     </button>,
