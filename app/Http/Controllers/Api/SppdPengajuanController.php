@@ -32,7 +32,7 @@ class SppdPengajuanController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $role = auth()->user()->roles()->first()->name;
+        $role = $user->getRoleNames();
         if ($role == 'admin' || $role == 'superadmin' || $role == 'kabid' || $role == 'kadis') {
             $sppd = SppdPengajuan::with(['user', 'documents', 'approval', 'history'])->paginate(10);
             return new SppdPengajuanResource(true, 'List Pengajuan SPPD', $sppd);
