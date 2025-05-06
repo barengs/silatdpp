@@ -31,7 +31,7 @@ class SppdPengajuanController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        $user = JWTAuth::user();
         dd($user);
         // $role = $user->getRoleNames();
         // if ($role == 'admin' || $role == 'superadmin' || $role == 'kabid' || $role == 'kadis') {
