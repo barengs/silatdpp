@@ -16,6 +16,7 @@ import { RecomendationType } from "@/types/pages/recomendation";
 import { DEFAULT_RECOMENDATION_DATA } from "@/utils/constans";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useStore } from "react-redux";
 import { toast } from "react-toastify";
 
 const Page: React.FC = () => {
@@ -33,6 +34,9 @@ const Page: React.FC = () => {
         setSelectedData(data)
         setShowPopup(true)
     }
+
+    const store = useStore()
+    const state = store.getState()
 
 
     const columns = [
@@ -72,9 +76,21 @@ const Page: React.FC = () => {
         },
     ]
 
-    const approvalHandler = () => {
+
+
+
+    const onRecomendationSubmission = () => {
         
     }
+
+    const getButtons = () => {
+        console.log()
+    }
+
+
+    useEffect(() => {
+        console.log(state.auth.user.role)
+    }, [])
 
     return (
         <DefaultLayout>
@@ -88,7 +104,7 @@ const Page: React.FC = () => {
                 buttons={[
                     <button
                         className="flex w-max justify-center rounded bg-blue-500 p-3 text-sm font-medium text-gray hover:bg-opacity-90"
-                        onClick={approvalHandler}
+                        onClick={onRecomendationSubmission}
                     >
                         Proses Pengajuan
                     </button>,
