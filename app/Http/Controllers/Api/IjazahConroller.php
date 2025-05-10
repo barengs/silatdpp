@@ -11,18 +11,22 @@ use Illuminate\Support\Facades\Validator;
 
 class IjazahConroller extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // $user = auth()->user();
-        // $role = $user->getRoleNames();
-        // if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
-        //     $data = Ijazah::with(['user', 'institusi'])->latest()->get();
-        //     return new ApiResource(true, 'semua data pengajuan ijazah', $data);
-        // }
-        $data = Ijazah::with(['institusi'])->latest()->get();
+        $user = auth()->user();
+        $role = $user->getRoleNames();
+        if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
+            $data = Ijazah::with(['user', 'institusi'])->latest()->get();
+            return new ApiResource(true, 'semua data pengajuan ijazah', $data);
+        }
+        $data = Ijazah::with(['institusi'])->where('user_id', $user->id)->latest()->get();
 
         return new ApiResource(true, 'data pengajuan perubahan ijazah', $data);
     }

@@ -20,13 +20,13 @@ class SiswaPindahConroller extends Controller
      */
     public function index()
     {
-        // $user = JWTAuth::user();
-        // $role = $user->getRoleNames();
-        // if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
-        //     $data = SiswaPindah::latest()->get();
-        //     return new ApiResource(true, 'semua data siswa pindah', $data);
-        // }
-        $data = SiswaPindah::latest()->get();
+        $user = JWTAuth::user();
+        $role = $user->getRoleNames();
+        if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
+            $data = SiswaPindah::latest()->get();
+            return new ApiResource(true, 'semua data siswa pindah', $data);
+        }
+        $data = SiswaPindah::with('user_id', $user->id)->latest()->get();
 
         return new ApiResource(true, 'semua data siswa pindah', $data);
     }

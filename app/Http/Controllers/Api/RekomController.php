@@ -16,12 +16,16 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RekomController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = JWTAuth::user();
+        $user = auth()->user();
         $role = $user->getRoleNames();
 
         if ($role == 'superadmin' || $role == 'administrasi' || $role == 'kabid' || $role == 'kadis') {
