@@ -12,7 +12,7 @@ class DivisiController extends Controller
      */
     public function index()
     {
-        //
+        return 'hello';
     }
 
     /**

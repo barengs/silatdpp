@@ -1,26 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 
 type optionType = {
-  name: string,
-  value: string,
-}
+    name: string;
+    value: string;
+};
 
 interface selectFieldsProps {
     title: string;
-    options?: optionType[];
-    defaultValue?: string
+    options: optionType[];
+    name: string;
+    defaultValue?: string;
+    error?: string;
 }
 
-const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValue }) => {
-    const [selectedOption, setSelectedOption] = useState<string>("");
-    const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
+const SelectFields: React.FC<selectFieldsProps> = ({
+    title,
+    options,
+    name,
+    defaultValue,
+    error = "",
+}) => {
+    const [errorMessege, setErrorMessege] = useState({});
 
-    const changeTextColor = () => {
-        setIsOptionSelected(true);
+    const handleError = (state) => {
+        if (state) {
+            setErrorMessege(error);
+        } else {
+            setErrorMessege(false);
+        }
     };
+
+    useEffect(() => handleError(true), [error]);
 
     return (
         <div>
@@ -28,16 +40,12 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValu
                 {title}
             </label>
 
-            <div className="relative z-20 bg-white dark:bg-form-input">
+            <div className="relative bg-white dark:bg-form-input">
                 <select
-                    value={selectedOption}
-                    onChange={(e) => {
-                        setSelectedOption(e.target.value);
-                        changeTextColor();
-                    }}
-                    className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
-                        isOptionSelected ? "text-black dark:text-white" : ""
-                    }`}
+                    defaultValue={defaultValue}
+                    name={name}
+                    onFocus={() => handleError(false)}
+                    className={`relative w-full appearance-none rounded border bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${errorMessege ? "border-red-500" : "border-stroke"}`}
                 >
                     <option
                         value=""
@@ -57,8 +65,8 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValu
                         </option>
                     ))}
                 </select>
-
-                <span className="absolute right-4 top-1/2 z-10 -translate-y-1/2">
+               
+                <span className="absolute right-4 top-1/2 -translate-y-1/2">
                     <svg
                         width="24"
                         height="24"
@@ -77,6 +85,12 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, defaultValu
                     </svg>
                 </span>
             </div>
+
+            {errorMessege && (
+                    <span className="mt-2 block text-sm text-red-500">
+                        {error}
+                    </span>
+                )}
         </div>
     );
 };
