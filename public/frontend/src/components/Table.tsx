@@ -26,6 +26,7 @@ interface TableProps {
     data: Record<string, string>[];
     detailLink?: detailLinkType;
     excludes?: string[];
+    isLoading?: boolean
 }
 
 const Table: React.FC<TableProps> = ({
@@ -36,6 +37,7 @@ const Table: React.FC<TableProps> = ({
     data,
     detailLink = { name: "Pengaturan", to: "#" },
     excludes = ["id", "created_at", "updated_at"],
+    isLoading = false
 }) => {
     const [searchText, setSearchText] = useState("");
     const [filteredData, setFilteredData] = useState(data);
@@ -201,12 +203,6 @@ const Table: React.FC<TableProps> = ({
                         >
                             <button
                                 className="hover:underline"
-                                onClick={() => handleExport("csv")}
-                            >
-                                Expor ke CSV
-                            </button>
-                            <button
-                                className="hover:underline"
                                 onClick={() => handleExport("pdf")}
                             >
                                 Expor ke PDF
@@ -226,6 +222,7 @@ const Table: React.FC<TableProps> = ({
                 highlightOnHover
                 customStyles={customStyles}
                 noDataComponent="Tidak ada data"
+                progressPending={isLoading}
             />
         </div>
     );

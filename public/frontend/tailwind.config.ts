@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 const colors = require("tailwindcss/colors");
+const plugin = require('tailwindcss/plugin');
 
 const config: Config = {
   content: [
@@ -339,6 +340,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: []
 };
 export default config;

@@ -50,6 +50,20 @@ export const DEFAULT_PROFILE_DATA = {
   created_at: "",
   updated_at: "",
   profile: "",
+  karyawan: {
+    id: "",
+    user_id: "",
+    nip: "",
+    first_name: "",
+    last_name: "",
+    nick_name: "",
+    address: " ",
+    gender: "",
+    phone: "",
+    photo: "",
+    created_at: "",
+    updated_at: ""
+  },
   roles: [
     {
       id: "",
@@ -93,7 +107,7 @@ export const DEFAULT_PARTNERS_DATA = {
 
 export const DEFAULT_BUDGET_DATA = {
   id: "",
-  biaya: "",
+  name: "",
   created_at: "",
   updated_at: ""
 }
@@ -128,7 +142,7 @@ export const DEFAULT_SPPD_DATA = {
   lama_perjalanan: "",
   tanggal_berangkat: "",
   tanggal_kembali: "",
-  tingkat_biaya_id: "",
+  biaya_id: "",
   created_at: "",
   updated_at: "",
   user: {
@@ -159,7 +173,7 @@ export const DEFAULT_SPPD_DATA = {
 export const DEFAULT_RECOMENDATION_DATA = {
   id: "",
   noreg: "",
-  rekanan_id: "",
+  mitra_id: "",
   user_id: "",
   institusi_id: "",
   nama_pejabat: "",
@@ -176,5 +190,40 @@ export const DEFAULT_RECOMENDATION_DATA = {
 
 
 export const DEFAULT_CERTIFICATE_DATA = {
+  id: "",
+  institusi_id: "",
+  nomor_ijazah: "",
+  nama_siswa: "",
+  nis: "",
+  perubahan: "",
+  alasan: "",
+  file: "",
+  user_id: "",
+  status: "",
+  created_at: "",
+  updated_at: "",
+};
 
+export const DEFAULT_NEWS_DATA = {
+  id: "",
+  judul: "",
+  isi: "",
+  gambar: ""
+}
+
+export const DEFAULT_STUDENT_TRANSFER_DATA = {
+  "id": "",
+  "sekolah_asal_id": "",
+  "sekolah_tujuan_id": "",
+  "nama_siswa": "",
+  "nis": "",
+  "jenis_kelamin": "",
+  "tingkat_kelas": "",
+  "nama_wali": "",
+  "alamat_wali": "",
+  "kontak_wali": "",
+  "status": "",
+  "file": "",
+  "created_at": "",
+  "updated_at": ""
 }

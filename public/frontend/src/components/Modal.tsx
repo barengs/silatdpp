@@ -1,74 +1,75 @@
-import useFetch from "@/hooks/useFetch";
 import { FormEvent, PropsWithChildren, useState } from "react";
-import { useStore } from "react-redux";
 import { toast } from "react-toastify";
+
+
+type immutableDataType = {
+    name: string;
+    value: string
+}
 
 interface PopupPropsType extends PropsWithChildren {
     title: string;
-    url: string;
+    idItem: string;
     state: boolean;
     stateSetter: (state: boolean) => void;
     ableUpdate?: boolean;
     ableDelete?: boolean;
+    mutation?: unknown;
+    isLoading?: boolean;
+    expanded?: boolean;
+    immutableData?: immutableDataType[];
 }
 
 const Modal: React.FC<PopupPropsType> = ({
     title,
     state,
     stateSetter,
-    url,
+    idItem,
     children,
     ableUpdate = false,
     ableDelete = false,
+    mutation = null,
+    isLoading = false,
+    expanded = false,
+    immutableData = [{ name: "", value: ""}]
 }) => {
-    const store = useStore();
-    const authState = store.getState().auth;
-    const [isPending, fetchCaller] = useFetch();
     const [method, setMethod] = useState("update");
 
     const handleDataSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const form = new URLSearchParams(new FormData(event.currentTarget));
+        const form = new FormData(event.currentTarget)
 
-        const res = await fetchCaller(url, {
-            method: method == "update" ? "PUT" : "DELETE",
-            headers: {
-                Authorization: authState.token,
-                "Content-Type":
-                    method == "update"
-                        ? "application/x-www-form-urlencoded"
-                        : "multipart/form-data",
-            },
-            body: method == "update" ? form : undefined,
-        });
+        immutableData.map(data => form.append(data.name, data.value))
 
-        if (!res.ok) {
+        const res = await mutation({idItem, form})
+
+
+
+        if (!res.data.success) {
             toast.error("Galat saat memperbarui data", {
                 position: "top-right",
             });
             return;
         }
 
-        toast.success("Berhasil memperbarui data", {
+        toast.success(`Berhasil ${method == "update" ? "Memperbarui" : "Menghapus"} data`, {
             position: "top-right",
         });
         stateSetter(false);
-        window.location.reload();
+        
     };
 
     return (
         <div
-            className={`${state || closed ? "fixed" : "hidden"} bottom-0 left-0 z-9999 flex min-h-screen w-full items-center justify-center`}
+            className={`${state || closed ? "fixed" : "hidden"} bottom-0 left-0 z-9999 flex min-h-screen w-full items-end`}
         >
-            {/* opacity clicker    */}
             <div
                 className="absolute bottom-0 left-0 -z-10 min-h-screen w-full bg-black-2 bg-opacity-75"
                 onClick={() => stateSetter(false)}
             ></div>
-            {/* endopacity clicker */}
 
-            <div className="w-max rounded-md bg-white p-4">
+            <div className="w-full min-h-screen bg-white p-4 overflow-y-auto">
                 <div className="flex w-full justify-between">
                     <h2 className="font-semibold text-black-2">{title}</h2>
                     <button onClick={() => stateSetter(false)}>
@@ -90,7 +91,7 @@ const Modal: React.FC<PopupPropsType> = ({
 
                 <form
                     onSubmit={handleDataSubmit}
-                    className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8"
+                    className="mt-8 flex flex-col md:grid md:grid-cols-2 gap-x-4 gap-y-8"
                 >
                     {children}
                     <div className="col-span-2 flex gap-x-4">
@@ -100,7 +101,7 @@ const Modal: React.FC<PopupPropsType> = ({
                                 type="submit"
                                 onClick={() => setMethod("update")}
                             >
-                                {isPending ? (
+                                {isLoading && method == "update" ? (
                                     <>
                                         <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
                                         Memperbarui Data
@@ -116,7 +117,14 @@ const Modal: React.FC<PopupPropsType> = ({
                                 type="submit"
                                 onClick={() => setMethod("delete")}
                             >
-                                Hapus Data
+                                {isLoading && method == "delete" ? (
+                                    <>
+                                        <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                                        Menghapus Data
+                                    </>
+                                ) : (
+                                    <>Hapus </>
+                                )}
                             </button>
                         )}
                     </div>

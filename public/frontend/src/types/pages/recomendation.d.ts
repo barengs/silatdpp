@@ -1,7 +1,7 @@
 export interface RecomendationType  {
     id: string;
     noreg: string;
-    rekanan_id: string;
+    mitra_id: string;
     user_id: string;
     institusi_id: string;
     nama_pejabat: string;

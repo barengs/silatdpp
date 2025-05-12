@@ -1,32 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
 
 type optionType = {
-  name: string,
-  value: string,
-}
+    name: string;
+    value: string;
+};
 
 interface selectFieldsProps {
     title: string;
     options: optionType[];
     name: string;
     defaultValue?: string;
+    error?: string;
 }
 
-const SelectFields: React.FC<selectFieldsProps> = ({ title, options, name, defaultValue }) => {
+const SelectFields: React.FC<selectFieldsProps> = ({
+    title,
+    options,
+    name,
+    defaultValue,
+    error = "",
+}) => {
+    const [errorMessege, setErrorMessege] = useState({});
+
+    const handleError = (state) => {
+        if (state) {
+            setErrorMessege(error);
+        } else {
+            setErrorMessege(false);
+        }
+    };
+
+    useEffect(() => handleError(true), [error]);
+
     return (
         <div>
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                 {title}
             </label>
 
-            <div className="relative z-20 bg-white dark:bg-form-input">
+            <div className="relative bg-white dark:bg-form-input">
                 <select
-                    value={defaultValue}
+                    defaultValue={defaultValue}
                     name={name}
-                    className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input `}
+                    onFocus={() => handleError(false)}
+                    className={`relative w-full appearance-none rounded border bg-transparent px-4 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${errorMessege ? "border-red-500" : "border-stroke"}`}
                 >
                     <option
                         value=""
@@ -46,8 +65,8 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, name, defau
                         </option>
                     ))}
                 </select>
-
-                <span className="absolute right-4 top-1/2 z-10 -translate-y-1/2">
+               
+                <span className="absolute right-4 top-1/2 -translate-y-1/2">
                     <svg
                         width="24"
                         height="24"
@@ -66,6 +85,12 @@ const SelectFields: React.FC<selectFieldsProps> = ({ title, options, name, defau
                     </svg>
                 </span>
             </div>
+
+            {errorMessege && (
+                    <span className="mt-2 block text-sm text-red-500">
+                        {error}
+                    </span>
+                )}
         </div>
     );
 };

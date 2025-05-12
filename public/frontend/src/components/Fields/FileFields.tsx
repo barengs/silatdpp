@@ -1,24 +1,33 @@
-import React, { ChangeEvent, ChangeEventHandler, useEffect, useRef, useState } from "react";
-
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 
 type FILE_PROTOTYPE_TYPE = {
-    name: string,
-    size: number,
-    type: string,
-    lastModified: number,
-}
+    name: string;
+    size: number;
+    type: string;
+    lastModified: number;
+};
 
 interface ComponentProps {
     title: string;
-    setter: (value: FILE_PROTOTYPE_TYPE[]) => void
-    multiple?: boolean
+    setter: (value: FILE_PROTOTYPE_TYPE[]) => void;
+    multiple?: boolean;
+    defaultValue?: File[];
+    error?: string;
 }
 
-const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true }) => {
+const FilesFields: React.FC<ComponentProps> = ({
+    title,
+    setter,
+    multiple = true,
+    defaultValue = [],
+    error = "",
+}) => {
     const [fieldActive, setFieldActive] = useState<boolean>(false);
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<File[]|{}[]>(defaultValue);
     const fileRef = useRef<HTMLInputElement>(null);
-    const [_, setForceUpdate] = useState<boolean>(false)
+    const [_, setForceUpdate] = useState<boolean>(false);
+
+    const [errorMessege, setErrorMessege] = useState(error);
 
     const handleClick = (event: React.MouseEvent<HTMLInputElement>) => {
         if (fieldActive) return;
@@ -28,46 +37,54 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
     };
 
     const handleSelected = (event: ChangeEvent<HTMLInputElement>) => {
-        const selectedFiles = event.target.files
+        const selectedFiles = event.target.files;
 
-        
-        if (selectedFiles?.length <= 0) return 
+        if (selectedFiles?.length <= 0) return;
 
         setFiles(Array.from(selectedFiles));
-
-    }
+    };
 
     const handleFileDropped = (event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
         setFiles(Array.from(event.dataTransfer.files));
+
         setFieldActive(false);
     };
 
-
     const handleFileRemove = (index: number) => {
-        setFiles(prevFile => {
-            prevFile.splice(index, 1)
-            return prevFile
-        })
-        setForceUpdate(state => !state)
-    }
+        setFiles((prevFile) => {
+            prevFile.splice(index, 1);
+            return prevFile;
+        });
+        setForceUpdate((state) => !state);
+    };
 
     const onChooseFile = () => {
         fileRef.current?.click();
     };
 
     useEffect(() => {
-        // const convertedData = files.map((file: File) => {
-        //     return {
-        //         name: file.name,
-        //         size: file.size,
-        //         type: file.type,
-        //         lastModified: file.lastModified,
-        //       }
-        // })
-        setter(files)
-        setFieldActive(false)
-    }, [files])
+        setter(files);
+        setFieldActive(false);
+    }, [files]);
+
+    const handleError = (state) => {
+        if (state) {
+            setErrorMessege(error);
+        } else {
+            setErrorMessege(false);
+        }
+    };
+
+    useEffect(() => handleError(true), [error]);
+
+    useEffect(() => {
+        if ((JSON.stringify(defaultValue) != JSON.stringify(files)) && (defaultValue.length != 0)) {
+            setFiles(defaultValue)
+            return
+        }
+
+    }, [defaultValue])
 
     return (
         <>
@@ -86,7 +103,10 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
                                     Upload Bukti
                                 </h1>
 
-                                <button type="button" onClick={() => setFieldActive(false)}>
+                                <button
+                                    type="button"
+                                    onClick={() => setFieldActive(false)}
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
@@ -129,20 +149,41 @@ const FilesFields: React.FC<ComponentProps> = ({ title, setter, multiple=true })
                     {title}
                 </label>
                 {files?.length <= 0 ? (
-                    <input
-                        onClick={handleClick}
-                        onChange={handleSelected}
-                        ref={fileRef}
-                        type="file"
-                        multiple={multiple}
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
+                    <>
+                        <input
+                            onClick={handleClick}
+                            onChange={handleSelected}
+                            onFocus={() => handleError(false)}
+                            ref={fileRef}
+                            type="file"
+                            multiple={multiple}
+                            accept=".png, .jpg, .jpeg, .pdf"
+                            className={`w-full rounded-lg border-[1.5px] bg-transparent p-1.5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary  ${errorMessege ? "border-red-500" : "border-stroke"}`}
+                        />
+                        {errorMessege && (
+                            <span className="mt-2 block text-sm text-red-500">
+                                {error}
+                            </span>
+                        )}
+                    </>
                 ) : (
                     <div className="space-y-2">
-                        {files.map((file, index) => (
-                            <div key={index} className="flex w-full items-center justify-between rounded-md border-[1.5px] border-black-2 px-2 py-2">
-                                <a target="_blank" href={URL.createObjectURL(file)} className="text-sm hover:underline">{file.name}</a>
-                                <button type="button" onClick={() => handleFileRemove(index)}>
+                        {files.map((file, index) =>  (
+                            <div
+                                key={index}
+                                className="flex w-full items-center justify-between rounded-md border-[1.5px] border-black-2 px-2 py-2"
+                            >
+                                <a
+                                    target="_blank"
+                                    href={ file instanceof File ? URL.createObjectURL(file) : `https://silat.barengsaya.com/${file.alamat_dokumen}`}
+                                    className="text-sm hover:underline"
+                                >
+                                    {file instanceof File ? file.name : file.nama_dokumen}
+                                </a>
+                                <button
+                                    type="button"
+                                    onClick={() => handleFileRemove(index)}
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"

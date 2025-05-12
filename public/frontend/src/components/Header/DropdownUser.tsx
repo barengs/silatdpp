@@ -8,15 +8,18 @@ import { useStore } from "react-redux";
 import {  DEFAULT_PROFILE_DATA } from "@/utils/constans";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useGetAllUserQuery } from "@/services/users";
 
 const DropdownUser = () => {
     const store = useStore();
     const state = store.getState();
     const authState = state.auth;
-    const serviceState = state.services
     const router = useRouter();
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [userData, setUserData] = useState(DEFAULT_PROFILE_DATA);
+    const [data, setData] = useState(DEFAULT_PROFILE_DATA)
+
+
+    const { data: userData } = useGetAllUserQuery()
 
     const handleLogout = async () => {
         const res = await fetch(
@@ -32,19 +35,42 @@ const DropdownUser = () => {
             return;
         }
 
+       sessionStorage.clear()
+
         toast.error("Gagal Logout", {
             position: 'top-right'
         })
+
+        setTimeout(() => window.location.reload(), 3000)
     };
 
+    const getRole = () => {
+
+        if (!data) return
+
+        if (!data.roles[0]) return "Tidak Ditugaskan"
+        
+        // temp
+        // if (!data.roles) return "Tidak Ditugaskan"
+
+
+        return data.roles[0].name
+    }
+
     useEffect(() => {
-        const user_data = serviceState.users.filter(user => user.name == authState.user.name)
 
-        if (user_data) {
-            setUserData(user_data[0]);
-        }
+        if (!userData) return
+        
+        
+        const user = userData.data.filter(userData => userData.name == authState.user.name)
+        
+        if (!user) {
+            return
+        } 
 
-    }, []);
+        setData(user[0])
+    }, [userData])
+
 
     return (
         <ClickOutside
@@ -58,9 +84,9 @@ const DropdownUser = () => {
             >
                 <span className="hidden text-right lg:block">
                     <span className="block text-sm font-medium text-black dark:text-white">
-                        {userData ? userData.name : ''}
+                        {data ? data.name : ''}
                     </span>
-                    <span className="block text-xs">{userData ? userData.roles[0].name : ''}</span>
+                    <span className="block text-xs">{getRole()}</span>
                 </span>
 
                 <span className="h-12 w-12 rounded-full">
