@@ -5,13 +5,12 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class InstitusiTamuResource extends JsonResource
+class KaryawanResource extends JsonResource
 {
-    /** public property */
     public $message;
     public $status;
     public $resource;
-    
+
     /**
      * Method __construct
      *
@@ -29,7 +28,7 @@ class InstitusiTamuResource extends JsonResource
         $this->message = $message;
     }
 
-     
+
     /**
      * Method toArray
      *
@@ -40,9 +39,9 @@ class InstitusiTamuResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'success'   => $this->status,
-            'message'   => $this->message,
-            'data'      => $this->resource,
+            'success' => $this->status,
+            'message' => $this->message,
+            'data' => $this->resource,
         ];
     }
 }

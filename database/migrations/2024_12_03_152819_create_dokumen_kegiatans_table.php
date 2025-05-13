@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('dokumen_kegiatans', function (Blueprint $table) {
             $table->id();
+            $table->text('nama_dokumen');
+            $table->text('alamat_dokumen');
+            $table->string('tipe_dokumen');
+            $table->foreignId('sppd_pengajuan_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,9 +13,15 @@ return new class extends Migration
         Schema::create('sppd_pengajuans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('nama_kegiatan');
-            $table->string('tempat_kegiatan');
+            $table->string('maksud_kegiatan');
+            $table->string('tempat_berangkat');
             $table->timestamp('tanggal_kegiatan');
+            $table->foreignId('alat_transportasi_id')->constrained()->cascadeOnDelete();
+            $table->string('tempat_tujuan');
+            $table->integer('lama_perjalanan')->nullable();
+            $table->timestamp('tanggal_berangkat')->useCurrent();
+            $table->timestamp('tanggal_kembali')->useCurrent();
+            $table->foreignId('biaya_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

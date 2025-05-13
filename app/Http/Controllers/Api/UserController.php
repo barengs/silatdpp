@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
+use App\Models\UserProfile;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -23,13 +25,37 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::create([
-            'name'  => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'gender' => 'required',
         ]);
 
-        return new UserResource(true, 'Berhasil daftakan user', $user);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $user = User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+        ]);
+
+        if ($user) {
+            $user->asignRole($request->tugas);
+            $profile = UserProfile::create([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'nick_name' => $request->nick_name,
+                'gender' => $request->gender,
+                'address' => $request->address,
+            ]);
+            return new UserResource(true, 'Berhasil daftakan pengguna', $user);
+        } else {
+            return new UserResource(false, 'gagal mendaftarkan pengguna', '');
+        }
     }
 
     /**

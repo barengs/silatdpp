@@ -16,7 +16,7 @@ class DivisiController extends Controller
     public function index()
     {
         // return 'hello';
-        $divisi = Divisi::latest();
+        $divisi = Divisi::all();
 
         return new DivisiResource(true, 'List data divisi', $divisi);
     }
@@ -30,7 +30,7 @@ class DivisiController extends Controller
             'nama' => 'required',
         ]);
 
-        if ($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
@@ -54,9 +54,13 @@ class DivisiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Divisi $divisi)
+    public function update(Request $request, string $id)
     {
-        //
+        $data = Divisi::find($id);
+        $data->nama = $request->nama;
+        $data->update();
+
+        return new DivisiResource(true, 'Berhasi update data', $data);
     }
 
     /**
