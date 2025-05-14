@@ -13,4 +13,9 @@ class History extends Model
     {
         return $this->belongsToMany(SppdPengajuan::class, 'sppd_histories');
     }
+
+    public function rekom()
+    {
+        return $this->belongsToMany(RekomHistory::class, 'rekom_histories');
+    }
 }
